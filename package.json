@@ -6,12 +6,40 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node server/bin/www"
+    "start": "node server/bin/www",
+    "server": "nodemon server/bin/www",
+    "prettier": "prettier **/*.{js,ts,vue,json} --write",
+    "deploy-to-prod": "git add . && git commit -m \"%npm_config_comment%\" && git push origin main && git push heroku main",
+    "heroku-prebuild": "echo Hook for Heroku prebuild...",
+    "heroku-postbuild": "echo Hook for Heroku postbuild..."
   },
   "dependencies": {
+    "aws-sdk": "^2.783.0",
+    "body-parser": "^1.19.0",
     "cookie-parser": "~1.4.4",
+    "cookie-session": "^1.4.0",
+    "cors": "^2.8.5",
+    "date-fns": "^2.16.1",
+    "date-fns-tz": "^1.0.12",
     "debug": "~2.6.9",
     "express": "~4.16.1",
-    "morgan": "~1.9.1"
+    "express-sslify": "^1.2.0",
+    "http-status-codes": "^2.1.4",
+    "md5": "^2.3.0",
+    "memjs": "^1.2.2",
+    "mongoose": "^5.10.11",
+    "morgan": "~1.9.1",
+    "nanoid": "^3.1.16",
+    "passport": "^0.4.1",
+    "passport-custom": "^1.1.1",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-local": "^1.0.0",
+    "shortid": "^2.2.16",
+    "stripe": "^8.119.0"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.6",
+    "prettier": "^2.1.2"
   }
 }
