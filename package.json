@@ -9,7 +9,7 @@
     "start": "node server/bin/www",
     "server": "nodemon server/bin/www",
     "prettier": "prettier **/*.{js,ts,vue,json} --write",
-    "deploy-to-prod": "git add . && git commit -m \"%npm_config_comment%\" && git push origin main && git push heroku main",
+    "deploy-to-prod": "git add . && git commit -m \"%npm_config_comment%\" && git push origin main",
     "heroku-prebuild": "echo Hook for Heroku prebuild...",
     "heroku-postbuild": "echo Hook for Heroku postbuild..."
   },
