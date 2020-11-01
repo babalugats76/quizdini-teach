@@ -1,6 +1,4 @@
-const {
-  NotAuthenticated
-} = require('../errors.js');
+const { NotAuthenticated } = require("../errors.js");
 
 module.exports = (req, res, next) => {
   if (!req.user) {

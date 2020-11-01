@@ -1,12 +1,12 @@
-const passport = require('passport');
-const mongoose = require('mongoose');
-const CustomStrategy = require('passport-custom').Strategy;
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const LocalStrategy = require('passport-local').Strategy;
-const md5 = require('md5');
-const keys = require('../config/keys');
+const passport = require("passport");
+const mongoose = require("mongoose");
+const CustomStrategy = require("passport-custom").Strategy;
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const LocalStrategy = require("passport-local").Strategy;
+const md5 = require("md5");
+const keys = require("../config/keys");
 
-const User = mongoose.model('users');
+const User = mongoose.model("users");
 
 /**
  * Function executed after strategy callback (user find)
@@ -36,8 +36,8 @@ passport.deserializeUser(async (id, done) => {
       lastName: 1,
       title: 1,
       username: 1,
-      role: 1
-    }).then(user => {
+      role: 1,
+    }).then((user) => {
       done(null, user);
     });
   } catch (e) {
@@ -53,8 +53,8 @@ passport.use(
     {
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
-      callbackURL: '/auth/google/callback',
-      proxy: true
+      callbackURL: "/auth/google/callback",
+      proxy: true,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -64,11 +64,11 @@ passport.use(
           family_name,
           given_name,
           picture,
-          sub
+          sub,
         } = profile._json;
 
         const existingUser = await User.findOne({
-          $and: [{ googleId: sub }, { googleId: { $exists: true } }]
+          $and: [{ googleId: sub }, { googleId: { $exists: true } }],
         });
 
         if (existingUser) {
@@ -87,7 +87,7 @@ passport.use(
           email: email,
           verified: email_verified,
           createDate: Date.now(),
-          lastLoginDate: Date.now()
+          lastLoginDate: Date.now(),
         }).save();
         done(null, user);
       } catch (e) {
@@ -101,10 +101,10 @@ passport.use(
   Configure Local Passport Strategy
 */
 passport.use(
-  'local',
+  "local",
   new LocalStrategy(
     {
-      passReqToCallback: true
+      passReqToCallback: true,
     },
     async (req, username, password, done) => {
       try {
@@ -115,8 +115,8 @@ passport.use(
             { username: { $exists: true } },
             { password: { $exists: true } },
             { googleId: { $exists: false } },
-            { verified: true }
-          ]
+            { verified: true },
+          ],
         });
 
         if (!user) return done(null, null);
@@ -125,7 +125,7 @@ passport.use(
          * req.logIn must be used when utilizing
          * passport.authenticate with a custom callback
          */
-        await req.logIn(user, function(err) {
+        await req.logIn(user, function (err) {
           if (err) {
             return done(err);
           }
@@ -142,12 +142,12 @@ passport.use(
   Configure Local Passport Strategy (become)
 */
 passport.use(
-  'become',
+  "become",
   new CustomStrategy(async (req, done) => {
     try {
-      const email = req.body.email || '';
+      const email = req.body.email || "";
       const user = await User.findOne({
-        email: email.toLowerCase()
+        email: email.toLowerCase(),
       });
 
       if (!user) return done(null, null);
@@ -157,7 +157,7 @@ passport.use(
        * passport.authenticate with a custom callback
        */
       await req.logout();
-      await req.logIn(user, function(err) {
+      await req.logIn(user, function (err) {
         if (err) {
           return done(err);
         }

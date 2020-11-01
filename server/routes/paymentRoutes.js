@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
-const requireLogin = require('../middlewares/requireLogin');
-const keys = require('../config/keys');
-const stripe = require('stripe')(keys.stripeSecretKey);
+const mongoose = require("mongoose");
+const requireLogin = require("../middlewares/requireLogin");
+const keys = require("../config/keys");
+const stripe = require("stripe")(keys.stripeSecretKey);
 
-const User = mongoose.model('users');
-const Payment = mongoose.model('payments');
-const { StripeChargeError } = require('../errors.js');
+const User = mongoose.model("users");
+const Payment = mongoose.model("payments");
+const { StripeChargeError } = require("../errors.js");
 
-module.exports = app => {
+module.exports = (app) => {
   /**
    * Processes Stripe payments using Stripe Elements API
    *
@@ -22,7 +22,7 @@ module.exports = app => {
    * @return Payment object
    * @throws StripeChargeError
    */
-  app.post('/api/payment', requireLogin, async (req, res, next) => {
+  app.post("/api/payment", requireLogin, async (req, res, next) => {
     try {
       const { tokenId, amount, credits, cardholderName } = req.body;
       const { email, fullName } = await User.findOne({ _id: req.user.id });
@@ -30,8 +30,8 @@ module.exports = app => {
       // STRIPE CHARGES MUST BE EXPRESSED IN PENNIES!
       const pennies = parseInt(amount) * 100,
         description = `${credits} Quizdini credits for ${fullName}`,
-        currency = 'usd',
-        units = 'pennies';
+        currency = "usd",
+        units = "pennies";
 
       let charge;
 
@@ -45,8 +45,8 @@ module.exports = app => {
           metadata: {
             credits,
             token: tokenId,
-            cardholderName
-          }
+            cardholderName,
+          },
         });
       } catch (e) {
         throw new StripeChargeError(e.message, e.code);
@@ -66,18 +66,23 @@ module.exports = app => {
         paymentDate: new Date(charge.created * 1000),
         receiptUrl: charge.receipt_url,
         charge: charge,
-        createDate: Date.now()
+        createDate: Date.now(),
       }).save();
 
       const user = await User.findByIdAndUpdate(
         req.user.id,
         {
-          $inc: { credits: credits }
+          $inc: { credits: credits },
         },
         { new: true }
       );
 
-      console.log('Credit Purchase: %s %s %s', user.fullName, payment.credits, payment.paymentId);
+      console.log(
+        "Credit Purchase: %s %s %s",
+        user.fullName,
+        payment.credits,
+        payment.paymentId
+      );
       const message = `${credits} credits have been added to your account.`;
       res.send({ message });
     } catch (e) {
@@ -85,11 +90,11 @@ module.exports = app => {
     }
   });
 
-  app.get('/api/payment/:id', requireLogin, async (req, res, next) => {
+  app.get("/api/payment/:id", requireLogin, async (req, res, next) => {
     try {
       const payment = await Payment.findOne({
         paymentId: req.params.id,
-        user_id: req.user.id
+        user_id: req.user.id,
       });
 
       if (!payment) return res.send({}); // Return empty Object to signify not found
@@ -100,11 +105,11 @@ module.exports = app => {
     }
   });
 
-  app.get('/api/payments', requireLogin, async (req, res, next) => {
+  app.get("/api/payments", requireLogin, async (req, res, next) => {
     try {
       //throw new Error("Test payment error handling...");
       const payments = await Payment.find({ user_id: req.user.id }).sort({
-        paymentDate: -1
+        paymentDate: -1,
       });
       if (!payments) return res.send([]); // Return empty Array to signify not found
       res.send(payments);

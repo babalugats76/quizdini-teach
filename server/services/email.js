@@ -1,11 +1,11 @@
-const AWS = require('aws-sdk');
-const keys = require('../config/keys');
+const AWS = require("aws-sdk");
+const keys = require("../config/keys");
 
 const awsConfig = {
   region: keys.awsRegion,
   accessKeyId: keys.awsAccessKeyId,
   secretAccessKey: keys.awsSecretAccessKey,
-  logger: console.log
+  logger: console.log,
 };
 
 /***
@@ -20,14 +20,14 @@ const awsConfig = {
  * @param {string} email.loginUrl Fully-qualified URL of login page.
  * @returns Promise Caller must handle fulfillment, rejection, etc.
  */
-const sendRecoveryEmail = async function({
+const sendRecoveryEmail = async function ({
   toAddress,
   firstName,
   fullName,
   username,
-  loginUrl
+  loginUrl,
 }) {
-  const config = new AWS.Config({ ...awsConfig, apiVersion: '2010-12-01' });
+  const config = new AWS.Config({ ...awsConfig, apiVersion: "2010-12-01" });
   const ses = new AWS.SES(config);
 
   // BccAddresses: ["Quizdini <support@quizdini.com>"],
@@ -37,17 +37,17 @@ const sendRecoveryEmail = async function({
 
   const emailParams = {
     Destination: {
-      ToAddresses: [recipient]
+      ToAddresses: [recipient],
     },
-    Template: 'QUIZDINI_RECOVER_USERNAME',
+    Template: "QUIZDINI_RECOVER_USERNAME",
     TemplateData: `{
         \"firstName\": \"${firstName}\",
         \"fullName\": \"${fullName}\",
         \"username\": \"${username}\",
         \"loginUrl\": \"${loginUrl}\"
       }`,
-    Source: 'Quizdini <support@quizdini.com>',
-    ReplyToAddresses: ['noreply@quizdini.com']
+    Source: "Quizdini <support@quizdini.com>",
+    ReplyToAddresses: ["noreply@quizdini.com"],
   };
   return await ses.sendTemplatedEmail(emailParams).promise();
 };
@@ -63,14 +63,13 @@ const sendRecoveryEmail = async function({
  * @param {string} email.verifyUrl Fully-qualified URL of link to verify recipient email.
  * @returns Promise Caller must handle fulfillment, rejection, etc.
  */
-const sendRegisterEmail = async function({
+const sendRegisterEmail = async function ({
   toAddress,
   firstName,
   fullName,
-  verifyUrl
+  verifyUrl,
 }) {
-
-  const config = new AWS.Config({ ...awsConfig, apiVersion: '2010-12-01' });
+  const config = new AWS.Config({ ...awsConfig, apiVersion: "2010-12-01" });
   const ses = new AWS.SES(config);
 
   // BccAddresses: ["Quizdini <support@quizdini.com>"],
@@ -80,16 +79,16 @@ const sendRegisterEmail = async function({
 
   const emailParams = {
     Destination: {
-      ToAddresses: [recipient]
+      ToAddresses: [recipient],
     },
-    Template: 'QUIZDINI_REGISTER',
+    Template: "QUIZDINI_REGISTER",
     TemplateData: `{
         \"firstName\": \"${firstName}\",
         \"fullName\": \"${fullName}\",
         \"verifyUrl\": \"${verifyUrl}\"
       }`,
-    Source: 'Quizdini <support@quizdini.com>',
-    ReplyToAddresses: ['noreply@quizdini.com']
+    Source: "Quizdini <support@quizdini.com>",
+    ReplyToAddresses: ["noreply@quizdini.com"],
   };
   return await ses.sendTemplatedEmail(emailParams).promise();
 };
@@ -106,14 +105,14 @@ const sendRegisterEmail = async function({
  * @param {string} email.resetExpiryDate Formatted date/time when provided resetUrl expires.
  * @returns Promise Caller must handle fulfillment, rejection, etc.
  */
-const sendResetEmail = async function({
+const sendResetEmail = async function ({
   toAddress,
   firstName,
   fullName,
   resetUrl,
-  resetExpiryDate
+  resetExpiryDate,
 }) {
-  const config = new AWS.Config({ ...awsConfig, apiVersion: '2010-12-01' });
+  const config = new AWS.Config({ ...awsConfig, apiVersion: "2010-12-01" });
   const ses = new AWS.SES(config);
 
   // BccAddresses: ["Quizdini <support@quizdini.com>"],
@@ -123,17 +122,17 @@ const sendResetEmail = async function({
 
   const emailParams = {
     Destination: {
-      ToAddresses: [recipient]
+      ToAddresses: [recipient],
     },
-    Template: 'QUIZDINI_RESET_PASSWORD',
+    Template: "QUIZDINI_RESET_PASSWORD",
     TemplateData: `{
         \"firstName\": \"${firstName}\",
         \"fullName\": \"${fullName}\",
         \"resetUrl\": \"${resetUrl}\",
         \"resetExpiryDate\": \"${resetExpiryDate}\"
       }`,
-    Source: 'Quizdini <support@quizdini.com>',
-    ReplyToAddresses: ['noreply@quizdini.com']
+    Source: "Quizdini <support@quizdini.com>",
+    ReplyToAddresses: ["noreply@quizdini.com"],
   };
   return await ses.sendTemplatedEmail(emailParams).promise();
 };
@@ -141,5 +140,5 @@ const sendResetEmail = async function({
 module.exports = {
   sendRecoveryEmail,
   sendRegisterEmail,
-  sendResetEmail
+  sendResetEmail,
 };

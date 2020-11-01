@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
-const shortid = require('shortid');
-const { format } = require('date-fns');
-const requireLogin = require('../middlewares/requireLogin');
-const User = mongoose.model('users');
-const Match = mongoose.model('matches');
-const Ping = mongoose.model('pings');
-const { InsufficientCredits } = require('../errors.js');
+const mongoose = require("mongoose");
+const shortid = require("shortid");
+const { format } = require("date-fns");
+const requireLogin = require("../middlewares/requireLogin");
+const User = mongoose.model("users");
+const Match = mongoose.model("matches");
+const Ping = mongoose.model("pings");
+const { InsufficientCredits } = require("../errors.js");
 
 module.exports = (app, memcache) => {
-  app.post('/api/match/', requireLogin, async (req, res, next) => {
+  app.post("/api/match/", requireLogin, async (req, res, next) => {
     try {
       const { title, instructions, matches, options, published } = req.body;
 
@@ -25,7 +25,7 @@ module.exports = (app, memcache) => {
         options,
         published,
         title,
-        user_id: req.user._id
+        user_id: req.user._id,
       }).save();
 
       user.credits -= 1;
@@ -37,11 +37,11 @@ module.exports = (app, memcache) => {
     }
   });
 
-  app.get('/api/match/:id', requireLogin, async (req, res, next) => {
+  app.get("/api/match/:id", requireLogin, async (req, res, next) => {
     try {
       const match = await Match.findOne({
         user_id: req.user.id,
-        matchId: req.params.id
+        matchId: req.params.id,
       });
       if (!match) return res.send({}); // Return empty Object to signify not found
       res.send(match);
@@ -50,14 +50,14 @@ module.exports = (app, memcache) => {
     }
   });
 
-  app.put('/api/match/:id', requireLogin, async (req, res, next) => {
+  app.put("/api/match/:id", requireLogin, async (req, res, next) => {
     try {
       //throw new Error('Test handling match update error...');
       const { title, instructions, matches, options, published } = req.body;
       const match = await Match.findOneAndUpdate(
         {
           user_id: req.user.id,
-          matchId: req.params.id
+          matchId: req.params.id,
         },
         {
           title,
@@ -65,7 +65,7 @@ module.exports = (app, memcache) => {
           matches,
           options,
           published,
-          updateDate: Date.now()
+          updateDate: Date.now(),
         },
         { new: true, useFindAndModify: false }
       );
@@ -81,11 +81,11 @@ module.exports = (app, memcache) => {
     }
   });
 
-  app.delete('/api/match/:id', requireLogin, async (req, res, next) => {
+  app.delete("/api/match/:id", requireLogin, async (req, res, next) => {
     try {
       const match = await Match.findOneAndDelete({
         user_id: req.user.id,
-        matchId: req.params.id
+        matchId: req.params.id,
       });
 
       if (!match) return res.send({}); // Return empty Object to signify not found
@@ -99,14 +99,14 @@ module.exports = (app, memcache) => {
     }
   });
 
-  app.get('/api/matches', requireLogin, async (req, res, next) => {
+  app.get("/api/matches", requireLogin, async (req, res, next) => {
     try {
       const matches = await Match.aggregate([
         { $match: { user_id: mongoose.Types.ObjectId(req.user.id) } },
-        { $addFields: { termCount: { $size: '$matches' } } },
-        { $unset: ['user_id', 'matches', '__v'] },
+        { $addFields: { termCount: { $size: "$matches" } } },
+        { $unset: ["user_id", "matches", "__v"] },
         { $sort: { updateDate: -1 } },
-        { $project: { _id: false } }
+        { $project: { _id: false } },
       ]);
       if (!matches) return res.send([]); // Return empty array to signify not found
       res.send(matches);
@@ -115,7 +115,7 @@ module.exports = (app, memcache) => {
     }
   });
 
-  app.get('/api/match/stats/:id', requireLogin, async (req, res, next) => {
+  app.get("/api/match/stats/:id", requireLogin, async (req, res, next) => {
     try {
       let results;
 
@@ -126,7 +126,7 @@ module.exports = (app, memcache) => {
 
       let match = await Match.findOne({
         user_id: req.user.id,
-        matchId: req.params.id
+        matchId: req.params.id,
       });
       if (!match) return res.send({}); // Return empty Object to signify not found
       const aggs = await Ping.aggregate([
@@ -138,20 +138,20 @@ module.exports = (app, memcache) => {
                 $group: {
                   _id: null,
                   plays: { $sum: 1 },
-                  correct: { $sum: '$results.correct' },
-                  incorrect: { $sum: '$results.incorrect' },
-                  avgScore: { $avg: '$results.score' }
-                }
+                  correct: { $sum: "$results.correct" },
+                  incorrect: { $sum: "$results.incorrect" },
+                  avgScore: { $avg: "$results.score" },
+                },
               },
               {
                 $project: {
                   _id: false,
                   avgScore: {
-                    $round: ['$avgScore', 2]
+                    $round: ["$avgScore", 2],
                   },
                   avgHitRate: {
                     $cond: [
-                      { $eq: ['$correct', 0] },
+                      { $eq: ["$correct", 0] },
                       0,
                       {
                         $round: [
@@ -159,21 +159,21 @@ module.exports = (app, memcache) => {
                             $multiply: [
                               {
                                 $divide: [
-                                  '$correct',
-                                  { $add: ['$correct', '$incorrect'] }
-                                ]
+                                  "$correct",
+                                  { $add: ["$correct", "$incorrect"] },
+                                ],
                               },
-                              100
-                            ]
+                              100,
+                            ],
                           },
-                          1
-                        ]
-                      }
-                    ]
+                          1,
+                        ],
+                      },
+                    ],
                   },
-                  plays: 1
-                }
-              }
+                  plays: 1,
+                },
+              },
             ],
             pings: [
               {
@@ -182,78 +182,80 @@ module.exports = (app, memcache) => {
                   createDate: {
                     $gte: new Date(
                       new Date().getTime() - 30 * 24 * 60 * 60 * 1000
-                    )
-                  }
-                }
+                    ),
+                  },
+                },
               },
               {
                 $group: {
                   _id: {
                     $toDate: {
                       $subtract: [
-                        { $toLong: '$createDate' },
+                        { $toLong: "$createDate" },
                         {
                           $mod: [
-                            { $toLong: '$createDate' },
-                            1000 * 60 * 60 * 24
-                          ]
-                        }
-                      ]
-                    }
+                            { $toLong: "$createDate" },
+                            1000 * 60 * 60 * 24,
+                          ],
+                        },
+                      ],
+                    },
                   },
-                  count: { $sum: 1 }
-                }
+                  count: { $sum: 1 },
+                },
               },
               { $sort: { _id: 1 } },
               {
                 $project: {
                   _id: false,
-                  plays: '$count',
-                  day: { $dateToString: { format: '%m/%d/%Y', date: '$_id' } }
-                }
-              }
+                  plays: "$count",
+                  day: { $dateToString: { format: "%m/%d/%Y", date: "$_id" } },
+                },
+              },
             ],
             terms: [
               { $match: { gameId: req.params.id } },
               {
-                $group: { _id: { gameId: '$gameId', results: '$results.data' } }
+                $group: {
+                  _id: { gameId: "$gameId", results: "$results.data" },
+                },
               },
-              { $unwind: { path: '$_id.results' } },
+              { $unwind: { path: "$_id.results" } },
               {
                 $group: {
-                  _id: '$_id.results.term',
+                  _id: "$_id.results.term",
                   tries: {
-                    $sum: { $add: ['$_id.results.hit', '$_id.results.miss'] }
+                    $sum: { $add: ["$_id.results.hit", "$_id.results.miss"] },
                   },
-                  hits: { $sum: '$_id.results.hit' },
-                  misses: { $sum: '$_id.results.miss' }
-                }
+                  hits: { $sum: "$_id.results.hit" },
+                  misses: { $sum: "$_id.results.miss" },
+                },
               },
               {
                 $project: {
                   _id: 0,
-                  term: '$_id',
+                  term: "$_id",
                   tries: 1,
                   hits: 1,
                   misses: 1,
                   hitRate: {
                     $round: [
-                      { $multiply: [{ $divide: ['$hits', '$tries'] }, 100] },
-                      0
-                    ]
+                      { $multiply: [{ $divide: ["$hits", "$tries"] }, 100] },
+                      0,
+                    ],
                   },
                   missRate: {
                     $round: [
-                      { $multiply: [{ $divide: ['$misses', '$tries'] }, 100] },
-                      0
-                    ]
-                  }
-                }
+                      { $multiply: [{ $divide: ["$misses", "$tries"] }, 100] },
+                      0,
+                    ],
+                  },
+                },
               },
-              { $sort: { hitRate: 1, tries: -1, term: 1 } }
-            ]
-          }
-        }
+              { $sort: { hitRate: 1, tries: -1, term: 1 } },
+            ],
+          },
+        },
       ]);
 
       const { createDate, matchId, options, title } = match.toJSON(); // convert to POJO and destructure
@@ -267,7 +269,7 @@ module.exports = (app, memcache) => {
         totals: { ...stats.totals[0] },
         pings: stats.pings,
         termCount: match.matches.length,
-        terms: stats.terms
+        terms: stats.terms,
       };
       memcache.set(statKey, results, { expires: 15 * 60 });
       res.send(results);

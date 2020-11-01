@@ -1,27 +1,26 @@
-const mongoose = require('mongoose');
-const md5 = require('md5');
-const requireLogin = require('../middlewares/requireLogin');
-const Country = mongoose.model('countries');
-const State = mongoose.model('states');
-const User = mongoose.model('users');
-const Token = mongoose.model('tokens');
+const mongoose = require("mongoose");
+const md5 = require("md5");
+const requireLogin = require("../middlewares/requireLogin");
+const Country = mongoose.model("countries");
+const State = mongoose.model("states");
+const User = mongoose.model("users");
+const Token = mongoose.model("tokens");
 const {
   sendRecoveryEmail,
   sendRegisterEmail,
-  sendResetEmail
-} = require('../services/email');
+  sendResetEmail,
+} = require("../services/email");
 const {
   DuplicateEmail,
   DuplicateUsername,
   IncorrectPassword,
-  InvalidToken
-} = require('../errors.js');
-const nanoid = require('nanoid');
-const { format, utcToZonedTime } = require('date-fns-tz');
+  InvalidToken,
+} = require("../errors.js");
+const nanoid = require("nanoid");
+const { format, utcToZonedTime } = require("date-fns-tz");
 
-module.exports = app => {
-  app.post('/api/account', async (req, res, next) => {
-
+module.exports = (app) => {
+  app.post("/api/account", async (req, res, next) => {
     try {
       const {
         title,
@@ -32,7 +31,7 @@ module.exports = app => {
         stateCode,
         email,
         username,
-        password
+        password,
       } = req.body;
 
       // Check for duplicate username
@@ -40,8 +39,8 @@ module.exports = app => {
         $and: [
           { username: username.toLowerCase() },
           { username: { $exists: true } },
-          { googleId: { $exists: false } }
-        ]
+          { googleId: { $exists: false } },
+        ],
       });
 
       if (usernameTaken) throw new DuplicateUsername(username);
@@ -51,8 +50,8 @@ module.exports = app => {
         $and: [
           { email: email.toLowerCase().trim() },
           { email: { $exists: true } },
-          { googleId: { $exists: false } }
-        ]
+          { googleId: { $exists: false } },
+        ],
       });
 
       if (emailTaken) throw new DuplicateEmail(email);
@@ -69,7 +68,7 @@ module.exports = app => {
         username,
         password: md5(password),
         verified: false,
-        createDate: Date.now()
+        createDate: Date.now(),
       }).save();
 
       // Generate secret token (for account verification)
@@ -77,7 +76,7 @@ module.exports = app => {
         secret: nanoid(),
         expiryDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
         user_id: user.id,
-        createDate: new Date()
+        createDate: new Date(),
       }).save();
 
       // Send email, welcome plus verification
@@ -86,22 +85,22 @@ module.exports = app => {
           toAddress: user.email,
           firstName: user.firstName,
           fullName: user.fullName,
-          verifyUrl: 'https://' + req.hostname + '/verify/' + token.secret
+          verifyUrl: "https://" + req.hostname + "/verify/" + token.secret,
         });
         console.log(
-          'Queued email (registration): %s, %s',
+          "Queued email (registration): %s, %s",
           user.fullName,
           user.email
         );
       } catch (e) {
         console.log(
-          'Unable to queue email (registration): %s, %s',
+          "Unable to queue email (registration): %s, %s",
           user.fullName,
           user.email
         );
       }
 
-      console.log('User Registration: %s, %s', user.fullName, user.email);
+      console.log("User Registration: %s, %s", user.fullName, user.email);
       const message = `Check your email, ${user.email}, for a link to verify your account.`;
       res.send({ message });
     } catch (e) {
@@ -109,7 +108,7 @@ module.exports = app => {
     }
   });
 
-  app.get('/api/account', requireLogin, async (req, res, next) => {
+  app.get("/api/account", requireLogin, async (req, res, next) => {
     try {
       const user = await User.findOne({ _id: req.user.id });
       res.send(user);
@@ -118,7 +117,7 @@ module.exports = app => {
     }
   });
 
-  app.put('/api/account', requireLogin, async (req, res, next) => {
+  app.put("/api/account", requireLogin, async (req, res, next) => {
     try {
       //throw new Error("Test account update error handling...");
       // Limit user updates to a narrow subset of fields
@@ -128,7 +127,7 @@ module.exports = app => {
         firstName,
         lastName,
         stateCode,
-        title
+        title,
       } = req.body;
 
       const user = await User.findOneAndUpdate(
@@ -140,7 +139,7 @@ module.exports = app => {
           lastName,
           stateCode,
           title,
-          updateDate: new Date()
+          updateDate: new Date(),
         },
         { new: true, useFindAndModify: false }
       );
@@ -150,12 +149,12 @@ module.exports = app => {
     }
   });
 
-  app.post('/api/account/lost', async (req, res, next) => {
+  app.post("/api/account/lost", async (req, res, next) => {
     try {
-      const timeZone = req.header('quizdini-timezone') || 'UTC';
-      const { email, recoveryType = 'password' } = req.body;
+      const timeZone = req.header("quizdini-timezone") || "UTC";
+      const { email, recoveryType = "password" } = req.body;
       const message = `If there is an account associated with ${email}, then a ${
-        recoveryType === 'password' ? 'password reset' : 'username recovery'
+        recoveryType === "password" ? "password reset" : "username recovery"
       } email has been sent.`;
 
       /* limited to 'local', verified users with matching email  */
@@ -164,8 +163,8 @@ module.exports = app => {
           { email },
           { password: { $exists: true } },
           { verified: true },
-          { googleId: { $exists: false } }
-        ]
+          { googleId: { $exists: false } },
+        ],
       });
 
       if (!user) {
@@ -176,13 +175,13 @@ module.exports = app => {
       // destructure fields needed to send email
       const { email: toAddress, firstName, fullName, username } = user;
 
-      if (recoveryType === 'password') {
+      if (recoveryType === "password") {
         // Generate secret token (for reset verification)
         const token = await new Token({
           secret: nanoid(),
           expiryDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000), // A day from the time on the server
           user_id: user.id,
-          createDate: new Date()
+          createDate: new Date(),
         }).save();
 
         let localExpiryDate = utcToZonedTime(token.expiryDate, timeZone);
@@ -190,12 +189,12 @@ module.exports = app => {
           localExpiryDate,
           "MMM do, yyyy 'at' h:mm aa (zzz)", // Aug 28th, 2019 at 10:09 PM (MDT)
           {
-            timeZone
+            timeZone,
           }
         );
 
         // generate resetUrl
-        const resetUrl = 'https://' + req.hostname + '/reset/' + token.secret;
+        const resetUrl = "https://" + req.hostname + "/reset/" + token.secret;
 
         try {
           await sendResetEmail({
@@ -203,18 +202,18 @@ module.exports = app => {
             firstName,
             fullName,
             resetUrl,
-            resetExpiryDate: localExpiryDate
+            resetExpiryDate: localExpiryDate,
           });
-          console.log('Queued email (recovery): %s, %s', fullName, toAddress);
+          console.log("Queued email (recovery): %s, %s", fullName, toAddress);
         } catch (e) {
           console.log(
-            'Unable to queue email (recovery): %s, %s',
+            "Unable to queue email (recovery): %s, %s",
             fullName,
             toAddress
           );
         }
       } else {
-        const loginUrl = 'https://' + req.hostname + '/login';
+        const loginUrl = "https://" + req.hostname + "/login";
 
         try {
           await sendRecoveryEmail({
@@ -222,12 +221,12 @@ module.exports = app => {
             firstName,
             fullName,
             username,
-            loginUrl
+            loginUrl,
           });
-          console.log('Queued email (recovery): %s, %s', fullName, toAddress);
+          console.log("Queued email (recovery): %s, %s", fullName, toAddress);
         } catch (e) {
           console.log(
-            'Unable to queue email (recovery): %s, %s',
+            "Unable to queue email (recovery): %s, %s",
             fullName,
             toAddress
           );
@@ -240,7 +239,7 @@ module.exports = app => {
     }
   });
 
-  app.put('/api/account/password', requireLogin, async (req, res, next) => {
+  app.put("/api/account/password", requireLogin, async (req, res, next) => {
     try {
       // Get payload
       const { newPassword, oldPassword } = req.body;
@@ -250,8 +249,8 @@ module.exports = app => {
           { _id: req.user.id },
           { password: { $exists: true } },
           { verified: true },
-          { googleId: { $exists: false } }
-        ]
+          { googleId: { $exists: false } },
+        ],
       });
       // Verify credentials
       if (user.password !== md5(oldPassword)) throw new IncorrectPassword();
@@ -262,14 +261,14 @@ module.exports = app => {
       await user.save();
 
       // Return "success" message
-      const message = 'Your password has been updated.';
+      const message = "Your password has been updated.";
       res.send({ message });
     } catch (e) {
       next(e);
     }
   });
 
-  app.put('/api/account/password-reset', async (req, res, next) => {
+  app.put("/api/account/password-reset", async (req, res, next) => {
     try {
       const { newPassword, secret } = req.body;
 
@@ -277,8 +276,8 @@ module.exports = app => {
         $and: [
           { secret },
           { claimed: false },
-          { expiryDate: { $gte: new Date().toISOString() } }
-        ]
+          { expiryDate: { $gte: new Date().toISOString() } },
+        ],
       });
 
       if (!token) throw new InvalidToken();
@@ -288,8 +287,8 @@ module.exports = app => {
           $and: [
             { _id: token.user_id },
             { verified: true },
-            { googleId: { $exists: false } }
-          ]
+            { googleId: { $exists: false } },
+          ],
         },
         { password: md5(newPassword), updateDate: new Date() },
         { new: true, useFindAndModify: false }
@@ -299,22 +298,22 @@ module.exports = app => {
       token.updateDate = new Date();
       await token.save();
 
-      const message = 'Your password has been reset.';
+      const message = "Your password has been reset.";
       res.send({ message });
     } catch (e) {
       next(e);
     }
   });
 
-  app.put('/api/account/verify', async (req, res, next) => {
+  app.put("/api/account/verify", async (req, res, next) => {
     try {
       const { secret } = req.body;
       const token = await Token.findOne({
         $and: [
           { secret: secret },
           { claimed: false },
-          { expiryDate: { $gte: new Date().toISOString() } }
-        ]
+          { expiryDate: { $gte: new Date().toISOString() } },
+        ],
       });
 
       if (!token) throw new InvalidToken();
@@ -324,8 +323,8 @@ module.exports = app => {
           $and: [
             { _id: token.user_id },
             { verified: false },
-            { googleId: { $exists: false } }
-          ]
+            { googleId: { $exists: false } },
+          ],
         },
         { verified: true, updateDate: new Date() },
         { new: true, useFindAndModify: false }
@@ -334,18 +333,18 @@ module.exports = app => {
       token.claimed = true;
       token.updateDate = new Date();
       await token.save();
-      console.log('Account Verified: %s, %s', user.fullName, secret);
-      const message = 'Your account has been verified.';
+      console.log("Account Verified: %s, %s", user.fullName, secret);
+      const message = "Your account has been verified.";
       res.send({ message });
     } catch (e) {
       next(e);
     }
   });
 
-  app.get('/api/countries', async (req, res, next) => {
+  app.get("/api/countries", async (req, res, next) => {
     try {
-      throw new Error('testing countries error...');
-      const countries = await Country.find().sort({ countryId: 'asc' });
+      throw new Error("testing countries error...");
+      const countries = await Country.find().sort({ countryId: "asc" });
       if (!countries) return res.send({}); // Return empty Object to signify not found
       res.send(countries);
     } catch (e) {
@@ -353,10 +352,10 @@ module.exports = app => {
     }
   });
 
-  app.get('/api/states', async (req, res, next) => {
+  app.get("/api/states", async (req, res, next) => {
     try {
       //throw new Error('testing states error...');
-      const states = await State.find().sort({ stateCode: 'asc' });
+      const states = await State.find().sort({ stateCode: "asc" });
       if (!states) return res.send({}); // Return empty Object to signify not found
       res.send(states);
     } catch (e) {
@@ -364,14 +363,14 @@ module.exports = app => {
     }
   });
 
-  app.get('/api/token/:secret', async (req, res, next) => {
+  app.get("/api/token/:secret", async (req, res, next) => {
     try {
       const token = await Token.findOne({
         $and: [
           { secret: req.params.secret },
           { claimed: false },
-          { expiryDate: { $gte: new Date().toISOString() } }
-        ]
+          { expiryDate: { $gte: new Date().toISOString() } },
+        ],
       });
       if (!token) throw new InvalidToken();
       return res.send(token);

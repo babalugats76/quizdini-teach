@@ -1,14 +1,14 @@
-const passport = require('passport');
-const requireAdmin = require('../middlewares/requireAdmin.js');
-const { LoginFailed } = require('../errors.js');
+const passport = require("passport");
+const requireAdmin = require("../middlewares/requireAdmin.js");
+const { LoginFailed } = require("../errors.js");
 
-module.exports = app => {
+module.exports = (app) => {
   /***
    * Utilizes a custom callback for passport.authenticate
    * in order to exercise full control over return, function, signature, etc.
    */
-  app.post('/auth/local', async (req, res, next) => {
-    passport.authenticate('local', function(err, user) {
+  app.post("/auth/local", async (req, res, next) => {
+    passport.authenticate("local", function (err, user) {
       try {
         if (err) return next(err);
         if (!user) throw new LoginFailed();
@@ -20,8 +20,8 @@ module.exports = app => {
     })(req, res, next);
   });
 
-  app.post('/auth/become', requireAdmin, async (req, res, next) => {
-    passport.authenticate('become', function(err, user) {
+  app.post("/auth/become", requireAdmin, async (req, res, next) => {
+    passport.authenticate("become", function (err, user) {
       try {
         if (err) return next(err);
         if (!user) throw new LoginFailed();
@@ -34,26 +34,26 @@ module.exports = app => {
   });
 
   app.get(
-    '/auth/google',
-    passport.authenticate('google', {
-      scope: ['profile', 'email']
+    "/auth/google",
+    passport.authenticate("google", {
+      scope: ["profile", "email"],
     })
   );
 
   app.get(
-    '/auth/google/callback',
-    passport.authenticate('google'),
+    "/auth/google/callback",
+    passport.authenticate("google"),
     (req, res) => {
-      res.redirect('/');
+      res.redirect("/");
     }
   );
 
-  app.get('/api/logout', (req, res) => {
+  app.get("/api/logout", (req, res) => {
     req.logout();
-    res.redirect('/');
+    res.redirect("/");
   });
 
-  app.get('/api/current_user', (req, res) => {
+  app.get("/api/current_user", (req, res) => {
     //throw new Error('unable to obtain current user...');
     res.send(req.user);
   });

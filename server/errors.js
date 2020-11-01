@@ -1,17 +1,17 @@
 const {
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
-  UNAUTHORIZED
-} = require('http-status-codes');
+  UNAUTHORIZED,
+} = require("http-status-codes");
 
-const DUPLICATE_EMAIL = '%email% is already associated with another account.';
-const DUPLICATE_USERNAME = '%username% already exists';
-const INCORRECT_PASSWORD = 'Your current password is incorrect.';
-const INSUFFICIENT_CREDITS = 'There are not enough credits in your account.';
-const INVALID_TOKEN = 'Your token is invalid, claimed, or expired.';
-const LOGIN_FAILED = 'Please check your credentials or verify your account.';
-const NOT_AUTHENTICATED = 'You must be logged in to access %path%.';
-const NOT_ADMIN = 'You must be a logged in super user to access %path%.';
+const DUPLICATE_EMAIL = "%email% is already associated with another account.";
+const DUPLICATE_USERNAME = "%username% already exists";
+const INCORRECT_PASSWORD = "Your current password is incorrect.";
+const INSUFFICIENT_CREDITS = "There are not enough credits in your account.";
+const INVALID_TOKEN = "Your token is invalid, claimed, or expired.";
+const LOGIN_FAILED = "Please check your credentials or verify your account.";
+const NOT_AUTHENTICATED = "You must be logged in to access %path%.";
+const NOT_ADMIN = "You must be a logged in super user to access %path%.";
 
 class CustomError extends Error {
   constructor(msg, statusCode = INTERNAL_SERVER_ERROR, code = undefined) {
@@ -23,20 +23,20 @@ class CustomError extends Error {
     return {
       statusCode: this.statusCode,
       code: this.code,
-      message: this.message
+      message: this.message,
     };
   }
 }
 
 class DuplicateEmail extends CustomError {
   constructor(email, msg = DUPLICATE_EMAIL) {
-    super(msg.replace('%email%', email), BAD_REQUEST);
+    super(msg.replace("%email%", email), BAD_REQUEST);
   }
 }
 
 class DuplicateUsername extends CustomError {
   constructor(username, msg = DUPLICATE_USERNAME) {
-    super(msg.replace('%username%', username), BAD_REQUEST);
+    super(msg.replace("%username%", username), BAD_REQUEST);
   }
 }
 
@@ -66,13 +66,13 @@ class LoginFailed extends CustomError {
 
 class NotAdmin extends CustomError {
   constructor(path, msg = NOT_ADMIN) {
-    super(msg.replace('%path%', path), UNAUTHORIZED);
+    super(msg.replace("%path%", path), UNAUTHORIZED);
   }
 }
 
 class NotAuthenticated extends CustomError {
   constructor(path, msg = NOT_AUTHENTICATED) {
-    super(msg.replace('%path%', path), UNAUTHORIZED);
+    super(msg.replace("%path%", path), UNAUTHORIZED);
   }
 }
 
@@ -92,5 +92,5 @@ module.exports = {
   LoginFailed,
   NotAdmin,
   NotAuthenticated,
-  StripeChargeError
+  StripeChargeError,
 };

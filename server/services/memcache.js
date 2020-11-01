@@ -1,6 +1,6 @@
 const memjs = require("memjs"); // memcache client (from memcachier)
 
-module.exports = keys => {
+module.exports = (keys) => {
   // Create instance of memjs client
   const mc = memjs.Client.create(keys.memcachierServers, {
     expires: keys.memcacheExpire, // default: 0 (never expires)
@@ -8,7 +8,7 @@ module.exports = keys => {
     keepAlive: true, // default: false
     password: keys.memcachierPassword,
     timeout: 1, // default: 0.5 (seconds)
-    username: keys.memcachierUsername
+    username: keys.memcachierUsername,
   });
 
   /***
@@ -27,10 +27,10 @@ module.exports = keys => {
      * @param {string} key  Key to obtain from cache
      * @return {Object}     Value, in JSON format, from cache lookup; `null` if not found
      */
-    get: key =>
+    get: (key) =>
       mc.get(key).then(
-        data => (data.value ? JSON.parse(data.value.toString()) : null),
-        err => null
+        (data) => (data.value ? JSON.parse(data.value.toString()) : null),
+        (err) => null
       ),
     /**
      * Set/overwrite cached value (from JSON format).
@@ -44,7 +44,7 @@ module.exports = keys => {
      */
     set: (key, value, options = {}) =>
       mc.set(key, JSON.stringify(value), options).then(
-        data =>
+        (data) =>
           console.log(
             "Cached:",
             key,
@@ -54,7 +54,7 @@ module.exports = keys => {
             Object.keys(options).length === 0 ? "default" : options,
             "options"
           ),
-        err => console.log("Unable to cache:", key, " => ", value)
+        (err) => console.log("Unable to cache:", key, " => ", value)
       ),
     /**
      * Removes cached value from the cache.
@@ -65,17 +65,17 @@ module.exports = keys => {
      * @param {string} key     Key to delete from the cache
      * @return {boolean}       Whether operation was successful (no errors)
      */
-    delete: key =>
+    delete: (key) =>
       mc.delete(key).then(
-        success => {
+        (success) => {
           console.log("Removed from cache:", key);
           return true; // if attempt was succeeded
         },
-        err => {
+        (err) => {
           console.log("Unable to delete from cache:", key);
           return false; // if there was an exception
         }
-      )
+      ),
   };
 
   // export singleton

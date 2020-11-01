@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const tokenSchema = new Schema(
@@ -17,22 +17,22 @@ const tokenSchema = new Schema(
       virtuals: true,
       versionKey: false,
       minimize: false,
-      transform: function(doc, ret) {
+      transform: function (doc, ret) {
         delete ret._id;
         delete ret.user_id;
-      }
+      },
     },
     toJSON: {
       getters: true,
       virtuals: true,
       versionKey: false,
       minimize: false,
-      transform: function(doc, ret) {
+      transform: function (doc, ret) {
         delete ret._id;
         delete ret.user_id;
-      }
-    }
+      },
+    },
   }
 );
 
-mongoose.model('tokens', tokenSchema);
+mongoose.model("tokens", tokenSchema);

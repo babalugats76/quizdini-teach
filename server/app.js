@@ -4,7 +4,7 @@ const logger = require("morgan");
 const path = require("path");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const cors = require('cors');
+const cors = require("cors");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
 
@@ -26,7 +26,7 @@ mongoose.connect(keys.mongoURI, {
   useNewUrlParser: true,
   useFindAndModify: false,
   useCreateIndex: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
 
 const app = express();
@@ -50,7 +50,7 @@ app.use(errorHandler); // Custom default, i.e., catch-all, error handler middlew
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    keys: [keys.cookieKey]
+    keys: [keys.cookieKey],
   })
 );
 

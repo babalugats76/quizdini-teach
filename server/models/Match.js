@@ -10,7 +10,7 @@ const matchSchema = new Schema(
     options: Schema.Types.Mixed, // Config info {} POJO, e.g., duration, etc.
     createDate: { type: Date, default: Date.now, required: true }, // create date/time
     updateDate: { type: Date, default: Date.now }, // last update date/time
-    user_id: { type: Schema.Types.ObjectId, required: true } // Manual reference (like a foreign key)
+    user_id: { type: Schema.Types.ObjectId, required: true }, // Manual reference (like a foreign key)
   },
   {
     id: false,
@@ -19,21 +19,21 @@ const matchSchema = new Schema(
       virtuals: true,
       versionKey: false,
       minimize: false,
-      transform: function(doc, ret) {
+      transform: function (doc, ret) {
         delete ret._id;
         delete ret.user_id;
-      }
+      },
     },
     toJSON: {
       getters: true,
       virtuals: true,
       versionKey: false,
       minimize: false,
-      transform: function(doc, ret) {
+      transform: function (doc, ret) {
         delete ret._id;
         delete ret.user_id;
-      }
-    }
+      },
+    },
   }
 );
 

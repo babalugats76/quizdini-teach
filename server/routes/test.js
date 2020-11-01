@@ -1,42 +1,38 @@
-const AWS = require('aws-sdk');
-const keys = require('../config/keys');
+const AWS = require("aws-sdk");
+const keys = require("../config/keys");
 const {
   sendRecoveryEmail,
   sendRegisterEmail,
-  sendResetEmail
-} = require('../services/email');
+  sendResetEmail,
+} = require("../services/email");
 
-const requireAdmin = require('../middlewares/requireAdmin.js');
+const requireAdmin = require("../middlewares/requireAdmin.js");
 
 const awsConfig = {
   region: keys.awsRegion,
   accessKeyId: keys.awsAccessKeyId,
   secretAccessKey: keys.awsSecretAccessKey,
-  logger: console.log
+  logger: console.log,
 };
 
-module.exports = app => {
-  app.get(
-    '/testEvent',
-    requireAdmin,
-    async (req, res, next) => {
-      try {
-        res.send("You have reached an admin route!")
-        next();
-      } catch (e) {
-        next(e);
-      }
+module.exports = (app) => {
+  app.get("/testEvent", requireAdmin, async (req, res, next) => {
+    try {
+      res.send("You have reached an admin route!");
+      next();
+    } catch (e) {
+      next(e);
     }
-  );
+  });
 
-  app.post('/testRegisterEmail', async (req, res, next) => {
+  app.post("/testRegisterEmail", async (req, res, next) => {
     try {
       const { toAddress, firstName, fullName, verifyUrl } = req.body;
       const email = await sendRegisterEmail({
         toAddress,
         firstName,
         fullName,
-        verifyUrl
+        verifyUrl,
       });
       res.send({ email });
     } catch (e) {
@@ -44,7 +40,7 @@ module.exports = app => {
     }
   });
 
-  app.post('/testRecoveryEmail', async (req, res, next) => {
+  app.post("/testRecoveryEmail", async (req, res, next) => {
     try {
       const { toAddress, firstName, fullName, username, loginUrl } = req.body;
       const email = await sendRecoveryEmail({
@@ -52,7 +48,7 @@ module.exports = app => {
         firstName,
         fullName,
         username,
-        loginUrl
+        loginUrl,
       });
       res.send({ email });
     } catch (e) {
@@ -60,21 +56,21 @@ module.exports = app => {
     }
   });
 
-  app.post('/testResetEmail', async (req, res, next) => {
+  app.post("/testResetEmail", async (req, res, next) => {
     try {
       const {
         toAddress,
         firstName,
         fullName,
         resetUrl,
-        resetExpiryDate
+        resetExpiryDate,
       } = req.body;
       const email = await sendResetEmail({
         toAddress,
         firstName,
         fullName,
         resetUrl,
-        resetExpiryDate
+        resetExpiryDate,
       });
       res.send({ email });
     } catch (e) {
@@ -83,16 +79,16 @@ module.exports = app => {
   });
 
   /* Use as a way to create email templates without the command-line API */
-  app.get('/createTemplates', async (req, res, next) => {
+  app.get("/createTemplates", async (req, res, next) => {
     try {
-      const config = new AWS.Config({ ...awsConfig, apiVersion: '2010-12-01' });
+      const config = new AWS.Config({ ...awsConfig, apiVersion: "2010-12-01" });
       const ses = new AWS.SES(config);
 
       let data, params, templateParams;
 
       /** BEGIN REGISTER EMAIL TEMPLATE */
 
-      params = { TemplateName: 'QUIZDINI_REGISTER' };
+      params = { TemplateName: "QUIZDINI_REGISTER" };
 
       try {
         await ses.deleteTemplate(params).promise();
@@ -102,8 +98,8 @@ module.exports = app => {
 
       templateParams = {
         Template: {
-          TemplateName: 'QUIZDINI_REGISTER',
-          SubjectPart: 'Completing Your Registration',
+          TemplateName: "QUIZDINI_REGISTER",
+          SubjectPart: "Completing Your Registration",
           HtmlPart:
             '<!DOCTYPE html> \
            <html lang="en"> \
@@ -179,15 +175,15 @@ module.exports = app => {
              </body> \
            </html>',
           TextPart:
-            'Dear {{firstName}},\r\n Welcome to Quizdini!\r\nYour account has been created.\r\nJust one more step and you will be creating fun activities for your students.\r\nPlease copy and paste the following link into your browser to verify your account: {{verifyUrl}}\r\nThank you for using Quizdini!\r\n--The Quizdini Team--'
-        }
+            "Dear {{firstName}},\r\n Welcome to Quizdini!\r\nYour account has been created.\r\nJust one more step and you will be creating fun activities for your students.\r\nPlease copy and paste the following link into your browser to verify your account: {{verifyUrl}}\r\nThank you for using Quizdini!\r\n--The Quizdini Team--",
+        },
       };
 
       data = await ses.createTemplate(templateParams).promise();
       console.log(data);
 
       /** BEGIN RECOVER USERNAME TEMPLATE */
-      params = { TemplateName: 'QUIZDINI_RECOVER_USERNAME' };
+      params = { TemplateName: "QUIZDINI_RECOVER_USERNAME" };
 
       try {
         await ses.deleteTemplate(params).promise();
@@ -197,8 +193,8 @@ module.exports = app => {
 
       templateParams = {
         Template: {
-          TemplateName: 'QUIZDINI_RECOVER_USERNAME',
-          SubjectPart: 'Username Recovery',
+          TemplateName: "QUIZDINI_RECOVER_USERNAME",
+          SubjectPart: "Username Recovery",
           HtmlPart:
             '<!DOCTYPE html> \
              <html lang="en"> \
@@ -289,15 +285,15 @@ module.exports = app => {
                </body> \
              </html>',
           TextPart:
-            'Dear {{firstName}},\r\nA request has been made to recover your username.\r\nPlease copy and paste the following link into your browser to log in to your account: {{loginUrl}}\r\nThank you for using Quizdini!\r\n--The Quizdini Team--'
-        }
+            "Dear {{firstName}},\r\nA request has been made to recover your username.\r\nPlease copy and paste the following link into your browser to log in to your account: {{loginUrl}}\r\nThank you for using Quizdini!\r\n--The Quizdini Team--",
+        },
       };
 
       data = await ses.createTemplate(templateParams).promise();
       console.log(data);
 
       /** BEGIN RESET PASSWORD TEMPLATE */
-      params = { TemplateName: 'QUIZDINI_RESET_PASSWORD' };
+      params = { TemplateName: "QUIZDINI_RESET_PASSWORD" };
 
       try {
         await ses.deleteTemplate(params).promise();
@@ -307,8 +303,8 @@ module.exports = app => {
 
       templateParams = {
         Template: {
-          TemplateName: 'QUIZDINI_RESET_PASSWORD',
-          SubjectPart: 'Password Reset Request',
+          TemplateName: "QUIZDINI_RESET_PASSWORD",
+          SubjectPart: "Password Reset Request",
           HtmlPart:
             '<!DOCTYPE html> \
              <html lang="en"> \
@@ -399,14 +395,14 @@ module.exports = app => {
                </body> \
              </html>',
           TextPart:
-            'Dear {{firstName}},\r\nA request has been made to reset your password.\r\nPlease copy and paste the following link into your browser to complete your password reset: {{resetUrl}}\r\nThis link will expire {{resetExpiryDate}}.\r\nThank you for using Quizdini!\r\n--The Quizdini Team--'
-        }
+            "Dear {{firstName}},\r\nA request has been made to reset your password.\r\nPlease copy and paste the following link into your browser to complete your password reset: {{resetUrl}}\r\nThis link will expire {{resetExpiryDate}}.\r\nThank you for using Quizdini!\r\n--The Quizdini Team--",
+        },
       };
 
       data = await ses.createTemplate(templateParams).promise();
       console.log(data);
 
-      res.send('Done creating templates...');
+      res.send("Done creating templates...");
     } catch (e) {
       console.log(e);
     }

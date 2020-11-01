@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const userSchema = new Schema(
@@ -20,12 +20,12 @@ const userSchema = new Schema(
       required: true,
       lowercase: true,
       trim: true,
-      default: 'teach'
+      default: "teach",
     },
     verified: { type: Boolean, default: false },
     createDate: { type: Date, default: Date.now, required: true }, // create date/time
     updateDate: { type: Date, default: Date.now }, // last update date/time
-    lastLoginDate: Date
+    lastLoginDate: Date,
   },
   {
     id: true,
@@ -34,30 +34,30 @@ const userSchema = new Schema(
       virtuals: true,
       versionKey: false,
       minimize: false,
-      transform: function(doc, ret) {
+      transform: function (doc, ret) {
         delete ret._id;
         delete ret.password;
-      }
+      },
     },
     toJSON: {
       getters: true,
       virtuals: true,
       versionKey: false,
       minimize: false,
-      transform: function(doc, ret) {
+      transform: function (doc, ret) {
         delete ret._id;
         delete ret.password;
-      }
-    }
+      },
+    },
   }
 );
 
-userSchema.virtual('fullName').get(function() {
+userSchema.virtual("fullName").get(function () {
   return (
-    (this.title ? this.title + ' ' : '') +
-    (this.firstName ? this.firstName + ' ' : '') +
-    (this.lastName ? this.lastName : '')
+    (this.title ? this.title + " " : "") +
+    (this.firstName ? this.firstName + " " : "") +
+    (this.lastName ? this.lastName : "")
   );
 });
 
-mongoose.model('users', userSchema);
+mongoose.model("users", userSchema);
