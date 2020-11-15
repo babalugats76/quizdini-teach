@@ -1,5 +1,6 @@
 {
   "name": "client",
+  "description": "Client-side application for Quizdini teach app",
   "version": "0.1.0",
   "private": true,
   "scripts": {

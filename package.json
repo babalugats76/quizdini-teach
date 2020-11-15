@@ -1,10 +1,15 @@
 {
   "name": "server",
+  "description": "Quizdini teach app",
   "config": {
     "comment": "Updated quizdini-teach source code"
   },
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "14.x",
+    "npm": "6.x"
+  },
   "scripts": {
     "start": "node server/bin/www",
     "server": "nodemon server/bin/www",
