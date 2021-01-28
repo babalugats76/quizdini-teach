@@ -13,7 +13,7 @@ const state = {
 
 const getters = {
   count: (state) => (Array.isArray(state.data) ? state.data.length : 0),
-  getAll: (state) => state.data,
+  all: (state) => state.data,
   initialized: (state) => state.status !== STATUS.INIT,
   inError: (state) => state.status === STATUS.ERROR,
   loaded: (state) => state.status === STATUS.LOADED,

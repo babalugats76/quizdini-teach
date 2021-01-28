@@ -1,12 +1,13 @@
 import { createWebHistory, createRouter } from "vue-router";
 //import Counter from "@/components/Counter";
-import Country from "@/components/Country";
+//import Country from "@/components/Country";
+import Auth from "@/components/Auth";
 
 const routes = [
   {
     path: "/",
-    name: "country",
-    component: Country,
+    name: "auth",
+    component: Auth,
     props: false,
   },
 ];

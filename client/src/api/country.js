@@ -1,4 +1,4 @@
 import { get } from "@/utils/fetch";
 const ENDPOINT = "/api/countries";
-const fetchCountries = () => get({ url: `${ENDPOINT}` });
-export { fetchCountries };
+const getCountries = () => get({ url: `${ENDPOINT}` });
+export { getCountries };

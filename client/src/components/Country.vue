@@ -22,14 +22,12 @@ export default {
     const store = useStore();
     return {
       count: computed(() => store.getters["countries/count"]),
-      countries: computed(() => store.getters["countries/getAll"]),
+      countries: computed(() => store.getters["countries/all"]),
       initialized: computed(() => store.getters["countries/initialized"]),
       inError: computed(() => store.getters["countries/inError"]),
       loaded: computed(() => store.getters["countries/loaded"]),
       loading: computed(() => store.getters["countries/loading"]),
-      ...mapActions("countries", {
-        fetchCountries: "fetch",
-      }),
+      ...mapActions("countries", ["fetchCountries"]),
     };
   },
 };

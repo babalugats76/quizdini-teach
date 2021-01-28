@@ -1,5 +1,6 @@
 import { createStore, createLogger } from "vuex";
 import test from "./modules/test";
+import auth from "./modules/auth";
 import countries from "./modules/countries";
 import { apiHelperPlugin } from "./apiHelper";
 
@@ -9,6 +10,7 @@ const store = createStore({
   plugins: [...(debug ? [createLogger()] : []), apiHelperPlugin],
   modules: {
     test,
+    auth,
     countries,
   },
   strict: debug,

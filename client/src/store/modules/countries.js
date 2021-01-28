@@ -1,4 +1,4 @@
-import { fetchCountries } from "@/api/country";
+import { getCountries } from "@/api/country";
 import { apiState, apiGetters, apiMutations } from "../apiHelper";
 
 const state = () => ({ ...apiState });
@@ -6,9 +6,9 @@ const state = () => ({ ...apiState });
 const getters = { ...apiGetters };
 
 const actions = {
-  async fetch({ commit }) {
+  async fetchCountries({ commit }) {
     commit("load");
-    commit("process", await fetchCountries());
+    commit("process", await getCountries());
   },
 };
 
