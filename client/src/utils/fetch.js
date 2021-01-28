@@ -16,8 +16,8 @@ const AXIOS_CONFIG = { timeout: 30000 };
  * @returns {object}       data or error object (from server)
  */
 export const get = async ({ url, config = AXIOS_CONFIG }) => {
-  console.log("url", url);
-  console.log("config", config);
+  // console.log("url", url);
+  // console.log("config", config);
   try {
     const res = await axios.get(url, config);
     return { data: res.data };
@@ -37,9 +37,9 @@ export const get = async ({ url, config = AXIOS_CONFIG }) => {
  * @returns {object}       data or error object (from server)
  */
 export const post = async ({ url, data, config = AXIOS_CONFIG }) => {
-  console.log("url", url);
-  console.log(JSON.stringify(data, null, 4));
-  console.log("config", config);
+  // console.log("url", url);
+  // console.log(JSON.stringify(data, null, 4));
+  // console.log("config", config);
   try {
     const res = await axios.post(url, data, config);
     return { data: res.data };

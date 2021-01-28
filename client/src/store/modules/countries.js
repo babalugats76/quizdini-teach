@@ -1,35 +1,33 @@
 import { fetchCountries } from "@/api/country";
+import { apiState, apiGetters, apiMutations } from "../apiHelper";
 
-const state = () => ({
-  data: null, // payload from successful api call
-  loaded: false, // whether initialized, successful or not
-  loading: false, // whether api call is in progress
-  error: null, // payload from unsuccessful api call
-});
+const state = () => ({ ...apiState });
+
+const getters = { ...apiGetters };
 
 const actions = {
-  async getCountries({ commit }) {
-    commit("loading", true);
-    commit("processData", await fetchCountries());
-    commit("loading", false);
+  async fetch({ commit }) {
+    commit("load");
+    commit("process", await fetchCountries());
   },
 };
 
 const mutations = {
-  loading(state, payload) {
-    console.log("loading!");
-    state.loading = payload;
+  ...apiMutations,
+  success(state, { data }) {
+    state.data = data;
+    state.error = null;
   },
-  processData(state, payload) {
-    console.log("process data here...");
-    console.log(JSON.stringify(payload, null, 4));
+  failure(state, { error }) {
+    state.error = error;
+    state.data = null;
   },
 };
 
 export default {
   namespaced: true,
   state,
-  //getters,
+  getters,
   actions,
   mutations,
 };
