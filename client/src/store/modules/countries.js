@@ -6,7 +6,7 @@ const state = () => ({ ...apiState });
 const getters = { ...apiGetters };
 
 const actions = {
-  async fetchCountries({ commit }) {
+  async fetch({ commit }) {
     commit("load");
     commit("process", await getCountries());
   },

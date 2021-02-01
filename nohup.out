@@ -6,80 +6,81 @@
 > server@0.0.0 prettier /home/bobleeswagger/Documents/Quizdini/quizdini-teach
 > prettier **/*.{js,ts,vue,json} --write
 
-client/babel.config.js 38ms
-client/package-lock.json 432ms
-client/package.json 26ms
-client/src/api/auth.js 10ms
+client/babel.config.js 39ms
+client/package-lock.json 427ms
+client/package.json 24ms
+client/src/api/auth.js 11ms
 client/src/api/country.js 4ms
-client/src/App.vue 56ms
-client/src/components/Auth.vue 39ms
-client/src/components/Counter.vue 36ms
-client/src/components/Country.vue 30ms
-client/src/main.js 3ms
-client/src/router/index.js 9ms
-client/src/store/actions.js 1ms
-client/src/store/apiHelper.js 23ms
-client/src/store/index.js 6ms
-client/src/store/modules/auth.js 10ms
-client/src/store/modules/countries.js 6ms
-client/src/store/modules/test.js 6ms
+client/src/App.vue 55ms
+client/src/components/ApiTester.vue 12ms
+client/src/components/Auth.vue 53ms
+client/src/components/Counter.vue 29ms
+client/src/components/Country.vue 66ms
+client/src/main.js 4ms
+client/src/router/index.js 4ms
+client/src/store/actions.js 2ms
+client/src/store/apiHelper.js 19ms
+client/src/store/index.js 8ms
+client/src/store/modules/auth.js 11ms
+client/src/store/modules/countries.js 5ms
+client/src/store/modules/test.js 7ms
 client/src/store/mutations.js 1ms
-client/src/utils/common.js 25ms
-client/src/utils/fetch.js 10ms
-client/vue.config.js 4ms
-package-lock.json 99ms
-package.json 3ms
-server/app.js 13ms
+client/src/utils/common.js 22ms
+client/src/utils/fetch.js 12ms
+client/vue.config.js 5ms
+package-lock.json 90ms
+package.json 2ms
+server/app.js 10ms
 server/config/dev.js 3ms
-server/config/keys.js 4ms
-server/config/prod.js 3ms
+server/config/keys.js 3ms
+server/config/prod.js 4ms
 server/errors.js 16ms
 server/middlewares/errorHandler.js 4ms
-server/middlewares/eventHandler.js 3ms
-server/middlewares/requireAdmin.js 4ms
+server/middlewares/eventHandler.js 4ms
+server/middlewares/requireAdmin.js 2ms
 server/middlewares/requireLogin.js 3ms
-server/models/Country.js 5ms
-server/models/Match.js 9ms
-server/models/Payment.js 8ms
-server/models/Ping.js 9ms
-server/models/State.js 4ms
-server/models/Token.js 11ms
-server/models/User.js 10ms
-server/routes/authRoutes.js 12ms
-server/routes/matchRoutes.js 44ms
-server/routes/paymentRoutes.js 18ms
-server/routes/test.js 25ms
-server/routes/userRoutes.js 43ms
-server/services/email.js 17ms
-server/services/memcache.js 10ms
-server/services/passport.js 17ms
+server/models/Country.js 6ms
+server/models/Match.js 6ms
+server/models/Payment.js 10ms
+server/models/Ping.js 7ms
+server/models/State.js 7ms
+server/models/Token.js 6ms
+server/models/User.js 11ms
+server/routes/authRoutes.js 11ms
+server/routes/matchRoutes.js 34ms
+server/routes/paymentRoutes.js 12ms
+server/routes/test.js 21ms
+server/routes/userRoutes.js 48ms
+server/services/email.js 14ms
+server/services/memcache.js 8ms
+server/services/passport.js 14ms
 
 > client@0.1.0 build /home/bobleeswagger/Documents/Quizdini/quizdini-teach/client
 > vue-cli-service build --modern
 
 
 -  Building legacy bundle for production...
- DONE  Compiled successfully in 4762ms3:07:39 PM
+ DONE  Compiled successfully in 5952ms6:23:07 PM
 
   File                                      Size             Gzipped
 
-  ../server/public/js/chunk-vendors-lega    158.41 KiB       56.28 KiB
-  cy.5a64b710.js
-  ../server/public/js/app-legacy.131e4ae    7.16 KiB         2.67 KiB
-  4.js
+  ../server/public/js/chunk-vendors-lega    160.58 KiB       57.06 KiB
+  cy.3999eeae.js
+  ../server/public/js/app-legacy.7b4cffe    11.33 KiB        3.39 KiB
+  1.js
   ../server/public/css/app.e99736f5.css     2.00 KiB         0.83 KiB
 
   Images and other types of assets omitted.
 
 
 -  Building modern bundle for production...
- DONE  Compiled successfully in 3695ms3:07:44 PM
+ DONE  Compiled successfully in 4255ms6:23:13 PM
 
   File                                      Size             Gzipped
 
-  ../server/public/js/chunk-vendors.9af2    122.42 KiB       43.59 KiB
-  1cf2.js
-  ../server/public/js/app.0286d751.js       5.47 KiB         2.31 KiB
+  ../server/public/js/chunk-vendors.fe95    124.59 KiB       44.34 KiB
+  10d0.js
+  ../server/public/js/app.75c7ac77.js       9.28 KiB         3.02 KiB
   ../server/public/css/app.e99736f5.css     2.00 KiB         0.83 KiB
 
   Images and other types of assets omitted.

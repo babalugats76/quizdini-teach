@@ -1,8 +1,8 @@
 const STATUS = {
   INIT: 0,
   LOADING: 1,
-  ERROR: 2,
-  LOADED: 3,
+  FAILURE: 2,
+  SUCCESS: 3,
 };
 
 const state = {
@@ -12,12 +12,19 @@ const state = {
 };
 
 const getters = {
-  count: (state) => (Array.isArray(state.data) ? state.data.length : 0),
   all: (state) => state.data,
-  initialized: (state) => state.status !== STATUS.INIT,
-  inError: (state) => state.status === STATUS.ERROR,
-  loaded: (state) => state.status === STATUS.LOADED,
+  count: (state) =>
+    Array.isArray(state.data)
+      ? state.data.length
+      : state.data
+      ? +!!state.data
+      : null,
+  hasData: (state) => !!state.data,
+  initialized: (state) => !!state.data || !!state.error,
+  inError: (state) => !!state.error,
   loading: (state) => state.status === STATUS.LOADING,
+  reloading: (state) =>
+    state.status === STATUS.LOADING && (!!state.data || !!state.error),
 };
 
 const mutations = {
@@ -30,11 +37,11 @@ const mutations = {
 
 const plugin = (store) => {
   // state is passed as 2nd arg (if needed)
-  store.subscribe((mutation) => {
+  store.subscribe((mutation /*, state */) => {
     const { payload } = mutation;
-    const [type, ...mod] = mutation.type.split("/").reverse();
-    const module = mod ? mod.join("/") : "";
-    const getMutation = (name) => `${module}${module ? "/" : ""}${name}`;
+    const [type, ...module] = mutation.type.split("/").reverse();
+    const namespace = module ? module.join("/") : "";
+    const getMutation = (name) => `${namespace}${namespace ? "/" : ""}${name}`;
 
     // const { status: prevStatus } = module
     //   ? module.split("/").reduce((acc, part) => acc && acc[part], state)
@@ -47,10 +54,10 @@ const plugin = (store) => {
     if (type === "process") {
       if (Object.prototype.hasOwnProperty.call(mutation.payload, "error")) {
         store.commit(getMutation("failure"), payload);
-        store.commit(getMutation("setStatus"), STATUS.ERROR);
+        store.commit(getMutation("setStatus"), STATUS.FAILURE);
       } else {
         store.commit(getMutation("success"), payload);
-        store.commit(getMutation("setStatus"), STATUS.LOADED);
+        store.commit(getMutation("setStatus"), STATUS.SUCCESS);
       }
     }
   });

@@ -11,14 +11,14 @@ const UNAUTHORIZED = {
   username: null, // unknown username
 };
 
-console.log(JSON.stringify(apiState, null, 4));
+const { error, status } = apiState;
 
-const state = () => ({ data: UNAUTHORIZED, ...apiState });
+const state = () => ({ data: UNAUTHORIZED, error, status });
 
-const getters = { ...apiGetters };
+const getters = { auth: (state) => state.data, ...apiGetters };
 
 const actions = {
-  async fetchAuth({ commit }) {
+  async fetch({ commit }) {
     commit("load");
     commit("process", await getAuth());
   },
