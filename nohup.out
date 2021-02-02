@@ -91,3 +91,37 @@ server/services/passport.js 23ms
  DONE  Build complete. The ../server/public directory is ready to be deployed.
  INFO  Check out deployment instructions at https://cli.vuejs.org/guide/deployment.html
       
+[main 1c16d25] auth and useLoader work, etc.
+ 30 files changed, 1717 insertions(+), 1191 deletions(-)
+ create mode 100644 client/src/components/Login.vue
+ create mode 100644 client/src/compose/useLoader.js
+ create mode 100644 client/src/enums.js
+ delete mode 100644 server/public/js/app-legacy.7b4cffe1.js
+ delete mode 100644 server/public/js/app-legacy.7b4cffe1.js.map
+ create mode 100644 server/public/js/app-legacy.92aad958.js
+ create mode 100644 server/public/js/app-legacy.92aad958.js.map
+ delete mode 100644 server/public/js/app.75c7ac77.js
+ delete mode 100644 server/public/js/app.75c7ac77.js.map
+ create mode 100644 server/public/js/app.b84d3515.js
+ create mode 100644 server/public/js/app.b84d3515.js.map
+ create mode 100644 server/public/js/chunk-vendors-legacy.249aa888.js
+ create mode 100644 server/public/js/chunk-vendors-legacy.249aa888.js.map
+ delete mode 100644 server/public/js/chunk-vendors-legacy.3999eeae.js
+ delete mode 100644 server/public/js/chunk-vendors-legacy.3999eeae.js.map
+ create mode 100644 server/public/js/chunk-vendors.00dd6dbd.js
+ create mode 100644 server/public/js/chunk-vendors.00dd6dbd.js.map
+ delete mode 100644 server/public/js/chunk-vendors.fe9510d0.js
+ delete mode 100644 server/public/js/chunk-vendors.fe9510d0.js.map
+To https://github.com/babalugats76/quizdini-teach
+   a4283a6..1c16d25  main -> main
+fatal: invalid refspec '/tmp/nohup.out'
+npm ERR! code ELIFECYCLE
+npm ERR! errno 128
+npm ERR! server@0.0.0 deploy-to-prod: `npm run prettier && npm run build --prefix client && git add . && cross-env git commit -m "${npm_config_comment}" && git push origin main && git push heroku main "/tmp/nohup.out"`
+npm ERR! Exit status 128
+npm ERR! 
+npm ERR! Failed at the server@0.0.0 deploy-to-prod script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/bobleeswagger/.npm/_logs/2021-02-02T00_19_48_923Z-debug.log
