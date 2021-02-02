@@ -22,9 +22,11 @@
 /* eslint-disable-next-line */
 import { computed } from "vue";
 import { useStore } from "vuex";
+
 export default {
   setup() {
     const store = useStore();
+
     return {
       fetchAuth: () => store.dispatch("auth/fetch"),
       count: computed(() => store.getters["auth/count"]),

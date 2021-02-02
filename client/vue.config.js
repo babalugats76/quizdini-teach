@@ -4,6 +4,9 @@ module.exports = {
       "^/api": {
         target: "http://localhost:5000",
       },
+      "^/auth": {
+        target: "http://localhost:5000",
+      },
     },
   },
   chainWebpack: (config) => {
