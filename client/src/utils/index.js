@@ -104,3 +104,19 @@ export function isEmpty(obj) {
   }
   return true;
 }
+
+/**
+ * Determines whether an object
+ *
+ * Helpful shorthand which deals with
+ * fact that null is an object too...
+ *
+ * Opinionated in that it excludes many
+ * other things, e.g., functions, that are
+ * also, technically, objects
+ *
+ * @param {*} obj  object to check
+ */
+export function isObject(obj) {
+  return obj !== null && typeof obj === "object";
+}
