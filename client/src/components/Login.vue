@@ -1,5 +1,7 @@
 <template>
   <div id="login">
+    <label>Logged In</label> {{ loggedIn }}<br />
+    <a href="/api/logout">Logout</a>
     {{ error && !isDirty ? error : "" }}
     <div class="form-input">
       <label>Username:</label
@@ -22,16 +24,21 @@
 /* eslint-disable-next-line */
 import { ref, watch, computed } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+
 import { postLogin } from "@/api/auth";
 import useLoader from "@/compose/useLoader";
 
 export default {
   setup() {
+    const store = useStore();
+    const router = useRouter();
+    const loggedIn = computed(() => store.state.auth.data.loggedIn);
+
     const username = ref("");
     const password = ref("");
     const toggleLogin = ref(0);
-
-    const store = useStore();
+    const isDirty = computed(() => !!(username.value || password.value));
 
     const { data: results, error, failed, loading, loaded } = useLoader({
       callback: async () => {
@@ -47,9 +54,14 @@ export default {
       deps: [toggleLogin],
     });
 
-    watch(loaded, () => store.dispatch("auth/fetch"));
-
-    const isDirty = computed(() => !!(username.value || password.value));
+    watch(loaded, () => loaded && store.dispatch("auth/fetch"));
+    store.watch(
+      (state) => state.auth.data.loggedIn,
+      () => {
+        console.log("state watcher fired!");
+        router.push({ name: "dashboard" });
+      }
+    );
 
     return {
       results,
@@ -61,6 +73,7 @@ export default {
       password,
       toggleLogin,
       isDirty,
+      loggedIn,
     };
   },
 };
