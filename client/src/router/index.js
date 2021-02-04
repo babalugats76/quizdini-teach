@@ -1,20 +1,32 @@
 import { createWebHistory, createRouter } from "vue-router";
+import { computed } from "vue";
+import store from "@/store";
+
 //import Counter from "@/components/Counter";
 //import Country from "@/components/Country";
 //import Auth from "@/components/Auth";
 import ApiTester from "@/components/ApiTester";
 import Dashboard from "@/components/Dashboard";
 import Login from "@/components/Login";
+import NotFound from "@/components/NotFound";
 
-import { computed } from "vue";
-import store from "@/store";
-
-// In your router initialization code
 const storeInit = store.dispatch("init");
+const loggedIn = computed(() => store.getters["auth/loggedIn"]);
 
-const isAuthenticated = computed(() => store.state.auth.data.loggedIn);
+// function dynamicPropsFn(route) {
+//   return {
+//     ...route.params,
+//     loggedIn,
+//   };
+// }
 
 const routes = [
+  {
+    path: "/",
+    name: "apitester",
+    component: ApiTester,
+    props: false,
+  },
   {
     path: "/login",
     name: "login",
@@ -24,26 +36,18 @@ const routes = [
     },
   },
   {
-    path: "/logout",
-    redirect: "/api/logout",
-  },
-  {
-    path: "/",
-    name: "apitester",
-    component: ApiTester,
-    props: false,
-  },
-  {
-    path: "/api/logout",
-    name: "logout",
-  },
-  {
     path: "/dashboard",
     name: "dashboard",
     component: Dashboard,
+    props: true,
     meta: {
       requiresAuth: true,
     },
+  },
+  {
+    path: "/:catchAll(.*)",
+    name: "notfound",
+    component: NotFound,
   },
 ];
 
@@ -52,34 +56,31 @@ const router = createRouter({
   routes,
 });
 
+/* initialize  */
 router.beforeEach((to, from, next) => {
-  console.log("initialization happens here...");
   storeInit
     .then(next)
-    .catch((e) => console.log("unable to initialize store", e));
+    .catch((e) => console.log("Unable to initialize store", e));
 });
 
+/* navigation guards  */
 router.beforeEach((to, from, next) => {
-  console.log("is authenticated", isAuthenticated.value);
   if (to.matched.some((r) => r.meta.guest)) {
-    console.log("route is guest only");
-    if (isAuthenticated.value) {
-      console.log("user is authenticated, i.e., not allowed");
-      next(false);
+    // GUESTS ONLY
+    if (loggedIn.value) {
+      next({ name: "dashboard" });
     } else {
-      console.log("user not authenticated");
       next();
     }
   } else if (to.matched.some((r) => r.meta.requiresAuth)) {
-    console.log("route requires to be authenticated");
-    if (isAuthenticated.value) {
-      console.log("user is authenticated, i.e., allowed");
+    // MEMBERS ONLY
+    if (loggedIn.value) {
       next();
     } else {
-      next(false);
+      next({ name: "login" });
     }
   } else {
-    console.log("not a protected route; proceed");
+    // UNGUARDED
     next();
   }
 });

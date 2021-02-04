@@ -1,22 +1,19 @@
 <template>
   <div>
-    <Login />
-    <Auth />
-    <Country />
+    <auth />
+    <country />
   </div>
 </template>
 
 <script>
 import Auth from "@/components/Auth";
 import Country from "@/components/Country";
-import Login from "@/components/Login";
 
 export default {
-  name: "ApiTester",
+  name: "api-tester",
   components: {
-    Auth: Auth,
-    Country: Country,
-    Login: Login,
+    Auth,
+    Country,
   },
 };
 </script>

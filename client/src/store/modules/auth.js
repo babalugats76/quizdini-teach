@@ -15,7 +15,11 @@ const { error, status } = apiState;
 
 const state = () => ({ data: UNAUTHORIZED, error, status });
 
-const getters = { auth: (state) => state.data, ...apiGetters };
+const getters = {
+  auth: (state) => state.data,
+  loggedIn: (state) => state.data.loggedIn,
+  ...apiGetters,
+};
 
 const actions = {
   async fetch({ commit }) {

@@ -40,7 +40,7 @@
 import { computed } from "vue";
 import { useStore, mapMutations, mapActions } from "vuex";
 export default {
-  name: "Counter",
+  name: "counter",
   data: function () {
     return {
       c: 0,

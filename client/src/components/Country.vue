@@ -42,7 +42,7 @@ const filters = {
 };
 
 export default {
-  name: "Country",
+  name: "country",
   setup() {
     const visibility = ref("all");
     const countryCode = ref("");

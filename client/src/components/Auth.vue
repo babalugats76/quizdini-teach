@@ -24,6 +24,7 @@ import { computed } from "vue";
 import { useStore } from "vuex";
 
 export default {
+  name: "auth",
   setup() {
     const store = useStore();
 

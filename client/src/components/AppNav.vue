@@ -1,12 +1,13 @@
 <template>
-  <div>
-    <h1>Welcome to the Dashboard</h1>
-  </div>
+  <div>I am nav!!!</div>
 </template>
 
 <script>
 export default {
-  name: "dashboard",
+  name: "app-nav",
+  setup() {
+    return {};
+  },
 };
 </script>
 

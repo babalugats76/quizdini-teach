@@ -1,7 +1,7 @@
 <template>
   <div id="login">
     <label>Logged In</label> {{ loggedIn }}<br />
-    <a href="/api/logout">Logout</a>
+    <a href="/logout">Logout</a>
     {{ error && !isDirty ? error : "" }}
     <div class="form-input">
       <label>Username:</label
@@ -30,6 +30,7 @@ import { postLogin } from "@/api/auth";
 import useLoader from "@/compose/useLoader";
 
 export default {
+  name: "login",
   setup() {
     const store = useStore();
     const router = useRouter();
