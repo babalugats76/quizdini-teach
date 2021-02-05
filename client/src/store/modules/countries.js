@@ -1,5 +1,5 @@
 import { getCountries } from "@/api/country";
-import { apiState, apiGetters, apiMutations } from "../apiHelper";
+import { apiState, apiGetters, apiMutations } from "../util";
 
 const state = () => ({ ...apiState });
 

@@ -18,11 +18,9 @@ const AXIOS_CONFIG = { timeout: 30000 };
 export const get = async ({ url, config = AXIOS_CONFIG }) => {
   try {
     const res = await axios.get(url, config);
-    return { data: res.data };
+    return { data: res.data, error: false };
   } catch (err) {
-    return {
-      error: err.response.data,
-    };
+    return { data: err.response.data, error: true };
   }
 };
 
@@ -37,10 +35,8 @@ export const get = async ({ url, config = AXIOS_CONFIG }) => {
 export const post = async ({ url, data, config = AXIOS_CONFIG }) => {
   try {
     const res = await axios.post(url, data, config);
-    return { data: res.data };
+    return { data: res.data, error: false };
   } catch (err) {
-    return {
-      error: err.response.data,
-    };
+    return { data: err.response.data, error: true };
   }
 };

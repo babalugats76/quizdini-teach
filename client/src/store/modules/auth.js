@@ -1,57 +1,62 @@
 import { getAuth } from "@/api/auth";
-import { apiState, apiGetters, apiMutations } from "../apiHelper";
+import { callApi } from "../util";
+import { AUTH } from "../types";
 
-// data for unauthorized user
+// data for unauthorized user (initial and failed state)
 const UNAUTHORIZED = {
   accountType: null, // no account type
   credits: null, // unknown credits
   googlePicture: null, // unknown Google attributes
-  error: null, // no errors
   loggedIn: false, // not logged in
   username: null, // unknown username
 };
 
-const { error, status } = apiState;
+const INITIAL_STATE = {
+  data: UNAUTHORIZED,
+  error: null,
+  failed: false,
+  loaded: false,
+  loading: false,
+};
 
-const state = () => ({ data: UNAUTHORIZED, error, status });
+const state = () => INITIAL_STATE;
 
 const getters = {
   auth: (state) => state.data,
+  error: (state) => state.error,
+  failed: (state) => state.failed,
+  loaded: (state) => state.loaded,
+  loading: (state) => state.loading,
   loggedIn: (state) => state.data.loggedIn,
-  ...apiGetters,
 };
 
 const actions = {
-  async fetch({ commit }) {
-    commit("load");
-    commit("process", await getAuth());
-  },
+  // fetch: (store) => callApi(() => getAuth(), AUTH)(store),
+  fetch: (store) => callApi(store, { cb: () => getAuth(), types: AUTH }),
 };
 
 const mutations = {
-  ...apiMutations,
-  success(state, { data }) {
+  [AUTH.PENDING](state) {
+    state.loading = true;
+  },
+  [AUTH.SUCCESS](state, data) {
     const { googleId, id = null } = data || {};
-
-    /***
-     * Determine "auth" object
-     * Presence of `id` signifies that user is logged; otherwise, unauthorized
-     * Presence of `googleId` signifies Google OAuth account; otherwise, local
-     */
     const auth = id
-      ? {
-          ...data,
-          accountType: googleId ? "google" : "local",
-          loggedIn: true,
-        }
+      ? { ...data, accountType: googleId ? "google" : "local", loggedIn: true }
       : UNAUTHORIZED;
 
     state.data = auth;
     state.error = null;
+    state.failed = false;
+    state.loaded = true;
+    state.loading = false;
   },
-  failure(state, { error }) {
-    state.error = error;
-    state.data = null;
+  [AUTH.FAILURE](state, data) {
+    state.data = UNAUTHORIZED;
+    state.error = data;
+    state.failed = true;
+    state.loaded = false;
+    state.loading = false;
   },
 };
 

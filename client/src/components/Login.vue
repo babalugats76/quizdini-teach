@@ -28,17 +28,19 @@ import { useRouter } from "vue-router";
 
 import { postLogin } from "@/api/auth";
 import useLoader from "@/compose/useLoader";
+//import { FETCH_AUTH } from "@/store/mutation-types";
 
 export default {
   name: "login",
   setup() {
     const store = useStore();
     const router = useRouter();
-    const loggedIn = computed(() => store.state.auth.data.loggedIn);
+    const loggedIn = computed(() => store.getters["auth/loggedIn"]);
 
     const username = ref("");
     const password = ref("");
     const toggleLogin = ref(0);
+
     const isDirty = computed(() => !!(username.value || password.value));
 
     const { data: results, error, failed, loading, loaded } = useLoader({

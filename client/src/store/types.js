@@ -1,11 +1,9 @@
-export const ACCOUNT_SUCCESS = "ACCOUNT_SUCCESS";
-export const ACCOUNT_FAILURE = "ACCOUNT_FAILURE";
+const generateMutations = (type) => ({
+  FETCH: `${type}_FETCH`,
+  SUCCESS: `${type}_SUCCESS`,
+  FAILURE: `${type}_FAILURE`,
+  PENDING: `${type}_PENDING`,
+});
 
-export const AUTH_FAILURE = "AUTH_FAILURE";
-export const AUTH_SUCCESS = "AUTH_SUCCESS";
-
-export const COUNTRIES_FAILURE = "COUNTRIES_FAILURE";
-export const COUNTRIES_SUCCESS = "COUNTRIES_SUCCESS";
-
-export const STATES_FAILURE = "STATES_FAILURE";
-export const STATES_SUCCESS = "STATES_SUCCESS";
+export const AUTH = generateMutations("AUTH");
+export const TOGGLE_LOADING = "TOGGLE_LOADING";
