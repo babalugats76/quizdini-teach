@@ -53,31 +53,43 @@ const router = createRouter({
   routes,
 });
 
-/* initialize  */
+/***
+ * Initialization
+ *
+ * Used to load store with *minimum* required state
+ * Promise must be resolved before subsequent `forEach`'s will execute
+ * Necessary to fetch user information using session cookie
+ * Seemingly needed in all SPAs with portal-esque functionality
+ *
+ */
 router.beforeEach((to, from, next) => {
   storeInit
     .then(next)
     .catch((e) => console.log("Unable to initialize store", e));
 });
 
-/* navigation guards  */
+/***
+ * Navigation Guards
+ *
+ * Guests -> redirect to dashboard if authenticated
+ * Member -> redirect to login if not authenticated
+ * Others -> serve up "unguarded" route
+ *
+ */
 router.beforeEach((to, from, next) => {
   if (to.matched.some((r) => r.meta.guest)) {
-    // GUESTS ONLY
     if (loggedIn.value) {
       next({ name: "dashboard" });
     } else {
       next();
     }
   } else if (to.matched.some((r) => r.meta.requiresAuth)) {
-    // MEMBERS ONLY
     if (loggedIn.value) {
       next();
     } else {
       next({ name: "login" });
     }
   } else {
-    // UNGUARDED
     next();
   }
 });
