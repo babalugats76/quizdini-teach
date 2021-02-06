@@ -20,7 +20,7 @@ const loggedIn = computed(() => store.getters["auth/loggedIn"]);
 const routes = [
   {
     path: "/",
-    name: "apitester",
+    name: "home",
     component: ApiTester,
     props: false,
   },

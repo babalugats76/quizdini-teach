@@ -1,14 +1,13 @@
 <template>
   <div class="login">
-    <div class="login__oauth google-oauth">
-      <ui-link
-        class="google-oauth__link"
-        href="/auth/google"
-        target="_self"
-        tabindex="1"
+    <div class="login__google-signin google-signin">
+      <div
+        class="google-signin__btn"
+        @click="popup('/auth/google', 'google_login', 500, 500)"
       >
-        <span class="google-oauth__icon"></span>
-      </ui-link>
+        <span class="google-signin__icon"></span>
+        <span class="google-signin__text">Login with Google</span>
+      </div>
     </div>
     <label>Logged In</label> {{ loggedIn }}<br />
     <a href="/logout">Logout</a>
@@ -39,12 +38,20 @@ import { useRouter } from "vue-router";
 import { postLogin } from "@/api/auth";
 import useLoader from "@/compose/useLoader";
 //import { FETCH_AUTH } from "@/store/mutation-types";
-import { UiLink } from "@/components";
+// import { UiLink } from "@/components";
 
 export default {
   name: "login",
-  components: {
-    UiLink,
+  // components: {
+  //   UiLink,
+  // },
+  methods: {
+    popup(url, name, width, height, win = window) {
+      const y = win.top.outerHeight / 2 + win.top.screenY - height / 2;
+      const x = win.top.outerWidth / 2 + win.top.screenX - width / 2;
+      const specs = `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${width}, height=${height}, top=${y}, left=${x}`;
+      win.open(url, name, specs);
+    },
   },
   setup() {
     const store = useStore();
@@ -97,29 +104,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$google-icon-size: "42px";
+
 .login {
-  &__oauth {
+  &__google-signin {
     display: block;
   }
 }
 
-.google-oauth {
-  &__link {
+.google-signin {
+  &__btn {
     display: inline-block;
+    cursor: pointer;
+    background: white;
+    color: #444;
+    border-radius: 5px;
+    border: thin solid #888;
+    box-shadow: 1px 1px 1px grey;
+    white-space: nowrap;
   }
   &__icon {
     display: inline-block;
-    width: 191px;
-    height: 46px;
-    margin: 0 auto;
-    text-decoration: none;
-    color: transparent;
-    border: 0;
-    outline: none;
-    background: #ffffff
-      url("~@/assets/images/btn_google_signin_light_normal_web@2x.png")
+    vertical-align: middle;
+    background: url("~@/assets/images/g-normal.png") transparent 5px 50%
       no-repeat;
-    background-size: 191px 46px;
+    width: #{$google-icon-size};
+    height: #{$google-icon-size};
+
     // &:focus,
     // &:hover {
     //   background-image: url("~@/assets/images/btn_google_signin_light_focus_web@2x.png");
@@ -128,6 +139,13 @@ export default {
     // &:visited {
     //   background-image: url("~@/assets/images/btn_google_signin_light_pressed_web@2x.png");
     // }
+  }
+  &__text {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 #{$google-icon-size} 0 1rem;
+    @include font("Montserrat", "normal");
+    font-size: 1rem;
   }
 }
 </style>

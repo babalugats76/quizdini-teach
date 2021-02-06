@@ -15,6 +15,15 @@ export default {
     Auth,
     Country,
   },
+  created: () => {
+    console.log("created...");
+    const url = "/dashboard";
+    if (window.opener) {
+      window.opener.open(url, "_self");
+      window.opener.focus();
+      window.close();
+    }
+  },
 };
 </script>
 
