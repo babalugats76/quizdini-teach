@@ -1,0 +1,406 @@
+$black-100: #999;
+$black-200: #888;
+$black-300: #777;
+$black-400: #666;
+$black-500: #555;
+$black-600: #444;
+$black-700: #333;
+$black-800: #222;
+$black-900: #111;
+
+$blue-100: #c2d6fe;
+$blue-200: #71a0fe;
+$blue-300: #4885fe;
+$blue-400: #206afe;
+$blue-500: #014ce4;
+$blue-600: #0144cb;
+$blue-700: #0137a2;
+$blue-800: #01297a;
+$blue-900: #011b51;
+
+$cyan-100: #c2fefd;
+$cyan-200: #71fefc;
+$cyan-300: #48fefb;
+$cyan-400: #20fefa;
+$cyan-500: #01e7e4;
+$cyan-600: #01cbc8;
+$cyan-700: #01a2a0;
+$cyan-800: #017a78;
+$cyan-900: #01514f;
+
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+
+$green-100: #d1e7dd;
+$green-200: #a3cfbb;
+$green-300: #75b798;
+$green-400: #479f76;
+$green-500: #198754;
+$green-600: #146c43;
+$green-700: #0f5132;
+$green-800: #0a3622;
+$green-900: #051b11;
+
+$indigo-100: #f2ebff;
+$indigo-200: #be99ff;
+$indigo-300: #a570ff;
+$indigo-400: #8b47ff;
+$indigo-500: #711cff;
+$indigo-600: #5a00f5;
+$indigo-700: #4b00cc;
+$indigo-800: #3c00a3;
+$indigo-900: #2d007a;
+
+$navy-100: #7081ff;
+$navy-200: #1f39ff;
+$navy-300: #001df5;
+$navy-400: #0018cc;
+$navy-500: #001399;
+$navy-600: #000e7a;
+$navy-700: #000c66;
+$navy-800: #000a52;
+$navy-900: #00073d;
+
+$orange-100: #ffe5d0;
+$orange-200: #fecba1;
+$orange-300: #feb272;
+$orange-400: #fd9843;
+$orange-500: #fd7e14;
+$orange-600: #ca6510;
+$orange-700: #984c0c;
+$orange-800: #653208;
+$orange-900: #331904;
+
+$pink-100: #f7d6e6;
+$pink-200: #efadce;
+$pink-300: #e685b5;
+$pink-400: #de5c9d;
+$pink-500: #d63384;
+$pink-600: #ab296a;
+$pink-700: #801f4f;
+$pink-800: #561435;
+$pink-900: #2b0a1a;
+
+$purple-100: #e0c2ff;
+$purple-200: #cc99ff;
+$purple-300: #c285ff;
+$purple-400: #b870ff;
+$purple-500: #aa54ff;
+$purple-600: #9933ff;
+$purple-700: #850aff;
+$purple-800: #7000e0;
+$purple-900: #5c00b8;
+
+$red-100: #f8d7da;
+$red-200: #f1aeb5;
+$red-300: #ea868f;
+$red-400: #e35d6a;
+$red-500: #dc3545;
+$red-600: #b02a37;
+$red-700: #842029;
+$red-800: #58151c;
+$red-900: #2c0b0e;
+
+$teal-100: #d2f4ea;
+$teal-200: #a6e9d5;
+$teal-300: #79dfc1;
+$teal-400: #4dd4ac;
+$teal-500: #20c997;
+$teal-600: #1aa179;
+$teal-700: #13795b;
+$teal-800: #0d503c;
+$teal-900: #06281e;
+
+$yellow-100: #fff3cd;
+$yellow-200: #ffe69c;
+$yellow-300: #ffda6a;
+$yellow-400: #ffcd39;
+$yellow-500: #ffc107;
+$yellow-600: #cc9a06;
+$yellow-700: #997404;
+$yellow-800: #664d03;
+$yellow-900: #332701;
+
+// Shade maps
+
+$blacks: (
+  "100": $black-100,
+  "200": $black-200,
+  "300": $black-300,
+  "400": $black-400,
+  "500": $black-500,
+  "600": $black-600,
+  "700": $black-700,
+  "800": $black-800,
+  "900": $black-900,
+);
+
+$blues: (
+  "100": $blue-100,
+  "200": $blue-200,
+  "300": $blue-300,
+  "400": $blue-400,
+  "500": $blue-500,
+  "600": $blue-600,
+  "700": $blue-700,
+  "800": $blue-800,
+  "900": $blue-900,
+);
+
+$cyans: (
+  "100": $cyan-100,
+  "200": $cyan-200,
+  "300": $cyan-300,
+  "400": $cyan-400,
+  "500": $cyan-500,
+  "600": $cyan-600,
+  "700": $cyan-700,
+  "800": $cyan-800,
+  "900": $cyan-900,
+);
+
+$grays: (
+  "100": $gray-100,
+  "200": $gray-200,
+  "300": $gray-300,
+  "400": $gray-400,
+  "500": $gray-500,
+  "600": $gray-600,
+  "700": $gray-700,
+  "800": $gray-800,
+  "900": $gray-900,
+);
+
+$greens: (
+  "100": $green-100,
+  "200": $green-200,
+  "300": $green-300,
+  "400": $green-400,
+  "500": $green-500,
+  "600": $green-600,
+  "700": $green-700,
+  "800": $green-800,
+  "900": $green-900,
+);
+
+$indigos: (
+  "100": $indigo-100,
+  "200": $indigo-200,
+  "300": $indigo-300,
+  "400": $indigo-400,
+  "500": $indigo-500,
+  "600": $indigo-600,
+  "700": $indigo-700,
+  "800": $indigo-800,
+  "900": $indigo-900,
+);
+
+$navys: (
+  "100": $navy-100,
+  "200": $navy-200,
+  "300": $navy-300,
+  "400": $navy-400,
+  "500": $navy-500,
+  "600": $navy-600,
+  "700": $navy-700,
+  "800": $navy-800,
+  "900": $navy-900,
+);
+
+$oranges: (
+  "100": $orange-100,
+  "200": $orange-200,
+  "300": $orange-300,
+  "400": $orange-400,
+  "500": $orange-500,
+  "600": $orange-600,
+  "700": $orange-700,
+  "800": $orange-800,
+  "900": $orange-900,
+);
+
+$pinks: (
+  "100": $pink-100,
+  "200": $pink-200,
+  "300": $pink-300,
+  "400": $pink-400,
+  "500": $pink-500,
+  "600": $pink-600,
+  "700": $pink-700,
+  "800": $pink-800,
+  "900": $pink-900,
+);
+
+$purples: (
+  "100": $purple-100,
+  "200": $purple-200,
+  "300": $purple-300,
+  "400": $purple-400,
+  "500": $purple-500,
+  "600": $purple-600,
+  "700": $purple-700,
+  "800": $purple-800,
+  "900": $purple-900,
+);
+
+$reds: (
+  "100": $red-100,
+  "200": $red-200,
+  "300": $red-300,
+  "400": $red-400,
+  "500": $red-500,
+  "600": $red-600,
+  "700": $red-700,
+  "800": $red-800,
+  "900": $red-900,
+);
+
+$teals: (
+  "100": $teal-100,
+  "200": $teal-200,
+  "300": $teal-300,
+  "400": $teal-400,
+  "500": $teal-500,
+  "600": $teal-600,
+  "700": $teal-700,
+  "800": $teal-800,
+  "900": $teal-900,
+);
+
+$yellows: (
+  "100": $yellow-100,
+  "200": $yellow-200,
+  "300": $yellow-300,
+  "400": $yellow-400,
+  "500": $yellow-500,
+  "600": $yellow-600,
+  "700": $yellow-700,
+  "800": $yellow-800,
+  "900": $yellow-900,
+);
+
+$shades: (
+  "black": $blacks,
+  "blue": $blues,
+  "cyan": $cyans,
+  "gray": $grays,
+  "green": $greens,
+  "indigo": $indigos,
+  "navy": $navys,
+  "orange": $oranges,
+  "pink": $pinks,
+  "purple": $purples,
+  "red": $reds,
+  "teal": $teals,
+  "yellow": $yellows,
+);
+
+// Base color variables
+$black: #000;
+$blue: $blue-500;
+$cyan: $cyan-500;
+$gray: $gray-500;
+$green: $green-500;
+$indigo: $indigo-500;
+$navy: $navy-500;
+$orange: $orange-500;
+$pink: $pink-500;
+$purple: $purple-500;
+$red: $red-500;
+$teal: $teal-500;
+$yellow: $yellow-500;
+$white: #fff;
+
+$base-colors: (
+  "black": $black,
+  "blue": $blue,
+  "cyan": $cyan,
+  "gray": $gray,
+  "green": $green,
+  "indigo": $indigo,
+  "navy": $navy,
+  "orange": $orange,
+  "pink": $pink,
+  "purple": $purple,
+  "red": $red,
+  "teal": $teal,
+  "yellow": $yellow,
+  "white": $white,
+);
+
+$primary: $indigo-500;
+$secondary: $blue-500;
+$tertiary: $navy-500;
+$quaternary: $cyan-500;
+$light: $gray-100;
+$dark: $gray-800;
+$danger: $red-500;
+$warning: $yellow-500;
+$info: #2196f3;
+$success: #28a745;
+
+$color-themes: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "tertiary": $tertiary,
+  "quaternary": $quaternary,
+  "light": $light,
+  "dark": $dark,
+  "danger": $danger,
+  "warning": $warning,
+  "info": $info,
+  "success": $success,
+);
+
+$min-contrast-ratio: 3;
+$color-contrast-dark: $black;
+$color-contrast-light: $white;
+
+$fonts: (
+  "Montserrat": (
+    "light": (
+      "path": "montserrat-v15-latin-ext_latin-300",
+      "style": "normal",
+      "weight": 300,
+    ),
+    "normal": (
+      "path": "montserrat-v15-latin-ext_latin-regular",
+      "style": "normal",
+      "weight": 400,
+    ),
+    "medium": (
+      "path": "montserrat-v15-latin-ext_latin-500",
+      "style": "normal",
+      "weight": 500,
+    ),
+    "semi-bold": (
+      "path": "montserrat-v15-latin-ext_latin-600",
+      "style": "normal",
+      "weight": 600,
+    ),
+    "bold": (
+      "path": "montserrat-v15-latin-ext_latin-700",
+      "style": "normal",
+      "weight": 700,
+    ),
+    "extra-bold": (
+      "path": "montserrat-v15-latin-ext_latin-800",
+      "style": "normal",
+      "weight": 800,
+    ),
+    "black": (
+      "path": "montserrat-v15-latin-ext_latin-900",
+      "style": "normal",
+      "weight": 900,
+    ),
+  ),
+);
+
+$tracking-tight: -0.025em;

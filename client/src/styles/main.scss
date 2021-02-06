@@ -1,0 +1,84 @@
+@each $font, $styles in $fonts {
+  @each $style, $values in $styles {
+    @include font-face($font, map-get($values, "path"), map-get($values, "weight"));
+  }
+}
+
+@each $font, $styles in $fonts {
+  @each $style, $values in $styles {
+    .#{#{to-lower-case($font)}#{if($style==normal,'','-'+$style)}} {
+      font-family: quote($font) !important;
+      font-weight: map-get($values, "weight") !important;
+    }
+  }
+}
+
+@each $color, $variants in $shades {
+  @each $shade, $value in $variants {
+    .bg-#{$color}-#{$shade} {
+      @include bg-color($value, 1, true);
+    }
+
+    .border-#{$color}-#{$shade} {
+      @include border-color($value, 1, true);
+    }
+
+    .text-#{$color}-#{$shade} {
+      @include text-color($value, 1, true);
+    }
+  }
+}
+
+@each $theme, $value in $color-themes {
+  .bg-#{$theme} {
+    @include bg-color($value, 1, true);
+  }
+
+  .border-#{$theme} {
+    @include border-color($value, 1, true);
+  }
+
+  .text-#{$theme} {
+    @include text-color($value, 1, true);
+  }
+}
+
+@each $color, $value in $base-colors {
+  .bg-#{$color} {
+    @include bg-color($value, 1, true);
+  }
+
+  .border-#{$color} {
+    @include border-color($value, 1, true);
+  }
+
+  .text-#{$color} {
+    @include text-color($value, 1, true);
+  }
+}
+
+.text-transparent {
+  color: transparent !important;
+  caret-color: transparent !important;
+}
+
+.bg-transparent {
+  background-color: transparent !important;
+}
+
+.border-transparent {
+  border-color: transparent !important;
+}
+
+.text-current {
+  color: currentColor !important;
+  caret-color: currentColor !important;
+}
+
+.bg-current {
+  background-color: currentColor !important;
+}
+
+.border-current {
+  border-color: currentColor !important;
+}

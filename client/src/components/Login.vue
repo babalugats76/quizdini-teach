@@ -1,5 +1,15 @@
 <template>
-  <div id="login">
+  <div class="login">
+    <div class="login__oauth google-oauth">
+      <ui-link
+        class="google-oauth__link"
+        href="/auth/google"
+        target="_self"
+        tabindex="1"
+      >
+        <span class="google-oauth__icon"></span>
+      </ui-link>
+    </div>
     <label>Logged In</label> {{ loggedIn }}<br />
     <a href="/logout">Logout</a>
     {{ error && !isDirty ? error : "" }}
@@ -29,9 +39,13 @@ import { useRouter } from "vue-router";
 import { postLogin } from "@/api/auth";
 import useLoader from "@/compose/useLoader";
 //import { FETCH_AUTH } from "@/store/mutation-types";
+import { UiLink } from "@/components";
 
 export default {
   name: "login",
+  components: {
+    UiLink,
+  },
   setup() {
     const store = useStore();
     const router = useRouter();
@@ -82,4 +96,38 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.login {
+  &__oauth {
+    display: block;
+  }
+}
+
+.google-oauth {
+  &__link {
+    display: inline-block;
+  }
+  &__icon {
+    display: inline-block;
+    width: 191px;
+    height: 46px;
+    margin: 0 auto;
+    text-decoration: none;
+    color: transparent;
+    border: 0;
+    outline: none;
+    background: #ffffff
+      url("~@/assets/images/btn_google_signin_light_normal_web@2x.png")
+      no-repeat;
+    background-size: 191px 46px;
+    // &:focus,
+    // &:hover {
+    //   background-image: url("~@/assets/images/btn_google_signin_light_focus_web@2x.png");
+    // }
+    // &:active,
+    // &:visited {
+    //   background-image: url("~@/assets/images/btn_google_signin_light_pressed_web@2x.png");
+    // }
+  }
+}
+</style>

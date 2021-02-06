@@ -1,0 +1,57 @@
+@mixin button-variant($background, $border: $background, $color: color-contrast($background)) {
+  background-color: $background;
+  border-color: $border;
+  color: $color;
+}
+
+@mixin bg-color($color, $opacity: 1, $important: false) {
+  --bg-opacity: #{$opacity};
+  background-color: $color if($important, !important, null);
+  background-color: rgba(red($color), green($color), blue($color), var(--bg-opacity))
+    if($important, !important, null);
+}
+
+@mixin border-color($color, $opacity: 1, $important: false) {
+  --border-opacity: #{$opacity};
+  border-color: $color if($important, !important, null);
+  border-color: rgba(red($color), green($color), blue($color), var(--border-opacity))
+    if($important, !important, null);
+}
+
+@mixin text-color($color, $opacity: 1, $important: false) {
+  --text-opacity: #{$opacity};
+  caret-color: $color if($important, !important, null);
+  caret-color: rgba(red($color), green($color), blue($color), var(--text-opacity))
+    if($important, !important, null);
+  color: $color if($important, !important, null);
+  color: rgba(red($color), green($color), blue($color), var(--text-opacity))
+    if($important, !important, null);
+}
+
+@mixin font($family, $style: normal, $important: false) {
+  font-family: quote($family) if($important, !important, null);
+  font-weight: map-get($fonts, $family, $style, "weight") if($important, !important, null);
+}
+
+@mixin font-face($font-name, $path, $weight: normal, $style: normal, $prefix: "~@/assets/fonts") {
+  $filepath: "~@/assets/fonts" + "/" + $path;
+  @font-face {
+    font-family: quote($font-name);
+    font-weight: $weight;
+    font-style: $style;
+    src: url($filepath + ".eot"); /* IE9 Compat Modes */
+    src: url($filepath + ".eot?#iefix") format("embedded-opentype"),
+      /* IE6-IE8 */ url($filepath + ".woff2") format("woff2"),
+      /* Super Modern Browsers */ url($filepath + ".woff") format("woff"),
+      /* Modern Browsers */ url($filepath + ".ttf") format("truetype"),
+      /* Safari, Android, iOS */ url($filepath + ".svg##{$font-name}") format("svg"); /* Legacy iOS */
+  }
+}
+
+@mixin sizes($sz) {
+  @each $key, $value in $sz {
+    &.size--#{$key} {
+      font-size: #{$value};
+    }
+  }
+}

@@ -1,0 +1,50 @@
+/*-------------------
+  Basic Reset
+--------------------*/
+
+@import "~styles/tailwind.css";
+
+/*-------------------
+  Quizdini Resets
+--------------------*/
+
+* {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: auto;
+  margin: 0;
+  padding: 0;
+}
+
+/*-------------------
+  Root Element
+--------------------*/
+
+#quizdini {
+  height: 100%;
+  overflow: auto;
+}
+
+:root {
+  --zaffre: #001399;
+  --blue-ryb: #014ce4;
+  --fluorescent-blue: #01e7e4;
+  --electric-purple: #aa54ff;
+  --violet: #711cff;
+  --yellow-crayola: #fff07c;
+  --white: #ffffff;
+  --primary: var(--zaffre);
+}
+
+@import "~styles/main.scss";

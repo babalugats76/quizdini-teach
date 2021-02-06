@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-4">
     <header class="app-header">
       <app-nav></app-nav>
     </header>
@@ -21,5 +21,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "assets/styles/quizdini.scss";
+@import "~styles/quizdini.scss";
 </style>
