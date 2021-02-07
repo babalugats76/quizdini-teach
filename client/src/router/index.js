@@ -3,19 +3,13 @@ import { computed } from "vue";
 import store from "@/store";
 
 import ApiTester from "@/components/ApiTester";
+import AuthSuccess from "@/components/AuthSuccess";
 import Dashboard from "@/components/Dashboard";
 import Login from "@/components/Login";
 import NotFound from "@/components/NotFound";
 
 const storeInit = store.dispatch("init");
 const loggedIn = computed(() => store.getters["auth/loggedIn"]);
-
-// function dynamicPropsFn(route) {
-//   return {
-//     ...route.params,
-//     loggedIn,
-//   };
-// }
 
 const routes = [
   {
@@ -40,6 +34,13 @@ const routes = [
     meta: {
       requiresAuth: true,
     },
+  },
+  {
+    path: "/success",
+    name: "success",
+    component: AuthSuccess,
+    props: true,
+    meta: {},
   },
   {
     path: "/:catchAll(.*)",

@@ -37,22 +37,11 @@ import { useRouter } from "vue-router";
 
 import { postLogin } from "@/api/auth";
 import useLoader from "@/compose/useLoader";
+
 //import { FETCH_AUTH } from "@/store/mutation-types";
-// import { UiLink } from "@/components";
 
 export default {
   name: "login",
-  // components: {
-  //   UiLink,
-  // },
-  methods: {
-    popup(url, name, width, height, win = window) {
-      const y = win.top.outerHeight / 2 + win.top.screenY - height / 2;
-      const x = win.top.outerWidth / 2 + win.top.screenX - width / 2;
-      const specs = `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${width}, height=${height}, top=${y}, left=${x}`;
-      win.open(url, name, specs);
-    },
-  },
   setup() {
     const store = useStore();
     const router = useRouter();
@@ -63,6 +52,13 @@ export default {
     const toggleLogin = ref(0);
 
     const isDirty = computed(() => !!(username.value || password.value));
+
+    const popup = (url, name, width, height, win = window) => {
+      const y = win.top.outerHeight / 2 + win.top.screenY - height / 2;
+      const x = win.top.outerWidth / 2 + win.top.screenX - width / 2;
+      const specs = `rel=opener, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${width}, height=${height}, top=${y}, left=${x}`;
+      win.open(url, name, specs);
+    };
 
     const { data: results, error, failed, loading, loaded } = useLoader({
       callback: async () => {
@@ -98,6 +94,7 @@ export default {
       toggleLogin,
       isDirty,
       loggedIn,
+      popup,
     };
   },
 };

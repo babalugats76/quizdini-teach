@@ -33,11 +33,13 @@ module.exports = (app) => {
     })(req, res, next);
   });
 
+  /* https://developers.google.com/identity/protocols/oauth2/openid-connect */
   app.get(
     "/auth/google",
     passport.authenticate("google", {
       scope: ["profile", "email"],
       display: "popup",
+      prompt: "select_account",
     })
   );
 
@@ -45,7 +47,8 @@ module.exports = (app) => {
     "/auth/google/callback",
     passport.authenticate("google"),
     (req, res) => {
-      res.redirect("/");
+      //console.log(JSON.stringify(req.user, null, 4));
+      res.redirect("/success");
     }
   );
 
