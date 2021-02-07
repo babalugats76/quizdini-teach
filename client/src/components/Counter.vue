@@ -26,8 +26,8 @@
       Reset
     </button>
     <input
-      type="number"
       v-model="c"
+      type="number"
       step="5"
       min="1"
       max="1000"
@@ -40,17 +40,7 @@
 import { computed } from "vue";
 import { useStore, mapMutations, mapActions } from "vuex";
 export default {
-  name: "counter",
-  data: function () {
-    return {
-      c: 0,
-    };
-  },
-  methods: {
-    onInputChange() {
-      this.setCounter({ counter: this.c });
-    },
-  },
+  name: "Counter",
   setup() {
     const store = useStore();
     const counter = computed(() => store.getters["test/counter"]);
@@ -65,6 +55,16 @@ export default {
       ...mapActions("test", ["setCounter"]),
       ...mapMutations("test", ["incrementCounter"]),
     };
+  },
+  data: function () {
+    return {
+      c: 0,
+    };
+  },
+  methods: {
+    onInputChange() {
+      this.setCounter({ counter: this.c });
+    },
   },
 };
 </script>

@@ -1,21 +1,21 @@
 <template>
-  <div class="p-4">
-    <header class="app-header">
-      <app-nav></app-nav>
-    </header>
-    <main class="container">
-      <router-view></router-view>
-    </main>
-  </div>
+  <component :is="layout">
+    <router-view v-model:layout="layout" />
+  </component>
 </template>
 
 <script>
-import AppNav from "@/components/AppNav";
+import LayoutDefault from "@/layouts/LayoutDefault";
 
 export default {
-  name: "app",
+  name: "App",
   components: {
-    AppNav,
+    LayoutDefault,
+  },
+  data() {
+    return {
+      layout: "div",
+    };
   },
 };
 </script>

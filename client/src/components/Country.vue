@@ -19,7 +19,7 @@
     <pre v-show="inError">There was an error!</pre>
     <pre v-show="hasData">There were {{ count }} records found!</pre>
     <pre v-show="reloading">reloading...</pre>
-    <input type="text" v-model="countryCode" />
+    <input v-model="countryCode" type="text" />
     <button @click="visibility = 'lookup'">Search Countries</button><br />
     <pre
       v-show="visibility === 'lookup'"
@@ -42,7 +42,7 @@ const filters = {
 };
 
 export default {
-  name: "country",
+  name: "Country",
   setup() {
     const visibility = ref("all");
     const countryCode = ref("");

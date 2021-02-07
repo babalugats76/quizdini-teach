@@ -2,7 +2,7 @@
 import { focus, color } from "./mixins";
 
 export default {
-  name: "ui-link",
+  name: "UiLink",
   mixins: [focus, color],
   props: {
     href: {

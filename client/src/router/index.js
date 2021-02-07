@@ -2,7 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import { computed } from "vue";
 import store from "@/store";
 
-import ApiTester from "@/components/ApiTester";
+import ApiTester from "@/views/ApiTester";
 import AuthSuccess from "@/components/AuthSuccess";
 import Dashboard from "@/components/Dashboard";
 import Login from "@/components/Login";

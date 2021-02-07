@@ -5,7 +5,7 @@
         class="google-signin__btn"
         @click="popup('/auth/google', 'google_login', 500, 500)"
       >
-        <span class="google-signin__icon"></span>
+        <span class="google-signin__icon" />
         <span class="google-signin__text">Login with Google</span>
       </div>
     </div>
@@ -14,15 +14,15 @@
     {{ error && !isDirty ? error : "" }}
     <div class="form-input">
       <label>Username:</label
-      ><input type="text" name="username" v-model="username" />
+      ><input v-model="username" type="text" name="username" />
     </div>
     <div class="form-input">
       <label>Password:</label
-      ><input type="password" name="password" v-model="password" />
+      ><input v-model="password" type="password" name="password" />
     </div>
     <button
-      @click.prevent="toggleLogin ^= true"
       :disabled="loading || !isDirty"
+      @click.prevent="toggleLogin ^= true"
     >
       {{ loading ? "Loading..." : "Login" }}
     </button>
@@ -41,7 +41,7 @@ import useLoader from "@/compose/useLoader";
 //import { FETCH_AUTH } from "@/store/mutation-types";
 
 export default {
-  name: "login",
+  name: "Login",
   setup() {
     const store = useStore();
     const router = useRouter();
