@@ -1,5 +1,17 @@
+<template>
+  <layout>
+    <slot />
+  </layout>
+</template>
+
+<script>
+import Layout from "@/layouts/Layout";
+
 export default {
-  name: "auth-success",
+  name: "AuthSuccess",
+  components: {
+    Layout,
+  },
   created() {
     window.document.body.style.display = "none";
     if (window.opener) {
@@ -8,7 +20,7 @@ export default {
       window.close();
     }
   },
-  render() {
-    return this.$slots.default[0];
-  },
 };
+</script>
+
+<style lang="scss" scoped></style>

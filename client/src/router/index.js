@@ -3,7 +3,7 @@ import { computed } from "vue";
 import store from "@/store";
 
 import ApiTester from "@/views/ApiTester";
-import AuthSuccess from "@/components/AuthSuccess";
+import AuthSuccess from "@/views/AuthSuccess";
 import Dashboard from "@/components/Dashboard";
 import Login from "@/components/Login";
 import NotFound from "@/components/NotFound";
