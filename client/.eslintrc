@@ -1,9 +1,21 @@
 {
   "extends": [
     //"eslint:recommended",
-    "plugin:vue/vue3-recommended"
+    "plugin:vue/vue3-essential",
+    "plugin:vue/vue3-recommended",
+    "plugin:vue/vue3-strongly-recommended"
   ],
   "rules": {
-    "vue/no-v-model-argument": "off"
+    "vue/no-v-model-argument": "off",
+    "vue/no-v-html": "off",
+    "vue/singleline-html-element-content-newline": "off",
+    "vue/multiline-html-element-content-newline": "off",
+    "vue/max-attributes-per-line": "off",
+    "vue/html-self-closing": "off"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
   }
 }
