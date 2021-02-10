@@ -5,7 +5,7 @@ import store from "@/store";
 import ApiTester from "@/views/ApiTester";
 import AuthSuccess from "@/views/AuthSuccess";
 import Dashboard from "@/components/Dashboard";
-import Login from "@/components/Login";
+import Login from "@/views/Login";
 import NotFound from "@/components/NotFound";
 
 const storeInit = store.dispatch("init");
