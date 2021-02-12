@@ -32,7 +32,7 @@ const getters = {
 
 const actions = {
   // fetch: (store) => callApi(() => getAuth(), AUTH)(store),
-  fetch: (store) => callApi(store, { cb: () => getAuth(), types: AUTH }),
+  [AUTH.FETCH]: (store) => callApi(store, { cb: () => getAuth(), types: AUTH }),
 };
 
 const mutations = {

@@ -9,13 +9,8 @@
         <span class="google-signin__text">Login with Google</span>
       </div>
     </div>
-
-    <a href="/logout">Logout</a>
-
-    <label>Dirty</label><span>&nbsp;{{ isDirty }}</span>
-    <pre>{{ errors && !isDirty ? errors : "" }}</pre>
-
     <form class="login-form" @submit.prevent="loginUser">
+      <div v-if="errors && !isDirty && message">{{ message }}</div>
       <div class="form-input">
         <ui-input
           v-model:value="username"
@@ -23,6 +18,7 @@
           label="Username"
           name="username"
           type="text"
+          tabindex="1"
           @input="validate('username')"
         />
       </div>
@@ -33,23 +29,30 @@
           label="Password"
           name="password"
           type="password"
+          tabindex="2"
           @input="validate('password')"
         />
       </div>
-      <input type="submit" value="Login" :disabled="!isDirty" />
+      <input
+        type="submit"
+        value="Login"
+        :disabled="!isDirty || hasErrors || loading"
+        tabindex="3"
+      />
     </form>
   </div>
 </template>
 
 <script>
 import { object, string } from "yup";
-import { ref, unref, computed, reactive, toRefs } from "vue";
+import { computed, reactive, toRefs } from "vue";
 import { useStore } from "vuex";
-// import { useRouter } from "vue-router";
-// import { postLogin } from "@/api/auth";
+import { useRouter } from "vue-router";
+import { postLogin } from "@/api/auth";
+
 import UiInput from "@/components/ui/UiInput";
 
-//import { FETCH_AUTH } from "@/store/mutation-types";
+import { AUTH } from "@/store/types";
 
 export default {
   name: "LoginForm",
@@ -58,18 +61,18 @@ export default {
   },
   setup() {
     const store = useStore();
-    // const router = useRouter();
-    // const loggedIn = computed(() => store.getters["auth/loggedIn"]);
-
-    const data = reactive({
+    const router = useRouter();
+    const state = reactive({
       username: "",
       password: "",
-      isDirty: computed(() => !!(data.username && data.password)),
+      loading: false,
+      isDirty: computed(() => !!(state.username && state.password)),
       errors: {},
+      hasErrors: computed(() =>
+        Object.keys(state.errors).some((e) => !!state.errors[e])
+      ),
+      message: "",
     });
-
-    // const username = ref("");
-    // const password = ref("");
 
     const loginFormSchema = object({
       username: string().required(),
@@ -79,19 +82,53 @@ export default {
     function validate(field) {
       loginFormSchema
         .validateAt(field, {
-          username: unref(data.username),
-          password: unref(data.password),
+          username: state.username,
+          password: state.password,
         })
         .then(() => {
-          console.log("need to clear", field);
-          data.errors[field] = "";
+          state.errors[field] = "";
         })
         .catch((err) => {
-          data.errors[field] = err.errors;
+          state.errors[field] = err.errors;
         });
     }
 
-    // const isDirty = computed(() => !!(username.value || password.value));
+    function loginUser() {
+      loginFormSchema
+        .validate(
+          {
+            username: state.username,
+            password: state.password,
+          },
+          { abortEarly: false }
+        )
+        .then(() => {
+          state.loading = true;
+          return postLogin({
+            username: state.username,
+            password: state.password,
+          })
+            .then((res) => {
+              const { error, data } = res || {};
+              if (error) {
+                state.errors = {};
+                state.loading = false;
+                state.password = "";
+                state.username = "";
+                state.message = data.message;
+                throw new Error("LoginFailed");
+              }
+            })
+            .then(() => store.dispatch(`auth/${AUTH.FETCH}`))
+            .then(() => router.push({ name: "dashboard" }))
+            .catch(() => {});
+        })
+        .catch((err) => {
+          err.inner.forEach((e) => {
+            state.errors[e.path] = e.errors;
+          });
+        });
+    }
 
     const popup = (url, name, width, height, win = window) => {
       const y = win.top.outerHeight / 2 + win.top.screenY - height / 2;
@@ -100,18 +137,11 @@ export default {
       win.open(url, name, specs);
     };
 
-    function loginUser() {
-      console.log("Logging In...");
-    }
-
     return {
-      // username,
-      // password,
-      // isDirty,
-      popup,
       loginUser,
+      popup,
       validate,
-      ...toRefs(data),
+      ...toRefs(state),
     };
   },
 };

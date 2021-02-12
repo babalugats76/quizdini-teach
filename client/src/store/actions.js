@@ -1,6 +1,6 @@
 const actions = {
   async init({ dispatch }) {
-    await dispatch("auth/fetch");
+    await dispatch("auth/AUTH_FETCH");
   },
 };
 
