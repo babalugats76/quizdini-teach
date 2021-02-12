@@ -1,53 +1,10 @@
 import { createWebHistory, createRouter } from "vue-router";
 import { computed } from "vue";
+import routes from "./routes";
 import store from "@/store";
 
-import ApiTester from "@/views/ApiTester";
-import AuthSuccess from "@/views/AuthSuccess";
-import Dashboard from "@/components/Dashboard";
-import Login from "@/views/Login";
-import NotFound from "@/components/NotFound";
-
 const storeInit = store.dispatch("init");
-const loggedIn = computed(() => store.getters["auth/loggedIn"]);
-
-const routes = [
-  {
-    path: "/",
-    name: "home",
-    component: ApiTester,
-    props: false,
-  },
-  {
-    path: "/login",
-    name: "login",
-    component: Login,
-    meta: {
-      guest: true,
-    },
-  },
-  {
-    path: "/dashboard",
-    name: "dashboard",
-    component: Dashboard,
-    props: true,
-    meta: {
-      requiresAuth: true,
-    },
-  },
-  {
-    path: "/success",
-    name: "success",
-    component: AuthSuccess,
-    props: true,
-    meta: {},
-  },
-  {
-    path: "/:catchAll(.*)",
-    name: "notfound",
-    component: NotFound,
-  },
-];
+const authenticated = computed(() => store.getters["auth/authenticated"]);
 
 const router = createRouter({
   history: createWebHistory(),
@@ -79,13 +36,13 @@ router.beforeEach((to, from, next) => {
  */
 router.beforeEach((to, from, next) => {
   if (to.matched.some((r) => r.meta.guest)) {
-    if (loggedIn.value) {
+    if (authenticated.value) {
       next({ name: "dashboard" });
     } else {
       next();
     }
   } else if (to.matched.some((r) => r.meta.requiresAuth)) {
-    if (loggedIn.value) {
+    if (authenticated.value) {
       next();
     } else {
       next({ name: "login" });
