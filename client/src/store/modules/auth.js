@@ -28,6 +28,7 @@ const getters = {
   loaded: (state) => state.loaded,
   loading: (state) => state.loading,
   authenticated: (state) => state.data.authenticated,
+  credits: (state) => state.data.credits,
 };
 
 const actions = {

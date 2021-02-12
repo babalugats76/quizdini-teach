@@ -1,9 +1,29 @@
 <template>
   <nav class="nav">
-    <NavItems :items="routes" :authenticated="authenticated" />
-    <a v-if="authenticated" href="/logout" class="nav__item" target="_self"
+    <NavItems :items="routes" :authenticated="auth.authenticated" />
+    <span v-if="auth.authenticated && auth.credits >= 0" class="nav__item"
+      >Credits: {{ auth.credits }}
+    </span>
+    <a v-if="auth.authenticated" href="/logout" class="nav__item" target="_self"
       >logout</a
     >
+    <span
+      v-if="auth.authenticated && auth.accountType === 'google'"
+      class="nav__item badge"
+    >
+      <img
+        v-if="auth.accountType === 'google'"
+        :src="auth.googlePicture"
+        class="badge--google"
+      />
+    </span>
+    <span
+      v-if="auth.authenticated && auth.accountType === 'local'"
+      class="nav__item nav__item--lc"
+    >
+      {{ auth.username }}
+    </span>
+    <!-- <pre>{{ JSON.stringify(auth, null, 4) }}</pre> -->
   </nav>
 </template>
 
@@ -15,26 +35,10 @@ import routes from "@/router/routes";
 const NavItems = ({ items, authenticated }) =>
   items
     .filter((item) => {
-      const { name, meta } = item;
-      const { navItem = false, requiresAuth = false, guest = false } =
-        meta || {};
-      // console.log("logged in?", authenticated);
-      // console.log("name", name);
-      // console.log("requiresAuth", requiresAuth);
-      // console.log("guest", guest);
-      // console.log(
-      //   "show",
-      //   navItem
-      //     ? authenticated
-      //       ? requiresAuth || !guest
-      //       : !requiresAuth
-      //     : false
-      // );
-      return navItem
-        ? authenticated
-          ? requiresAuth || !guest
-          : !requiresAuth
-        : false;
+      const {
+        meta: { navItem = false, auth = false, guest = false } = {},
+      } = item;
+      return navItem ? (authenticated ? auth || !guest : !auth) : false;
     })
     .map((item) => {
       const { name } = item;
@@ -52,10 +56,13 @@ export default {
   },
   setup() {
     const store = useStore();
-    const authenticated = computed(() => store.getters["auth/authenticated"]);
-
+    const auth = computed(() => store.getters["auth/auth"]);
+    // const authenticated = computed(() => store.getters["auth/authenticated"]);
+    // const credits = computed(() => store.getters["auth/credits"]);
     return {
-      authenticated,
+      auth,
+      // authenticated,
+      // credits,
       routes,
     };
   },
@@ -64,12 +71,35 @@ export default {
 
 <style lang="scss">
 .nav {
-  display: block;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
   &__item {
-    display: inline-block;
+    $item: &;
+    flex: 1;
     padding: 1rem;
     margin: 0.25rem 0.75rem;
+    @include font("Montserrat", "extra-bold");
+    text-align: center;
     text-transform: capitalize;
+    &--lc {
+      text-transform: none;
+    }
+    // To be replaced with a proper badge component
+    &.badge {
+      $badge: &;
+      flex: 0 0 auto;
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+      margin: 0 1rem;
+      vertical-align: middle;
+      @at-root #{$badge} .badge--google {
+        border-radius: 100%;
+      }
+    }
   }
 }
 </style>

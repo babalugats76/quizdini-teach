@@ -41,7 +41,7 @@ router.beforeEach((to, from, next) => {
     } else {
       next();
     }
-  } else if (to.matched.some((r) => r.meta.requiresAuth)) {
+  } else if (to.matched.some((r) => r.meta.auth)) {
     if (authenticated.value) {
       next();
     } else {

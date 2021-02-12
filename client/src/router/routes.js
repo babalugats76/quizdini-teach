@@ -29,7 +29,7 @@ const routes = [
     component: Dashboard,
     meta: {
       navItem: true,
-      requiresAuth: true,
+      auth: true,
     },
     props: true,
   },
