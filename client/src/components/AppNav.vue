@@ -1,8 +1,10 @@
 <template>
-  <div>
-    <strong> {{ authenticated }} </strong>
+  <nav class="nav">
     <NavItems :items="routes" :authenticated="authenticated" />
-  </div>
+    <a v-if="authenticated" href="/logout" class="nav__item" target="_self"
+      >logout</a
+    >
+  </nav>
 </template>
 
 <script>
@@ -14,17 +16,33 @@ const NavItems = ({ items, authenticated }) =>
   items
     .filter((item) => {
       const { name, meta } = item;
-      const { requiresAuth = false, guest = false } = meta || {};
-      console.log("logged in?", authenticated);
-      console.log("name", name);
-      console.log("requiresAuth", requiresAuth);
-      console.log("guest", guest);
-      console.log("show", authenticated ? requiresAuth || !guest : true);
-      return authenticated ? requiresAuth || !guest : true;
+      const { navItem = false, requiresAuth = false, guest = false } =
+        meta || {};
+      // console.log("logged in?", authenticated);
+      // console.log("name", name);
+      // console.log("requiresAuth", requiresAuth);
+      // console.log("guest", guest);
+      // console.log(
+      //   "show",
+      //   navItem
+      //     ? authenticated
+      //       ? requiresAuth || !guest
+      //       : !requiresAuth
+      //     : false
+      // );
+      return navItem
+        ? authenticated
+          ? requiresAuth || !guest
+          : !requiresAuth
+        : false;
     })
     .map((item) => {
       const { name } = item;
-      return <span key="name">{name}</span>;
+      return (
+        <router-link class="nav__item" to={{ name: name }} key={name}>
+          {name}
+        </router-link>
+      );
     });
 
 export default {
@@ -44,4 +62,14 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.nav {
+  display: block;
+  &__item {
+    display: inline-block;
+    padding: 1rem;
+    margin: 0.25rem 0.75rem;
+    text-transform: capitalize;
+  }
+}
+</style>

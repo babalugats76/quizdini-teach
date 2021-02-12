@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import Layout from "@/layouts/Layout";
 import Auth from "@/components/Auth";
 import Country from "@/components/Country";
 
@@ -17,7 +16,6 @@ export default {
   components: {
     Auth,
     Country,
-    Layout,
   },
 };
 </script>

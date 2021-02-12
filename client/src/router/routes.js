@@ -1,6 +1,6 @@
 import ApiTester from "@/views/ApiTester";
 import AuthSuccess from "@/views/AuthSuccess";
-import Dashboard from "@/components/Dashboard";
+import Dashboard from "@/views/Dashboard";
 import Login from "@/views/Login";
 import NotFound from "@/components/NotFound";
 
@@ -9,7 +9,9 @@ const routes = [
     path: "/",
     name: "home",
     component: ApiTester,
-    meta: {},
+    meta: {
+      navItem: true,
+    },
     props: false,
   },
   {
@@ -17,6 +19,7 @@ const routes = [
     name: "login",
     component: Login,
     meta: {
+      navItem: true,
       guest: true,
     },
   },
@@ -25,6 +28,7 @@ const routes = [
     name: "dashboard",
     component: Dashboard,
     meta: {
+      navItem: true,
       requiresAuth: true,
     },
     props: true,
@@ -33,14 +37,18 @@ const routes = [
     path: "/success",
     name: "success",
     component: AuthSuccess,
-    meta: {},
+    meta: {
+      navItem: false,
+    },
     props: true,
   },
   {
     path: "/:catchAll(.*)",
     name: "notfound",
     component: NotFound,
-    meta: {},
+    meta: {
+      navItem: false,
+    },
   },
 ];
 
