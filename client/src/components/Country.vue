@@ -2,23 +2,24 @@
   <div id="country">
     Visibility: {{ visibility }} <br />
     <button @click="fetchCountries()">Fetch Countries</button><br />
+    <button @click.prevent="visibility = 'all'">All Countries</button><br />
     <button @click.prevent="visibility = 'merica'">America First!</button><br />
-    Total Count: {{ count }} <br />
-    Filtered Count: {{ filteredCountries ? filteredCountries.length : null }}
-    <br />
-    Has Data: {{ hasData }} <br />
-    Initialized: {{ initialized }} <br />
-    Loading: {{ loading }}<br />
-    Reloading: {{ reloading }} <br />
-    In Error: {{ inError }} <br />
+    <span v-if="loaded"
+      >Filtered Count:
+      {{ filteredCountries ? filteredCountries.length : null }}</span
+    ><br />
+    loaded: {{ loaded }}<br />
+    loading: {{ loading }} <br />
+    failed: {{ failed }} <br />
     <pre
-      v-show="filteredCountries"
+      v-show="loaded"
       :style="{ fontSize: '10px', maxHeight: '200px', overflow: 'scroll' }"
       >{{ JSON.stringify(filteredCountries, null, 4) }}</pre
     >
-    <pre v-show="inError">There was an error!</pre>
-    <pre v-show="hasData">There were {{ count }} records found!</pre>
-    <pre v-show="reloading">reloading...</pre>
+    <pre v-show="failed">There was an error!</pre>
+    <!-- <pre v-show="loaded">
+       There were {{ filteredCountries.length }} records found!</pre
+    > -->
     <input v-model="countryCode" type="text" />
     <button @click="visibility = 'lookup'">Search Countries</button><br />
     <pre
@@ -32,6 +33,7 @@
 <script>
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
+import { COUNTRIES } from "@/store/types";
 
 /*eslint-disable-next-line*/
 const filters = {
@@ -47,7 +49,8 @@ export default {
     const visibility = ref("all");
     const countryCode = ref("");
     const store = useStore();
-    const countries = computed(() => store.state.countries.data);
+    const countries = computed(() => store.getters["countries/all"]);
+
     const filteredCountries = computed(() =>
       filters[visibility.value](countries.value)
     );
@@ -56,15 +59,12 @@ export default {
     );
 
     return {
-      fetchCountries: () => store.dispatch("countries/fetch"),
-      count: computed(() => store.getters["countries/count"]),
+      fetchCountries: () => store.dispatch(`countries/${COUNTRIES.FETCH}`),
       filteredCountries,
       lookupCountry,
-      hasData: computed(() => store.getters["countries/hasData"]),
-      inError: computed(() => store.getters["countries/inError"]),
-      initialized: computed(() => store.getters["countries/initialized"]),
+      loaded: computed(() => store.getters["countries/loaded"]),
+      failed: computed(() => store.getters["countries/failed"]),
       loading: computed(() => store.getters["countries/loading"]),
-      reloading: computed(() => store.getters["countries/reloading"]),
       visibility,
       countryCode,
     };

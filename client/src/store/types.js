@@ -6,4 +6,5 @@ const generateMutations = (type) => ({
 });
 
 export const AUTH = generateMutations("AUTH");
+export const COUNTRIES = generateMutations("COUNTRIES");
 export const TOGGLE_LOADING = "TOGGLE_LOADING";

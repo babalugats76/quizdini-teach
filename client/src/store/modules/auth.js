@@ -22,13 +22,15 @@ const INITIAL_STATE = {
 const state = () => INITIAL_STATE;
 
 const getters = {
+  accountType: (state) => state.accountType,
   auth: (state) => state.data,
-  error: (state) => state.error,
-  failed: (state) => state.failed,
-  loaded: (state) => state.loaded,
-  loading: (state) => state.loading,
   authenticated: (state) => state.data.authenticated,
   credits: (state) => state.data.credits,
+  error: (state) => state.error,
+  failed: (state) => state.failed,
+  googlePicture: (state) => state.googlePicture,
+  loaded: (state) => state.loaded,
+  loading: (state) => state.loading,
 };
 
 const actions = {

@@ -1,33 +1,55 @@
-// import { getCountries } from "@/api/country";
-// import { apiState, apiGetters, apiMutations } from "../util";
+import { getCountries } from "@/api/countries";
+import { callApi } from "../util";
+import { COUNTRIES } from "../types";
 
-// const state = () => ({ ...apiState });
+const INITIAL_STATE = {
+  data: null,
+  error: null,
+  failed: false,
+  loaded: false,
+  loading: false,
+};
 
-// const getters = { ...apiGetters };
+const state = () => INITIAL_STATE;
 
-// const actions = {
-//   async fetch({ commit }) {
-//     commit("load");
-//     commit("process", await getCountries());
-//   },
-// };
+const getters = {
+  all: (state) => state.data,
+  error: (state) => state.error,
+  failed: (state) => state.failed,
+  loaded: (state) => state.loaded,
+  loading: (state) => state.loading,
+};
 
-// const mutations = {
-//   ...apiMutations,
-//   success(state, { data }) {
-//     state.data = data;
-//     state.error = null;
-//   },
-//   failure(state, { error }) {
-//     state.error = error;
-//     state.data = null;
-//   },
-// };
+const actions = {
+  // fetch: (store) => callApi(() => getCountries(), COUNTRIES)(store),
+  [COUNTRIES.FETCH]: (store) =>
+    callApi(store, { cb: () => getCountries(), types: COUNTRIES }),
+};
 
-// export default {
-//   namespaced: true,
-//   state,
-//   getters,
-//   actions,
-//   mutations,
-// };
+const mutations = {
+  [COUNTRIES.PENDING](state) {
+    state.loading = true;
+  },
+  [COUNTRIES.SUCCESS](state, data) {
+    state.data = data;
+    state.error = null;
+    state.failed = false;
+    state.loaded = true;
+    state.loading = false;
+  },
+  [COUNTRIES.FAILURE](state, data) {
+    state.data = null;
+    state.error = data;
+    state.failed = true;
+    state.loaded = false;
+    state.loading = false;
+  },
+};
+
+export default {
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations,
+};
