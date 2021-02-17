@@ -2,20 +2,20 @@
   <layout name="LayoutDefault">
     <div>
       <!-- <auth /> -->
-      <country />
+      <!-- <country /> -->
     </div>
   </layout>
 </template>
 
 <script>
 // import Auth from "@/components/Auth";
-import Country from "@/components/Country";
+// import Country from "@/components/Country";
 
 export default {
   name: "ApiTester",
   components: {
     // Auth,
-    Country,
+    // Country,
   },
 };
 </script>

@@ -1,7 +1,14 @@
 <template>
   <label>
     {{ label }}
-    <input v-model="input" list="id" :class="classes" :name="name" />
+    <input
+      v-model="input"
+      list="id"
+      :class="classes"
+      :name="name"
+      v-bind="$attrs"
+      @input="onInputChange($event)"
+    />
     <datalist id="id">
       <option
         v-for="option in options"
@@ -26,6 +33,10 @@ export default {
   },
   inheritAttr: false,
   props: {
+    // eslint-disable-next-line
+    code: {
+      type: String,
+    },
     errors: {
       type: [Array, String],
       default: "",
@@ -53,14 +64,22 @@ export default {
       type: String,
     },
   },
-  emits: ["update:value"],
+  emits: ["update:value", "update:code"],
   setup(props, { emit }) {
     const input = computed({
       get: () => props.value,
       set: (value) => emit("update:value", value),
     });
+    const onInputChange = (evt) => {
+      const match = Array.from(evt.target.list.options).find(
+        (o) => o.innerHTML === evt.target.value
+      );
+      emit("update:code", match ? match.dataset["value"] : "");
+    };
+
     return {
       input,
+      onInputChange,
     };
   },
   computed: {

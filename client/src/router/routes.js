@@ -3,6 +3,7 @@ import AuthSuccess from "@/views/AuthSuccess";
 import Dashboard from "@/views/Dashboard";
 import Login from "@/views/Login";
 import NotFound from "@/components/NotFound";
+import Register from "@/views/Register";
 
 const routes = [
   {
@@ -11,6 +12,16 @@ const routes = [
     component: ApiTester,
     meta: {
       navItem: true,
+    },
+    props: false,
+  },
+  {
+    path: "/",
+    name: "register",
+    component: Register,
+    meta: {
+      navItem: true,
+      guest: true,
     },
     props: false,
   },

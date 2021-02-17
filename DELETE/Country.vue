@@ -53,10 +53,13 @@
       <ui-datalist
         id="countries"
         v-model:value="countrySearch"
+        v-model:code="countryCode"
         :options="countries"
         label="Country"
         name="country"
-        @input="onCountryChange($event)"
+        :errors="errors['country']"
+        @blur="validate('country')"
+        @input="errors['country'] && validate('country')"
       />
       <span>{{ countryCode }}</span>
     </form>
@@ -65,11 +68,13 @@
 
 <script>
 import { computed, onMounted, reactive, /* ref, */ toRefs } from "vue";
-import { useStore } from "vuex";
+// import { useStore } from "vuex";
 import { object, string } from "yup";
 
-import { COUNTRIES } from "@/store/types";
+// import { COUNTRIES } from "@/store/types";
 import UiDatalist from "@/components/ui/UiDatalist";
+
+import useCountries from "@/compose/useCountries";
 
 /*eslint-disable-next-line*/
 // const filters = {
@@ -92,14 +97,22 @@ export default {
     // const countryName = ref("");
     // const countrySearch = ref("");
     // const selectedCountry = ref("");
-    const store = useStore();
+    // const store = useStore();
+
+    const {
+      countries,
+      failed,
+      getCountryCode,
+      loaded,
+      loading,
+    } = useCountries();
 
     const state = reactive({
-      countries: computed(() => store.getters["countries/options"]),
+      // countries: computed(() => store.getters["countries/options"]),
       countryCode: "",
       countrySearch: "",
       loading: false,
-      isDirty: computed(() => !!(state.username && state.password)),
+      // isDirty: computed(() => !!(state.username && state.password)),
       errors: {},
       hasErrors: computed(() =>
         Object.keys(state.errors).some((e) => !!state.errors[e])
@@ -107,17 +120,16 @@ export default {
       message: "",
     });
 
-    const fetchCountries = () => store.dispatch(`countries/${COUNTRIES.FETCH}`);
-    // const countries = computed(() => store.getters["countries/options"]);
+    // const getCountries = () => store.dispatch(`countries/${COUNTRIES.FETCH}`);
 
     const registerFormSchema = object({
-      countryCode: string().required(),
+      country: string().required("Valid country is required"),
     });
 
     function validate(field) {
       registerFormSchema
         .validateAt(field, {
-          countryCode: state.countryCode,
+          country: state.countryCode,
         })
         .then(() => {
           state.errors[field] = "";
@@ -138,17 +150,17 @@ export default {
     //   filters[visibility.value](countries.value, countryName.value)
     // );
 
-    onMounted(() => {
-      fetchCountries();
-    });
+    // onMounted(() => {
+    //   getCountries();
+    // });
 
-    const onCountryChange = (evt) => {
-      const match = Array.from(evt.target.list.options).find(
-        (o) => o.innerHTML === evt.target.value
-      );
-      state.countryCode = match ? match.dataset["value"] : null;
-      validate("countryCode");
-    };
+    // const onCountryChange = (evt) => {
+    //   const match = Array.from(evt.target.list.options).find(
+    //     (o) => o.innerHTML === evt.target.value
+    //   );
+    //   state.countryCode = match ? match.dataset["value"] : null;
+    //   validate("countryCode");
+    // };
 
     return {
       // fetchCountries,
@@ -164,19 +176,21 @@ export default {
       // countrySearch,
       // selectedCountry,
       // countries,
-      onCountryChange,
+      validate,
+      // onCountryChange,
+      countries,
       ...toRefs(state),
     };
   },
-  methods: {
-    getCountryCode: (e) => {
-      const match = Array.from(e.target.list.options).find(
-        (o) => o.innerHTML === e.target.value
-      );
-      if (!match) return;
-      return match.dataset["value"];
-    },
-  },
+  // methods: {
+  //   getCountryCode: (e) => {
+  //     const match = Array.from(e.target.list.options).find(
+  //       (o) => o.innerHTML === e.target.value
+  //     );
+  //     if (!match) return;
+  //     return match.dataset["value"];
+  //   },
+  // },
 };
 </script>
 

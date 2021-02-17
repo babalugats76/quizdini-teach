@@ -9,7 +9,7 @@
         <span class="google-signin__text">Login with Google</span>
       </div>
     </div>
-    <form class="login-form" @submit.prevent="loginUser">
+    <form class="login__form" @submit.prevent="loginUser">
       <div v-if="errors && !isDirty && message">{{ message }}</div>
       <div class="form-input">
         <ui-input
@@ -33,12 +33,14 @@
           @input="validate('password')"
         />
       </div>
-      <input
-        type="submit"
-        value="Login"
-        :disabled="!isDirty || hasErrors || loading"
-        tabindex="3"
-      />
+      <div class="form-input">
+        <input
+          type="submit"
+          value="Login"
+          :disabled="!isDirty || hasErrors || loading"
+          tabindex="3"
+        />
+      </div>
     </form>
   </div>
 </template>
