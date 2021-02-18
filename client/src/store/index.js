@@ -2,6 +2,7 @@ import { createStore, createLogger } from "vuex";
 import test from "./modules/test";
 import auth from "./modules/auth";
 import countries from "./modules/countries";
+import states from "./modules/states";
 // import { apiHelperPlugin } from "./apiHelper";
 import actions from "./actions";
 
@@ -14,6 +15,7 @@ const store = createStore({
     test,
     auth,
     countries,
+    states,
   },
   strict: debug,
 });

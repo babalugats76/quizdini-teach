@@ -1,26 +1,29 @@
 <template>
-  <label>
-    {{ label }}
-    <input
-      v-model="input"
-      autocomplete="autocomplete ? 'on' : null"
-      :class="classes"
-      :name="name"
-      :type="type"
-    />
-    <ui-error v-if="errors" :errors="errors" />
-  </label>
+  <label> {{ label }} </label>
+  <input
+    v-bind="$attrs"
+    ref="inputRef"
+    v-model="input"
+    autocomplete="autocomplete ? 'on' : null"
+    :class="classes"
+    :name="name"
+    :type="type"
+  />
+  <ui-error v-if="errors" :errors="errors" />
 </template>
 
 <script>
-import { computed /*ref, toRef*/ } from "vue";
+import { computed } from "vue";
 import UiError from "./UiError";
+import { focus } from "./mixins";
 
 export default {
   name: "UiInput",
   components: {
     UiError,
   },
+  mixins: [focus],
+  inheritAttr: false,
   props: {
     autocomplete: {
       type: Boolean,

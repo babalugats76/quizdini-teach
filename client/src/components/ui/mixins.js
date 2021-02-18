@@ -28,13 +28,13 @@ export const focus = {
   },
   mounted() {
     this.autofocus &&
-      document.activeElement !== this.$el &&
+      document.activeElement !== this.$refs.inputRef &&
       typeof document !== "undefined" &&
       this.setFocus();
   },
   methods: {
     setFocus() {
-      this.$el.focus();
+      this.$refs.inputRef.focus();
     },
   },
 };

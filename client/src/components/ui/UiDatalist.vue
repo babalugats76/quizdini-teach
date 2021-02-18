@@ -1,41 +1,43 @@
 <template>
-  <label>
-    {{ label }}
-    <input
-      v-model="input"
-      list="id"
-      :class="classes"
-      :name="name"
-      v-bind="$attrs"
-      @input="onInputChange($event)"
-    />
-    <datalist id="id">
-      <option
-        v-for="option in options"
-        :key="option.key"
-        :data-value="option.value"
-      >
-        {{ option.text }}
-      </option>
-    </datalist>
-    <ui-error v-if="errors" :errors="errors" />
-  </label>
+  <label> {{ label }} </label>
+  <input
+    v-bind="$attrs"
+    ref="inputRef"
+    v-model="input"
+    :list="id"
+    :class="classes"
+    :name="name"
+    @input="onInputChange($event)"
+  />
+  <datalist :id="id">
+    <option
+      v-for="option in options"
+      :key="option.key"
+      :data-value="option.value"
+    >
+      {{ option.text }}
+    </option>
+  </datalist>
+  <ui-error v-if="errors" :errors="errors" />
 </template>
 
 <script>
 import { computed } from "vue";
 import UiError from "./UiError";
+import { focus } from "./mixins";
 
 export default {
   name: "UiDatalist",
   components: {
     UiError,
   },
+  mixins: [focus],
   inheritAttr: false,
   props: {
     // eslint-disable-next-line
     code: {
       type: String,
+      required: false,
     },
     errors: {
       type: [Array, String],

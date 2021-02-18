@@ -14,12 +14,14 @@
       <div class="form-input">
         <ui-input
           v-model:value="username"
+          autofocus
           :errors="errors['username']"
           label="Username"
           name="username"
           type="text"
           tabindex="1"
-          @input="validate('username')"
+          @blur="validate('username')"
+          @keyup="hasError('username') && validate('username')"
         />
       </div>
       <div class="form-input">
@@ -30,7 +32,8 @@
           name="password"
           type="password"
           tabindex="2"
-          @input="validate('password')"
+          @blur="validate('password')"
+          @keyup="hasError('password') && validate('password')"
         />
       </div>
       <div class="form-input">
@@ -139,7 +142,10 @@ export default {
       win.open(url, name, specs);
     };
 
+    const hasError = (field) => field in state.errors && !!state.errors[field];
+
     return {
+      hasError,
       loginUser,
       popup,
       validate,

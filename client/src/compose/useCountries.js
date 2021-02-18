@@ -4,7 +4,7 @@ import { COUNTRIES } from "@/store/types";
 
 export default function useCountries() {
   const store = useStore();
-  const getCountries = () => store.dispatch(`countries/${COUNTRIES.FETCH}`);
+  const fetchCountries = () => store.dispatch(`countries/${COUNTRIES.FETCH}`);
 
   const countries = computed(() => store.getters["countries/options"]); // computed for dropdowns
 
@@ -14,7 +14,7 @@ export default function useCountries() {
   const loading = computed(() => store.getters["countries/loading"]);
 
   onMounted(() => {
-    if (!loaded.value) getCountries(); // load once (cached in Vuex store)
+    if (!loaded.value) fetchCountries(); // load once (cached in Vuex store)
   });
 
   return {
