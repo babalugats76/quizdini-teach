@@ -1,5 +1,5 @@
 <template>
-  <label> {{ label }} </label>
+  <label :for="name"> {{ label }} </label>
   <input
     v-bind="$attrs"
     ref="inputRef"
@@ -23,9 +23,8 @@
 
 <script>
 import { computed } from "vue";
-import UiError from "./UiError";
 import { focus } from "./mixins";
-
+import UiError from "./UiError";
 export default {
   name: "UiDatalist",
   components: {

@@ -1,10 +1,10 @@
 <template>
-  <label> {{ label }} </label>
+  <label :for="name"> {{ label }} </label>
   <input
     v-bind="$attrs"
     ref="inputRef"
     v-model="input"
-    autocomplete="autocomplete ? 'on' : null"
+    :autocomplete="autocomplete || 'off'"
     :class="classes"
     :name="name"
     :type="type"
@@ -26,7 +26,9 @@ export default {
   inheritAttr: false,
   props: {
     autocomplete: {
-      type: Boolean,
+      type: String,
+      default: "off",
+      required: false,
     },
     errors: {
       type: [Array, String],
@@ -72,4 +74,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+label {
+  font-weight: bold;
+}
+
+.ui-input {
+  outline: 1px solid gray;
+}
+</style>
