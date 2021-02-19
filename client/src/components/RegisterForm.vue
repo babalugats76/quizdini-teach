@@ -1,7 +1,7 @@
 <template>
   <div class="register">
     <form class="register__form" @submit.prevent="registerUser">
-      <div v-if="message && !isTouched">{{ message }}</div>
+      <div v-if="message && (!isTouched || !isValid)">{{ message }}</div>
       <div class="form-input">
         <ui-datalist
           id="title"
@@ -143,8 +143,10 @@
       </div>
       <div class="form-input">
         <input
-          type="submit"
+          type="button"
           value="Register"
+          @mousedown.prevent="console.log($event)"
+          @click.prevent="registerUser()"
           :disabled="isSubmitting || !isDirty || !isTouched || !isValid"
           tabindex="11"
         />
@@ -194,7 +196,6 @@ export default {
   setup() {
     const { countries } = useCountries();
     const { states } = useStates();
-
     const titles = [
       { key: 0, text: "Mr.", value: "Mr." },
       { key: 1, text: "Mrs.", value: "Mrs." },
@@ -256,8 +257,9 @@ export default {
       meta.touched[field] = true;
     };
 
-    const handleBlur = async (field) => {
-      await validate(field).then(() => {
+    const handleBlur = (field) => {
+      console.log("validating...");
+      validate(field).then(() => {
         setTouched(field);
         setDirty(field);
       });
@@ -276,7 +278,7 @@ export default {
           }
         });
 
-    function registerUser() {
+    const registerUser = async () => {
       registerFormSchema
         .validate(values, { abortEarly: false })
         .then(() => {
@@ -323,7 +325,7 @@ export default {
           meta.touched = {};
           meta.isSubmitting = false;
         });
-    }
+    };
 
     watch(
       () => values,
