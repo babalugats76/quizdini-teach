@@ -245,6 +245,9 @@ export default {
           meta.changed || Object.keys(meta.dirty).some((e) => !!meta.dirty[e])
       ),
       isSubmitting: false,
+      isTouched: computed(
+        () => !Object.keys(meta.touched).some((e) => !!meta.touched[e])
+      ),
       isValid: computed(
         () => !Object.keys(meta.errors).some((e) => !!meta.errors[e])
       ),
@@ -252,21 +255,21 @@ export default {
       touched: {},
     });
 
-    function setDirty(field) {
+    const setDirty = (field) => {
       if (!_.isEqual(values[field], initialValues[field])) {
         meta.dirty = Object.assign({}, meta.dirty, { [field]: true });
       } else {
         const { [field]: remove, ...rest } = meta.dirty;
         meta.dirty = rest;
       }
-    }
+    };
 
-    function setTouched(field) {
-      console.log("setTouch", field);
+    const setTouched = (field) => {
+      // console.log("setTouch", field);
       meta.touched = Object.assign({}, meta.touched, { [field]: true });
-    }
+    };
 
-    function validate(field) {
+    const validate = (field) => {
       registerFormSchema
         .validateAt(field, values, { abortEarly: false })
         .then(() => {
@@ -282,50 +285,42 @@ export default {
           // setTouched(field);
           setDirty(field);
         });
-    }
-
-    function handleBlur(field, validateOnBlur = false) {
-      setTouched(field);
-      validateOnBlur && validate(field);
-    }
+    }; // console.log("setTouch", field);
 
     const registerUser = async () => {
       registerFormSchema
         .validate(values, { abortEarly: false })
         .then(() => {
           meta.isSubmitting = true;
-          return (
-            postAccount(values)
-              .then((res) => {
-                const { error, data } = res || {};
-                if (error) {
-                  switch (data.code) {
-                    case "DuplicateUsername":
-                      values.username = "";
-                      meta.errors["username"] = ["Username already taken"];
-                      setDirty("username");
-                      break;
-                    case "DuplicateEmail":
-                      values.email = "";
-                      meta.errors["email"] = ["Email already taken"];
-                      setDirty("email");
-                      break;
-                    default:
-                      break;
-                  }
-                  meta.message = data.message;
-                  throw new Error("RegisterFailed");
+          return postAccount(values)
+            .then((res) => {
+              const { error, data } = res || {};
+              if (error) {
+                switch (data.code) {
+                  case "DuplicateUsername":
+                    values.username = "";
+                    meta.errors["username"] = ["Username already taken"];
+                    setDirty("username");
+                    break;
+                  case "DuplicateEmail":
+                    values.email = "";
+                    meta.errors["email"] = ["Email already taken"];
+                    setDirty("email");
+                    break;
+                  default:
+                    break;
                 }
-                return data.message;
-              })
-              // .then(() => store.dispatch(`auth/${AUTH.FETCH}`))
-              .then((message) =>
-                router.push({ name: "login", params: { message } })
-              )
-              .catch((err) => {
-                console.error(err);
-              })
-          );
+                meta.message = data.message;
+                throw new Error("RegisterFailed");
+              }
+              return data.message;
+            })
+            .then((message) =>
+              router.push({ name: "login", params: { message } })
+            )
+            .catch((err) => {
+              console.error(err);
+            });
         })
         .catch((err) => {
           if (err.name === "ValidationError") {
@@ -363,10 +358,10 @@ export default {
       ...toRefs(values),
     };
   },
-  computed: {
-    console: () => console,
-    window: () => window,
-  },
+  // computed: {
+  //   console: () => console,
+  //   window: () => window,
+  // },
 };
 </script>
 
