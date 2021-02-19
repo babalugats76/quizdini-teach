@@ -1,7 +1,7 @@
 <template>
   <div class="register">
-    <form class="register__form" @submit.prevent="loginUser">
-      <div v-if="errors && !isDirty && message">{{ message }}</div>
+    <form class="register__form" @submit.prevent="registerUser">
+      <div v-if="message && !isTouched">{{ message }}</div>
       <div class="form-input">
         <ui-datalist
           id="title"
@@ -61,7 +61,7 @@
       <div class="form-input">
         <ui-datalist
           id="countries"
-          v-model:value="countrySearch"
+          v-model:value="country"
           v-model:code="countryCode"
           autocomplete="country-name"
           :options="countries"
@@ -76,7 +76,7 @@
       <div v-show="countryCode === 'US'" class="form-input">
         <ui-datalist
           id="states"
-          v-model:value="stateSearch"
+          v-model:value="state"
           v-model:code="stateCode"
           autocomplete="address-level1"
           :options="states"
@@ -145,7 +145,7 @@
         <input
           type="submit"
           value="Register"
-          :disabled="!isDirty || hasErrors || loading"
+          :disabled="submitting || !changed"
           tabindex="11"
         />
       </div>
@@ -154,8 +154,10 @@
 </template>
 
 <script>
-import { computed, reactive, toRefs } from "vue";
+import { computed, reactive, toRefs, watch } from "vue";
+import _ from "lodash";
 import { object, string, ref as yupRef } from "yup";
+import { postAccount } from "@/api/account";
 
 import UiDatalist from "@/components/ui/UiDatalist";
 import UiInput from "@/components/ui/UiInput";
@@ -178,46 +180,75 @@ export default {
       { key: 5, text: "Dr.", value: "Dr." },
     ];
 
-    const state = reactive({
+    const initialValues = reactive({
       city: "",
       confirmPassword: "",
+      // cookie: false,
+      country: "",
       countryCode: "",
-      countrySearch: "",
       email: "",
-      errors: {},
       firstName: "",
-      hasErrors: computed(() =>
-        Object.keys(state.errors).some((e) => !!state.errors[e])
-      ),
-      isDirty: computed(() => !!state.countryCode),
       lastName: "",
-      loading: false,
-      message: "",
       password: "",
-      stateSearch: "",
+      // privacy: false,
+      state: "",
       stateCode: "",
+      // terms: false,
       title: "",
       username: "",
     });
 
+    const values = reactive({ ...initialValues });
+
+    // const values = reactive({
+    //   city: "",
+    //   confirmPassword: "",
+    //   country: "",
+    //   countryCode: "",
+    //   email: "",
+    //   firstName: "",
+    //   lastName: "",
+    //   password: "",
+    //   state: "",
+    //   stateCode: "",
+    //   title: "",
+    //   username: "",
+    // });
+
+    const meta = reactive({
+      changed: false,
+      errors: {},
+      hasErrors: computed(() =>
+        Object.keys(meta.errors).some((e) => !!meta.errors[e])
+      ),
+      isTouched: computed(() =>
+        Object.keys(meta.touched).some((e) => !!meta.touched[e])
+      ),
+      message: "",
+      submitting: false,
+      touched: {},
+    });
+
     const registerFormSchema = object({
       city: string().max(100, "City is too long (${max} characters allowed)"),
-      confirmPassword: string()
-        .required("Confirm Password is required")
-        .oneOf([yupRef("password")], "Passwords must match"),
+      confirmPassword: string().oneOf(
+        [yupRef("password")],
+        "Passwords mismatch"
+      ),
       country: string().required("Country is required"),
-      email: string()
-        .required("Email is required")
-        .email("Valid email is required"),
+      email: string().required("Email is required").email("Invalid email"),
       firstName: string().required("First Name is required"),
       lastName: string().required("Last Name is required"),
       password: string() /* Add rules for password complexity */
         .required("Password is required")
         .matches(
-          /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&]{8,}$/,
+          /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&]{8,}$/,
           "Password must be 8 or more characters long and include upper, lower, numeric and special @$!%*#?& characters"
         ),
-      state: string().required("State is required"),
+      state: string().when("countryCode", {
+        is: (val) => val === "US",
+        then: string().required("State is required"),
+      }),
       title: string().max(10, "Title too long (${max} characters allowed)"),
       username: string()
         .required("Username is required")
@@ -225,37 +256,81 @@ export default {
         .max(20, "Username is too long (${max} characters allowed)"),
     });
 
-    function validate(field) {
+    const validate = (field) => {
+      // meta.touched[field] = true;
       registerFormSchema
-        .validateAt(field, {
-          city: state.city,
-          confirmPassword: state.confirmPassword,
-          country: state.countryCode,
-          email: state.email,
-          firstName: state.firstName,
-          lastName: state.lastName,
-          password: state.password,
-          state: state.stateCode,
-          title: state.title,
-          username: state.username,
-        })
+        .validateAt(field, values)
         .then(() => {
-          state.errors[field] = "";
+          meta.errors[field] = "";
         })
         .catch((err) => {
-          state.errors[field] = err.errors;
+          meta.errors[field] = err.errors;
+        });
+    };
+
+    function registerUser() {
+      registerFormSchema
+        .validate(values, { abortEarly: false })
+        .then(() => {
+          meta.errors = {};
+          meta.submitting = true;
+          return (
+            postAccount(values)
+              .then((res) => {
+                const { error, data } = res || {};
+                if (error) {
+                  meta.submitting = false;
+                  meta.touched = {};
+                  meta.errors = {};
+                  switch (data.code) {
+                    case "DuplicateUsername":
+                      values.username = "";
+                    default:
+                      break;
+                  }
+                  meta.message = data.message;
+                  throw new Error("RegisterFailed");
+                }
+              })
+              // .then(() => store.dispatch(`auth/${AUTH.FETCH}`))
+              // .then(() => router.push({ name: "dashboard" }))
+              .catch(() => {
+                meta.touched = {};
+                meta.submitting = false;
+              })
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.name === "ValidationError") {
+            meta.errors = {};
+            err.inner.forEach((e) => {
+              meta.errors[e.path] = e.errors;
+            });
+          }
+          meta.submitting = false;
         });
     }
 
-    const hasError = (field) => field in state.errors && !!state.errors[field];
+    const hasError = (field) => field in meta.errors && !!meta.errors[field];
+
+    watch(
+      () => values,
+      (values) => {
+        meta.changed = !_.isEqual(values, initialValues);
+      },
+      { deep: true }
+    );
 
     return {
       countries,
       hasError,
+      registerUser,
       states,
       titles,
       validate,
-      ...toRefs(state),
+      ...toRefs(meta),
+      ...toRefs(values),
     };
   },
   computed: {
