@@ -14,8 +14,8 @@
           :errors="errors['title']"
           tabindex="1"
           maxlength="10"
+          @input="hasError('title') && validate('title')"
           @blur="validate('title')"
-          @keyup="hasError('title') && validate('title')"
         />
       </div>
       <div class="form-input">
@@ -27,8 +27,8 @@
           name="first-name"
           type="text"
           tabindex="2"
+          @input="hasError('firstName') && validate('firstName')"
           @blur="validate('firstName')"
-          @keyup="hasError('firstName') && validate('firstName')"
         />
       </div>
       <div class="form-input">
@@ -40,8 +40,8 @@
           name="last-name"
           type="text"
           tabindex="3"
+          @input="hasError('lastName') && validate('lastName')"
           @blur="validate('lastName')"
-          @keyup="hasError('lastName') && validate('lastName')"
         />
       </div>
       <div class="form-input">
@@ -54,8 +54,8 @@
           type="text"
           tabindex="4"
           maxlength="100"
+          @input="hasError('city') && validate('city')"
           @blur="validate('city')"
-          @keyup="hasError('city') && validate('city')"
         />
       </div>
       <div class="form-input">
@@ -69,8 +69,8 @@
           name="country"
           :errors="errors['country']"
           tabindex="5"
+          @input="hasError('country') && validate('country')"
           @blur="validate('country')"
-          @keyup="hasError('country') && validate('country')"
         />
       </div>
       <div v-show="countryCode === 'US'" class="form-input">
@@ -84,8 +84,8 @@
           name="state"
           :errors="errors['state']"
           tabindex="6"
+          @input="hasError('state') && validate('state')"
           @blur="validate('state')"
-          @keyup="hasError('state') && validate('state')"
         />
       </div>
       <div class="form-input">
@@ -97,8 +97,8 @@
           name="email"
           type="email"
           tabindex="7"
+          @input="hasError('email') && validate('email')"
           @blur="validate('email')"
-          @keyup="hasError('email') && validate('email')"
         />
       </div>
       <div class="form-input">
@@ -111,8 +111,8 @@
           type="text"
           tabindex="8"
           maxlength="20"
+          @input="hasError('username') && validate('username')"
           @blur="validate('username')"
-          @keyup="hasError('username') && validate('username')"
         />
       </div>
       <div class="form-input">
@@ -124,8 +124,8 @@
           name="password"
           type="password"
           tabindex="9"
+          @input="hasError('password') && validate('password')"
           @blur="validate('password')"
-          @keyup="hasError('password') && validate('password')"
         />
       </div>
       <div class="form-input">
@@ -137,15 +137,15 @@
           name="confirm-password"
           type="password"
           tabindex="10"
+          @input="hasError('confirmPassword') && validate('confirmPassword')"
           @blur="validate('confirmPassword')"
-          @keyup="hasError('confirmPassword') && validate('confirmPassword')"
         />
       </div>
       <div class="form-input">
         <input
           type="submit"
           value="Register"
-          :disabled="submitting || !changed"
+          :disabled="submitting || !changed /*|| !isTouched*/"
           tabindex="11"
         />
       </div>
@@ -256,17 +256,17 @@ export default {
         .max(20, "Username is too long (${max} characters allowed)"),
     });
 
-    const validate = (field) => {
-      // meta.touched[field] = true;
+    const validate = (field) =>
       registerFormSchema
         .validateAt(field, values)
         .then(() => {
           meta.errors[field] = "";
+          meta.touched[field] = true;
         })
         .catch((err) => {
           meta.errors[field] = err.errors;
+          meta.touched[field] = true;
         });
-    };
 
     function registerUser() {
       registerFormSchema
@@ -304,8 +304,13 @@ export default {
           console.log(err);
           if (err.name === "ValidationError") {
             meta.errors = {};
+            //console.log(JSON.stringify(err.inner, null, 4));
             err.inner.forEach((e) => {
-              meta.errors[e.path] = e.errors;
+              //console.log(e);
+              if (!meta.errors.hasOwnProperty(e.path)) {
+                // grab first error in validation chain
+                meta.errors[e.path] = e.errors;
+              }
             });
           }
           meta.submitting = false;
