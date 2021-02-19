@@ -1,5 +1,6 @@
 <template>
   <div class="login">
+    <h1 :v-if="flashMessage">{{ flashMessage }}</h1>
     <div class="login__google-signin google-signin">
       <div
         class="google-signin__btn"
@@ -52,7 +53,7 @@
 import { object, string } from "yup";
 import { computed, reactive, toRefs } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { postLogin } from "@/api/auth";
 
 import UiInput from "@/components/ui/UiInput";
@@ -66,7 +67,11 @@ export default {
   },
   setup() {
     const store = useStore();
+    const route = useRoute();
     const router = useRouter();
+
+    const { message: flashMessage } = route.params;
+
     const state = reactive({
       username: "",
       password: "",
@@ -145,6 +150,7 @@ export default {
     const hasError = (field) => field in state.errors && !!state.errors[field];
 
     return {
+      flashMessage,
       hasError,
       loginUser,
       popup,

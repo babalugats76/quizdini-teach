@@ -1,7 +1,8 @@
 <template>
   <div class="register">
     <form class="register__form" @submit.prevent="registerUser">
-      <div v-if="message && (!isTouched || !isValid)">{{ message }}</div>
+      <div v-if="message && !isValid">{{ message }}</div>
+      <pre>{{ JSON.stringify(touched, null, 4) }} </pre>
       <div class="form-input">
         <ui-datalist
           id="title"
@@ -14,8 +15,9 @@
           :errors="errors.title"
           tabindex="1"
           maxlength="10"
-          @input="errors.title && validate('title')"
-          @blur="handleBlur('title')"
+          @focus="setTouched('title')"
+          @input="errors.title & validate('title')"
+          @blur="handleBlur('title', true)"
         />
       </div>
       <div class="form-input">
@@ -27,8 +29,9 @@
           name="first-name"
           type="text"
           tabindex="2"
+          @focus="setTouched('firstName')"
           @input="errors.firstName && validate('firstName')"
-          @blur="handleBlur('firstName')"
+          @blur="handleBlur('firstName', true)"
         />
       </div>
       <div class="form-input">
@@ -40,8 +43,9 @@
           name="last-name"
           type="text"
           tabindex="3"
+          @focus="setTouched('lastName')"
           @input="errors.lastName && validate('lastName')"
-          @blur="handleBlur('lastName')"
+          @blur="handleBlur('lastName', true)"
         />
       </div>
       <div class="form-input">
@@ -54,8 +58,9 @@
           type="text"
           tabindex="4"
           maxlength="100"
+          @focus="setTouched('city')"
           @input="errors.city && validate('city')"
-          @blur="handleBlur('city')"
+          @blur="handleBlur('city', true)"
         />
       </div>
       <div class="form-input">
@@ -69,8 +74,9 @@
           name="country"
           :errors="errors.country"
           tabindex="5"
+          @focus="setTouched('country')"
           @input="errors.country && validate('country')"
-          @blur="handleBlur('country')"
+          @blur="handleBlur('country', true)"
         />
       </div>
       <div v-show="countryCode === 'US'" class="form-input">
@@ -84,8 +90,9 @@
           name="state"
           :errors="errors.state"
           tabindex="6"
+          @focus="setTouched('state')"
           @input="errors.state && validate('state')"
-          @blur="handleBlur('state')"
+          @blur="handleBlur('state', true)"
         />
       </div>
       <div class="form-input">
@@ -97,8 +104,9 @@
           name="email"
           type="email"
           tabindex="7"
+          @focus="setTouched('email')"
           @input="errors.email && validate('email')"
-          @blur="handleBlur('email')"
+          @blur="handleBlur('email', true)"
         />
       </div>
       <div class="form-input">
@@ -111,8 +119,9 @@
           type="text"
           tabindex="8"
           maxlength="20"
+          @focus="setTouched('username')"
           @input="errors.username && validate('username')"
-          @blur="handleBlur('username')"
+          @blur="handleBlur('username', true)"
         />
       </div>
       <div class="form-input">
@@ -124,8 +133,9 @@
           name="password"
           type="password"
           tabindex="9"
+          @focus="setTouched('password')"
           @input="errors.password && validate('password')"
-          @blur="handleBlur('password')"
+          @blur="handleBlur('password', true)"
         />
       </div>
       <div class="form-input">
@@ -137,17 +147,16 @@
           name="confirm-password"
           type="password"
           tabindex="10"
+          @focus="setTouched('confirmPassword')"
           @input="errors.confirmPassword && validate('confirmPassword')"
-          @blur="handleBlur('confirmPassword')"
+          @blur="handleBlur('confirmPassword', true)"
         />
       </div>
       <div class="form-input">
         <input
-          type="button"
-          value="Register"
-          @mousedown.prevent="console.log($event)"
-          @click.prevent="registerUser()"
-          :disabled="isSubmitting || !isDirty || !isTouched || !isValid"
+          type="submit"
+          :value="isSubmitting ? 'Loading' : 'Register'"
+          :disabled="isSubmitting || !isDirty || !isValid"
           tabindex="11"
         />
       </div>
@@ -157,6 +166,7 @@
 
 <script>
 import { computed, reactive, toRefs, watch } from "vue";
+import { useRouter } from "vue-router";
 import _ from "lodash";
 import { object, string, ref as yupRef } from "yup";
 import { postAccount } from "@/api/account";
@@ -194,6 +204,7 @@ export default {
   name: "RegisterForm",
   components: { UiDatalist, UiInput },
   setup() {
+    const router = useRouter();
     const { countries } = useCountries();
     const { states } = useStates();
     const titles = [
@@ -234,9 +245,6 @@ export default {
           meta.changed || Object.keys(meta.dirty).some((e) => !!meta.dirty[e])
       ),
       isSubmitting: false,
-      isTouched: computed(() =>
-        Object.keys(meta.touched).some((e) => !!meta.touched[e])
-      ),
       isValid: computed(
         () => !Object.keys(meta.errors).some((e) => !!meta.errors[e])
       ),
@@ -244,28 +252,21 @@ export default {
       touched: {},
     });
 
-    const setDirty = (field) => {
+    function setDirty(field) {
       if (!_.isEqual(values[field], initialValues[field])) {
-        meta.dirty[field] = true;
+        meta.dirty = Object.assign({}, meta.dirty, { [field]: true });
       } else {
         const { [field]: remove, ...rest } = meta.dirty;
         meta.dirty = rest;
       }
-    };
+    }
 
-    const setTouched = (field) => {
-      meta.touched[field] = true;
-    };
+    function setTouched(field) {
+      console.log("setTouch", field);
+      meta.touched = Object.assign({}, meta.touched, { [field]: true });
+    }
 
-    const handleBlur = (field) => {
-      console.log("validating...");
-      validate(field).then(() => {
-        setTouched(field);
-        setDirty(field);
-      });
-    };
-
-    const validate = (field) =>
+    function validate(field) {
       registerFormSchema
         .validateAt(field, values, { abortEarly: false })
         .then(() => {
@@ -276,7 +277,17 @@ export default {
           if (err.name === "ValidationError") {
             meta.errors[field] = Array.from(err.inner[0].errors);
           }
+        })
+        .finally(() => {
+          // setTouched(field);
+          setDirty(field);
         });
+    }
+
+    function handleBlur(field, validateOnBlur = false) {
+      setTouched(field);
+      validateOnBlur && validate(field);
+    }
 
     const registerUser = async () => {
       registerFormSchema
@@ -305,9 +316,12 @@ export default {
                   meta.message = data.message;
                   throw new Error("RegisterFailed");
                 }
+                return data.message;
               })
               // .then(() => store.dispatch(`auth/${AUTH.FETCH}`))
-              // .then(() => router.push({ name: "dashboard" }))
+              .then((message) =>
+                router.push({ name: "login", params: { message } })
+              )
               .catch((err) => {
                 console.error(err);
               })
@@ -323,6 +337,8 @@ export default {
         })
         .finally(() => {
           meta.touched = {};
+          meta.dirty = {};
+          meta.changed = false;
           meta.isSubmitting = false;
         });
     };
@@ -338,6 +354,7 @@ export default {
     return {
       countries,
       handleBlur,
+      setTouched,
       registerUser,
       states,
       titles,

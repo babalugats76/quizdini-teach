@@ -16,7 +16,7 @@ const {
   IncorrectPassword,
   InvalidToken,
 } = require("../errors.js");
-const nanoid = require("nanoid");
+const { nanoid } = require("nanoid");
 const { format, utcToZonedTime } = require("date-fns-tz");
 
 module.exports = (app) => {
