@@ -8,6 +8,7 @@
     :class="classes"
     :name="name"
     :type="type"
+    novalidate="true"
   />
   <ui-error v-if="errors" :errors="errors" />
 </template>

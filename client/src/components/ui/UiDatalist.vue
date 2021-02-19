@@ -7,6 +7,7 @@
     :list="id"
     :class="classes"
     :name="name"
+    novalidate="true"
     @input="onInputChange($event)"
   />
   <datalist :id="id">

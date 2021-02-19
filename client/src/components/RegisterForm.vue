@@ -11,51 +11,51 @@
           :options="titles"
           label="Title"
           name="title"
-          :errors="errors['title']"
+          :errors="errors.title"
           tabindex="1"
           maxlength="10"
-          @input="hasError('title') && validate('title')"
-          @blur="validate('title')"
+          @input="errors.title && validate('title')"
+          @blur="handleBlur('title')"
         />
       </div>
       <div class="form-input">
         <ui-input
           v-model:value="firstName"
           autocomplete="given-name"
-          :errors="errors['firstName']"
+          :errors="errors.firstName"
           label="First Name"
           name="first-name"
           type="text"
           tabindex="2"
-          @input="hasError('firstName') && validate('firstName')"
-          @blur="validate('firstName')"
+          @input="errors.firstName && validate('firstName')"
+          @blur="handleBlur('firstName')"
         />
       </div>
       <div class="form-input">
         <ui-input
           v-model:value="lastName"
           autocomplete="family-name"
-          :errors="errors['lastName']"
+          :errors="errors.lastName"
           label="Last Name"
           name="last-name"
           type="text"
           tabindex="3"
-          @input="hasError('lastName') && validate('lastName')"
-          @blur="validate('lastName')"
+          @input="errors.lastName && validate('lastName')"
+          @blur="handleBlur('lastName')"
         />
       </div>
       <div class="form-input">
         <ui-input
           v-model:value="city"
           autocomplete="address-level2"
-          :errors="errors['city']"
+          :errors="errors.city"
           label="City"
           name="city"
           type="text"
           tabindex="4"
           maxlength="100"
-          @input="hasError('city') && validate('city')"
-          @blur="validate('city')"
+          @input="errors.city && validate('city')"
+          @blur="handleBlur('city')"
         />
       </div>
       <div class="form-input">
@@ -67,10 +67,10 @@
           :options="countries"
           label="Country"
           name="country"
-          :errors="errors['country']"
+          :errors="errors.country"
           tabindex="5"
-          @input="hasError('country') && validate('country')"
-          @blur="validate('country')"
+          @input="errors.country && validate('country')"
+          @blur="handleBlur('country')"
         />
       </div>
       <div v-show="countryCode === 'US'" class="form-input">
@@ -82,70 +82,70 @@
           :options="states"
           label="State"
           name="state"
-          :errors="errors['state']"
+          :errors="errors.state"
           tabindex="6"
-          @input="hasError('state') && validate('state')"
-          @blur="validate('state')"
+          @input="errors.state && validate('state')"
+          @blur="handleBlur('state')"
         />
       </div>
       <div class="form-input">
         <ui-input
           v-model:value="email"
           autocomplete="email"
-          :errors="errors['email']"
+          :errors="errors.email"
           label="Email"
           name="email"
           type="email"
           tabindex="7"
-          @input="hasError('email') && validate('email')"
-          @blur="validate('email')"
+          @input="errors.email && validate('email')"
+          @blur="handleBlur('email')"
         />
       </div>
       <div class="form-input">
         <ui-input
           v-model:value="username"
           autocomplete="username"
-          :errors="errors['username']"
+          :errors="errors.username"
           label="Username"
           name="username"
           type="text"
           tabindex="8"
           maxlength="20"
-          @input="hasError('username') && validate('username')"
-          @blur="validate('username')"
+          @input="errors.username && validate('username')"
+          @blur="handleBlur('username')"
         />
       </div>
       <div class="form-input">
         <ui-input
           v-model:value="password"
           autocomplete="new-password"
-          :errors="errors['password']"
+          :errors="errors.password"
           label="Password"
           name="password"
           type="password"
           tabindex="9"
-          @input="hasError('password') && validate('password')"
-          @blur="validate('password')"
+          @input="errors.password && validate('password')"
+          @blur="handleBlur('password')"
         />
       </div>
       <div class="form-input">
         <ui-input
           v-model:value="confirmPassword"
           autocomplete="new-password"
-          :errors="errors['confirmPassword']"
+          :errors="errors.confirmPassword"
           label="Confirm Password"
           name="confirm-password"
           type="password"
           tabindex="10"
-          @input="hasError('confirmPassword') && validate('confirmPassword')"
-          @blur="validate('confirmPassword')"
+          @input="errors.confirmPassword && validate('confirmPassword')"
+          @blur="handleBlur('confirmPassword')"
         />
       </div>
       <div class="form-input">
         <input
           type="submit"
           value="Register"
-          :disabled="submitting || !changed /*|| !isTouched*/"
+          :disabled="isSubmitting || !isDirty || !isTouched || !isValid"
           tabindex="11"
         />
       </div>
@@ -163,6 +163,30 @@ import UiDatalist from "@/components/ui/UiDatalist";
 import UiInput from "@/components/ui/UiInput";
 import useCountries from "@/compose/useCountries";
 import useStates from "@/compose/useStates";
+
+const registerFormSchema = object({
+  city: string().max(100, "City is too long (${max} characters allowed)"),
+  confirmPassword: string().oneOf([yupRef("password")], "Passwords mismatch"),
+  country: string().required("Country is required"),
+  email: string().required("Email is required").email("Invalid email"),
+  firstName: string().required("First Name is required"),
+  lastName: string().required("Last Name is required"),
+  password: string() /* Add rules for password complexity */
+    .required("Password is required")
+    .matches(
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&]{8,}$/,
+      "Password must be 8 or more characters long and include upper, lower, numeric and special @$!%*#?& characters"
+    ),
+  state: string().when("countryCode", {
+    is: (val) => val === "US",
+    then: string().required("State is required"),
+  }),
+  title: string().max(10, "Title too long (${max} characters allowed)"),
+  username: string()
+    .required("Username is required")
+    .min(6, "Username is too short (${min} characters minimum)")
+    .max(20, "Username is too long (${max} characters allowed)"),
+});
 
 export default {
   name: "RegisterForm",
@@ -200,91 +224,77 @@ export default {
 
     const values = reactive({ ...initialValues });
 
-    // const values = reactive({
-    //   city: "",
-    //   confirmPassword: "",
-    //   country: "",
-    //   countryCode: "",
-    //   email: "",
-    //   firstName: "",
-    //   lastName: "",
-    //   password: "",
-    //   state: "",
-    //   stateCode: "",
-    //   title: "",
-    //   username: "",
-    // });
-
     const meta = reactive({
       changed: false,
+      dirty: {},
       errors: {},
-      hasErrors: computed(() =>
-        Object.keys(meta.errors).some((e) => !!meta.errors[e])
+      isDirty: computed(
+        () =>
+          meta.changed || Object.keys(meta.dirty).some((e) => !!meta.dirty[e])
       ),
+      isSubmitting: false,
       isTouched: computed(() =>
         Object.keys(meta.touched).some((e) => !!meta.touched[e])
       ),
+      isValid: computed(
+        () => !Object.keys(meta.errors).some((e) => !!meta.errors[e])
+      ),
       message: "",
-      submitting: false,
       touched: {},
     });
 
-    const registerFormSchema = object({
-      city: string().max(100, "City is too long (${max} characters allowed)"),
-      confirmPassword: string().oneOf(
-        [yupRef("password")],
-        "Passwords mismatch"
-      ),
-      country: string().required("Country is required"),
-      email: string().required("Email is required").email("Invalid email"),
-      firstName: string().required("First Name is required"),
-      lastName: string().required("Last Name is required"),
-      password: string() /* Add rules for password complexity */
-        .required("Password is required")
-        .matches(
-          /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&]{8,}$/,
-          "Password must be 8 or more characters long and include upper, lower, numeric and special @$!%*#?& characters"
-        ),
-      state: string().when("countryCode", {
-        is: (val) => val === "US",
-        then: string().required("State is required"),
-      }),
-      title: string().max(10, "Title too long (${max} characters allowed)"),
-      username: string()
-        .required("Username is required")
-        .min(6, "Username is too short (${min} characters minimum)")
-        .max(20, "Username is too long (${max} characters allowed)"),
-    });
+    const setTouched = (field) => {
+      meta.touched[field] = true;
+    };
+
+    const setDirty = (field) => {
+      if (!_.isEqual(values[field], initialValues[field])) {
+        meta.dirty[field] = true;
+      } else {
+        const { [field]: remove, ...rest } = meta.dirty;
+        meta.dirty = rest;
+      }
+    };
+
+    const handleBlur = async (field) => {
+      await validate(field).then(() => {
+        setTouched(field);
+        setDirty(field);
+      });
+    };
 
     const validate = (field) =>
       registerFormSchema
-        .validateAt(field, values)
+        .validateAt(field, values, { abortEarly: false })
         .then(() => {
-          meta.errors[field] = "";
-          meta.touched[field] = true;
+          const { [field]: remove, ...rest } = meta.errors;
+          meta.errors = rest;
         })
         .catch((err) => {
-          meta.errors[field] = err.errors;
-          meta.touched[field] = true;
+          if (err.name === "ValidationError") {
+            meta.errors[field] = Array.from(err.inner[0].errors);
+          }
         });
 
     function registerUser() {
       registerFormSchema
         .validate(values, { abortEarly: false })
         .then(() => {
-          meta.errors = {};
-          meta.submitting = true;
+          meta.isSubmitting = true;
           return (
             postAccount(values)
               .then((res) => {
                 const { error, data } = res || {};
                 if (error) {
-                  meta.submitting = false;
-                  meta.touched = {};
-                  meta.errors = {};
                   switch (data.code) {
                     case "DuplicateUsername":
                       values.username = "";
+                      setDirty("username");
+                      break;
+                    case "DuplicateEmail":
+                      values.email = "";
+                      setDirty("email");
+                      break;
                     default:
                       break;
                   }
@@ -294,30 +304,24 @@ export default {
               })
               // .then(() => store.dispatch(`auth/${AUTH.FETCH}`))
               // .then(() => router.push({ name: "dashboard" }))
-              .catch(() => {
-                meta.touched = {};
-                meta.submitting = false;
+              .catch((err) => {
+                console.error(err);
               })
           );
         })
         .catch((err) => {
-          console.log(err);
           if (err.name === "ValidationError") {
-            meta.errors = {};
-            //console.log(JSON.stringify(err.inner, null, 4));
-            err.inner.forEach((e) => {
-              //console.log(e);
-              if (!meta.errors.hasOwnProperty(e.path)) {
-                // grab first error in validation chain
-                meta.errors[e.path] = e.errors;
-              }
-            });
+            meta.errors = err.inner.reduce((errors, e) => {
+              if (!(e.path in errors)) errors[e.path] = Array.from(e.errors);
+              return errors;
+            }, {});
           }
-          meta.submitting = false;
+        })
+        .finally(() => {
+          meta.touched = {};
+          meta.isSubmitting = false;
         });
     }
-
-    const hasError = (field) => field in meta.errors && !!meta.errors[field];
 
     watch(
       () => values,
@@ -329,7 +333,7 @@ export default {
 
     return {
       countries,
-      hasError,
+      handleBlur,
       registerUser,
       states,
       titles,
