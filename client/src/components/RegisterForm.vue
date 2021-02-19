@@ -243,10 +243,6 @@ export default {
       touched: {},
     });
 
-    const setTouched = (field) => {
-      meta.touched[field] = true;
-    };
-
     const setDirty = (field) => {
       if (!_.isEqual(values[field], initialValues[field])) {
         meta.dirty[field] = true;
@@ -254,6 +250,10 @@ export default {
         const { [field]: remove, ...rest } = meta.dirty;
         meta.dirty = rest;
       }
+    };
+
+    const setTouched = (field) => {
+      meta.touched[field] = true;
     };
 
     const handleBlur = async (field) => {
@@ -289,10 +289,12 @@ export default {
                   switch (data.code) {
                     case "DuplicateUsername":
                       values.username = "";
+                      meta.errors["username"] = ["Username already taken"];
                       setDirty("username");
                       break;
                     case "DuplicateEmail":
                       values.email = "";
+                      meta.errors["email"] = ["Email already taken"];
                       setDirty("email");
                       break;
                     default:
