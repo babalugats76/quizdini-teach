@@ -287,6 +287,11 @@ export default {
         });
     }; // console.log("setTouch", field);
 
+    const handleBlur = (field, validateOnBlur = false) => {
+      setFieldTouched(field);
+      validateOnBlur && validateField(field);
+    };
+
     const registerUser = async () => {
       registerFormSchema
         .validate(values, { abortEarly: false })
