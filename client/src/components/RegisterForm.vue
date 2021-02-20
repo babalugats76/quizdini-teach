@@ -15,8 +15,8 @@
           :errors="errors.title"
           tabindex="1"
           maxlength="10"
-          @focus="setTouched('title')"
-          @input="errors.title & validate('title')"
+          @focus="setFieldTouched('title')"
+          @input="errors.title & validateField('title')"
           @blur="handleBlur('title', true)"
         />
       </div>
@@ -29,8 +29,8 @@
           name="first-name"
           type="text"
           tabindex="2"
-          @focus="setTouched('firstName')"
-          @input="errors.firstName && validate('firstName')"
+          @focus="setFieldTouched('firstName')"
+          @input="errors.firstName && validateField('firstName')"
           @blur="handleBlur('firstName', true)"
         />
       </div>
@@ -43,8 +43,8 @@
           name="last-name"
           type="text"
           tabindex="3"
-          @focus="setTouched('lastName')"
-          @input="errors.lastName && validate('lastName')"
+          @focus="setFieldTouched('lastName')"
+          @input="errors.lastName && validateField('lastName')"
           @blur="handleBlur('lastName', true)"
         />
       </div>
@@ -58,8 +58,8 @@
           type="text"
           tabindex="4"
           maxlength="100"
-          @focus="setTouched('city')"
-          @input="errors.city && validate('city')"
+          @focus="setFieldTouched('city')"
+          @input="errors.city && validateField('city')"
           @blur="handleBlur('city', true)"
         />
       </div>
@@ -74,8 +74,8 @@
           name="country"
           :errors="errors.country"
           tabindex="5"
-          @focus="setTouched('country')"
-          @input="errors.country && validate('country')"
+          @focus="setFieldTouched('country')"
+          @input="errors.country && validateField('country')"
           @blur="handleBlur('country', true)"
         />
       </div>
@@ -90,8 +90,8 @@
           name="state"
           :errors="errors.state"
           tabindex="6"
-          @focus="setTouched('state')"
-          @input="errors.state && validate('state')"
+          @focus="setFieldTouched('state')"
+          @input="errors.state && validateField('state')"
           @blur="handleBlur('state', true)"
         />
       </div>
@@ -104,8 +104,8 @@
           name="email"
           type="email"
           tabindex="7"
-          @focus="setTouched('email')"
-          @input="errors.email && validate('email')"
+          @focus="setFieldTouched('email')"
+          @input="errors.email && validateField('email')"
           @blur="handleBlur('email', true)"
         />
       </div>
@@ -119,8 +119,8 @@
           type="text"
           tabindex="8"
           maxlength="20"
-          @focus="setTouched('username')"
-          @input="errors.username && validate('username')"
+          @focus="setFieldTouched('username')"
+          @input="errors.username && validateField('username')"
           @blur="handleBlur('username', true)"
         />
       </div>
@@ -133,8 +133,8 @@
           name="password"
           type="password"
           tabindex="9"
-          @focus="setTouched('password')"
-          @input="errors.password && validate('password')"
+          @focus="setFieldTouched('password')"
+          @input="errors.password && validateField('password')"
           @blur="handleBlur('password', true)"
         />
       </div>
@@ -147,8 +147,8 @@
           name="confirm-password"
           type="password"
           tabindex="10"
-          @focus="setTouched('confirmPassword')"
-          @input="errors.confirmPassword && validate('confirmPassword')"
+          @focus="setFieldTouched('confirmPassword')"
+          @input="errors.confirmPassword && validateField('confirmPassword')"
           @blur="handleBlur('confirmPassword', true)"
         />
       </div>
@@ -255,7 +255,7 @@ export default {
       touched: {},
     });
 
-    const setDirty = (field) => {
+    const setFieldDirty = (field) => {
       if (!_.isEqual(values[field], initialValues[field])) {
         meta.dirty = Object.assign({}, meta.dirty, { [field]: true });
       } else {
@@ -264,12 +264,12 @@ export default {
       }
     };
 
-    const setTouched = (field) => {
+    const setFieldTouched = (field) => {
       // console.log("setTouch", field);
       meta.touched = Object.assign({}, meta.touched, { [field]: true });
     };
 
-    const validate = (field) => {
+    const validateField = (field) => {
       registerFormSchema
         .validateAt(field, values, { abortEarly: false })
         .then(() => {
@@ -282,8 +282,8 @@ export default {
           }
         })
         .finally(() => {
-          // setTouched(field);
-          setDirty(field);
+          // setFieldTouched(field);
+          setFieldDirty(field);
         });
     }; // console.log("setTouch", field);
 
@@ -300,12 +300,12 @@ export default {
                   case "DuplicateUsername":
                     values.username = "";
                     meta.errors["username"] = ["Username already taken"];
-                    setDirty("username");
+                    // setDirty("username");
                     break;
                   case "DuplicateEmail":
                     values.email = "";
                     meta.errors["email"] = ["Email already taken"];
-                    setDirty("email");
+                    // setDirty("email");
                     break;
                   default:
                     break;
@@ -349,11 +349,11 @@ export default {
     return {
       countries,
       handleBlur,
-      setTouched,
+      setFieldTouched,
       registerUser,
       states,
       titles,
-      validate,
+      validateField,
       ...toRefs(meta),
       ...toRefs(values),
     };
