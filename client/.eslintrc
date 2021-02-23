@@ -13,7 +13,9 @@
     "vue/max-attributes-per-line": "off",
     "vue/html-self-closing": "off",
     "vue/html-indent": "off",
-    "vue/html-closing-bracket-newline": "off"
+    "vue/html-closing-bracket-newline": "off",
+    "vue/no-unused-vars": "off",
+    "vue/require-prop-types": "off"
   },
   "parserOptions": {
     "ecmaFeatures": {

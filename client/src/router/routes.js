@@ -4,12 +4,22 @@ import Dashboard from "@/views/Dashboard";
 import Login from "@/views/Login";
 import NotFound from "@/components/NotFound";
 import Register from "@/views/Register";
+import Test from "@/views/Test";
 
 const routes = [
   {
     path: "/",
     name: "home",
     component: ApiTester,
+    meta: {
+      navItem: true,
+    },
+    props: false,
+  },
+  {
+    path: "/test",
+    name: "test",
+    component: Test,
     meta: {
       navItem: true,
     },
