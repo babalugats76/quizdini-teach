@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["`${route.webpackChunkName}`2"],{bede:function(e,n,t){"use strict";t.r(n);var u=t("7a23"),a=Object(u["g"])("h1",null,"Landing",-1);function c(e,n,t,c,r,b){var d=Object(u["A"])("layout-default");return Object(u["s"])(),Object(u["d"])(d,null,{default:Object(u["J"])((function(){return[a]})),_:1})}var r={};r.render=c;n["default"]=r}}]);
-//# sourceMappingURL=`${route.webpackChunkName}`2-legacy.70c69c29.js.map
