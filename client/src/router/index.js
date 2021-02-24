@@ -12,11 +12,10 @@ const router = createRouter({
     ...route,
     component: () =>
       import(
-        /* webpackChunkName: "`chunk-${route.webpackChunkName}`" */ `../views/${route.view}.vue`
+        /* webpackChunkName: [`chunk-${route.webpackChunkName}`]" */ `../views/${route.view}.vue`
       ),
   })),
 });
-
 /***
  * Initialization
  *

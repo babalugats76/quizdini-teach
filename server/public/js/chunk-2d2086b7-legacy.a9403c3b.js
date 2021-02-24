@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d2086b7"],{a55b:function(n,e,t){"use strict";t.r(e);var o=t("7a23");function a(n,e,t,a,c,r){var u=Object(o["A"])("login-form"),b=Object(o["A"])("layout-default");return Object(o["s"])(),Object(o["d"])(b,null,{default:Object(o["J"])((function(){return[Object(o["g"])(u)]})),_:1})}var c=t("2af9"),r={name:"Login",components:{LoginForm:c["a"]}};r.render=a;e["default"]=r}}]);
+//# sourceMappingURL=chunk-2d2086b7-legacy.a9403c3b.js.map

@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0c5afd"],{"3fc7":function(e,n,o){"use strict";o.r(n);var d=o("7a23");function t(e,n,o,t,c,s){const a=Object(d["A"])("layout-default");return Object(d["s"])(),Object(d["d"])(a,null,{default:Object(d["J"])(()=>[Object(d["z"])(e.$slots,"default")]),_:3})}var c={name:"AuthSuccess",created(){window.document.body.style.display="none",window.opener&&(window.opener.open("/dashboard","_self"),window.opener.focus(),window.close())}};c.render=t;n["default"]=c}}]);
+//# sourceMappingURL=chunk-2d0c5afd.56af5de3.js.map
