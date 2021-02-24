@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0d63f1"],{7277:function(e,t,n){"use strict";n.r(t);var a=n("7a23"),u=Object(a["g"])("h1",null,"Welcome to the Dashboard",-1);function c(e,t,n,c,r,o){var d=Object(a["A"])("layout-default");return Object(a["s"])(),Object(a["d"])(d,null,{default:Object(a["J"])((function(){return[u]})),_:1})}var r={name:"Dashboard"};r.render=c;t["default"]=r}}]);
-//# sourceMappingURL=chunk-2d0d63f1-legacy.8e3f926f.js.map

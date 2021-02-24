@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0d6d35"],{"73cf":function(e,t,n){"use strict";n.r(t);var c=n("7a23");function r(e,t,n,r,o,a){const s=Object(c["A"])("register-form"),u=Object(c["A"])("layout-default");return Object(c["s"])(),Object(c["d"])(u,null,{default:Object(c["J"])(()=>[Object(c["g"])(s)]),_:1})}var o=n("2af9"),a={name:"Register",components:{RegisterForm:o["b"]}};a.render=r;t["default"]=a}}]);
-//# sourceMappingURL=chunk-2d0d6d35.80cd9689.js.map
