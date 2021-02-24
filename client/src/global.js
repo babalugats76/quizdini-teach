@@ -1,7 +1,6 @@
-import Layout from "@/layouts/Layout";
 import LayoutDefault from "@/layouts/LayoutDefault";
 
-const components = [Layout, LayoutDefault];
+const components = [LayoutDefault];
 
 export default {
   install: (app, options) => {

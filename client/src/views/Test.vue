@@ -1,7 +1,7 @@
 <template>
-  <layout name="LayoutDefault">
-    <TestForm />
-  </layout>
+  <layout-default>
+    <test-form />
+  </layout-default>
 </template>
 
 <script>
@@ -14,5 +14,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped></style>

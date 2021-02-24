@@ -1,14 +1,14 @@
 <template>
   <nav class="nav">
-    <NavItems :items="routes" :authenticated="auth.authenticated" />
-    <span v-if="auth.authenticated && auth.credits >= 0" class="nav__item"
+    <NavItems :items="routes" :authenticated="auth.loggedIn" />
+    <span v-if="auth.loggedIn && auth.credits >= 0" class="nav__item"
       >Credits: {{ auth.credits }}
     </span>
-    <a v-if="auth.authenticated" href="/logout" class="nav__item" target="_self"
+    <a v-if="auth.loggedIn" href="/logout" class="nav__item" target="_self"
       >logout</a
     >
     <span
-      v-if="auth.authenticated && auth.accountType === 'google'"
+      v-if="auth.loggedIn && auth.accountType === 'google'"
       class="nav__item badge"
     >
       <img
@@ -18,7 +18,7 @@
       />
     </span>
     <span
-      v-if="auth.authenticated && auth.accountType === 'local'"
+      v-if="auth.loggedIn && auth.accountType === 'local'"
       class="nav__item nav__item--lc"
     >
       {{ auth.username }}

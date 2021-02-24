@@ -1,7 +1,7 @@
 <template>
-  <layout name="LayoutDefault">
+  <layout-default>
     <h1>Welcome to the Dashboard</h1>
-  </layout>
+  </layout-default>
 </template>
 
 <script>

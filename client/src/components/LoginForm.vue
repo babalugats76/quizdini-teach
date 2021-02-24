@@ -69,7 +69,6 @@ export default {
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
-
     const { message: flashMessage } = route.params;
 
     const state = reactive({

@@ -7,7 +7,7 @@ const UNAUTHORIZED = {
   accountType: null, // no account type
   credits: null, // unknown credits
   googlePicture: null, // unknown Google attributes
-  authenticated: false, // not logged in
+  loggedIn: false, // not logged in
   username: null, // unknown username
 };
 
@@ -24,7 +24,7 @@ const state = () => INITIAL_STATE;
 const getters = {
   accountType: (state) => state.accountType,
   auth: (state) => state.data,
-  authenticated: (state) => state.data.authenticated,
+  loggedIn: (state) => state.data.loggedIn,
   credits: (state) => state.data.credits,
   error: (state) => state.error,
   failed: (state) => state.failed,
@@ -48,7 +48,7 @@ const mutations = {
       ? {
           ...data,
           accountType: googleId ? "google" : "local",
-          authenticated: true,
+          loggedIn: true,
         }
       : UNAUTHORIZED;
 

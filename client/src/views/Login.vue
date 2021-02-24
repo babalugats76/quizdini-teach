@@ -1,7 +1,7 @@
 <template>
-  <layout name="LayoutDefault">
-    <LoginForm />
-  </layout>
+  <layout-default>
+    <login-form />
+  </layout-default>
 </template>
 
 <script>

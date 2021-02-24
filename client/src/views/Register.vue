@@ -1,7 +1,7 @@
 <template>
-  <layout name="LayoutDefault">
-    <RegisterForm />
-  </layout>
+  <layout-default>
+    <register-form />
+  </layout-default>
 </template>
 
 <script>

@@ -4,7 +4,7 @@ import routes from "./routes";
 import store from "@/store";
 
 const storeInit = store.dispatch("init");
-const authenticated = computed(() => store.getters["auth/authenticated"]);
+const loggedIn = computed(() => store.getters["auth/loggedIn"]);
 
 const router = createRouter({
   history: createWebHistory(),
@@ -36,13 +36,13 @@ router.beforeEach((to, from, next) => {
  */
 router.beforeEach((to, from, next) => {
   if (to.matched.some((r) => r.meta.guest)) {
-    if (authenticated.value) {
+    if (loggedIn.value) {
       next({ name: "dashboard" });
     } else {
       next();
     }
   } else if (to.matched.some((r) => r.meta.auth)) {
-    if (authenticated.value) {
+    if (loggedIn.value) {
       next();
     } else {
       next({ name: "login" });

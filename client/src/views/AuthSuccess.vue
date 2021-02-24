@@ -1,7 +1,7 @@
 <template>
-  <layout>
+  <layout-default>
     <slot />
-  </layout>
+  </layout-default>
 </template>
 
 <script>
