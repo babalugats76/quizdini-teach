@@ -1,5 +1,7 @@
 const path = require("path");
 
+const webpack = require("webpack");
+
 module.exports = {
   css: {
     loaderOptions: {
@@ -32,4 +34,11 @@ module.exports = {
     config.resolve.alias.set("styles", path.resolve(__dirname, "src/styles"));
   },
   outputDir: "../server/public",
+  configureWebpack: {
+    plugins: [
+      new webpack.DefinePlugin({
+        global: "window", // Placeholder for global used in any node_modules
+      }),
+    ],
+  },
 };

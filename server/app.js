@@ -48,7 +48,7 @@ app.use(
         scriptSrc: [
           "'self'",
           "https",
-          "'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI='",
+          "sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI=",
           "'unsafe-inline'",
         ],
         scriptSrcAttr: ["'none'"],
