@@ -1,5 +1,6 @@
 //require("newrelic");
 const express = require("express");
+const helmet = require("helmet");
 const logger = require("morgan");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -30,6 +31,7 @@ mongoose.connect(keys.mongoURI, {
 });
 
 const app = express();
+app.use(helmet());
 
 if (process.env.NODE_ENV === "production") {
   const enforce = require("express-sslify");
