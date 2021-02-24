@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["`chunk-${route.webpackChunkName}`5"],{"73cf":function(e,t,n){"use strict";n.r(t);var c=n("7a23");function r(e,t,n,r,a,o){const u=Object(c["A"])("register-form"),s=Object(c["A"])("layout-default");return Object(c["s"])(),Object(c["d"])(s,null,{default:Object(c["J"])(()=>[Object(c["g"])(u)]),_:1})}var a=n("2af9"),o={name:"Register",components:{RegisterForm:a["b"]}};o.render=r;t["default"]=o}}]);
+//# sourceMappingURL=`chunk-${route.webpackChunkName}`5.01c8add1.js.map
