@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["Test-vue"],{"78c1":function(e,t,c){"use strict";c.r(t);var n=c("7a23");function o(e,t,c,o,s,a){const u=Object(n["A"])("test-form"),r=Object(n["A"])("layout-default");return Object(n["s"])(),Object(n["d"])(r,null,{default:Object(n["J"])(()=>[Object(n["g"])(u)]),_:1})}var s=c("2af9"),a={name:"Test",components:{TestForm:s["c"]}};a.render=o;t["default"]=a}}]);
-//# sourceMappingURL=Test-vue.7c3b327f.js.map

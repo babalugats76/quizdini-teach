@@ -11,7 +11,9 @@ const router = createRouter({
   routes: routes.map((route) => ({
     ...route,
     component: () =>
-      import(/* webpackChunkName: "[request]" */ `../views/${route.view}.vue`),
+      import(
+        /* webpackChunkName: "`${route.webpackChunkName}`" */ `../views/${route.view}.vue`
+      ),
   })),
 });
 

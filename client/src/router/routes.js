@@ -1,10 +1,3 @@
-// import AuthSuccess from "@/views/AuthSuccess";
-// import Dashboard from "@/views/Dashboard";
-// import Login from "@/views/Login";
-// import NotFound from "@/components/NotFound";
-// import Register from "@/views/Register";
-// import Test from "@/views/Test";
-
 const routes = [
   {
     path: "/",
@@ -14,6 +7,7 @@ const routes = [
       navItem: true,
     },
     props: false,
+    webpackChunkName: "public",
   },
   {
     path: "/test",
@@ -23,7 +17,8 @@ const routes = [
       navItem: true,
       guest: true,
     },
-    props: false,
+    props: true,
+    webpackChunkName: "public",
   },
   {
     path: "/register",
@@ -33,7 +28,8 @@ const routes = [
       navItem: true,
       guest: true,
     },
-    props: false,
+    props: true,
+    webpackChunkName: "public",
   },
   {
     path: "/login",
@@ -43,6 +39,18 @@ const routes = [
       navItem: true,
       guest: true,
     },
+    props: true,
+    webpackChunkName: "public",
+  },
+  {
+    path: "/success",
+    name: "Success",
+    view: "AuthSuccess",
+    meta: {
+      navItem: false,
+    },
+    props: false,
+    webpackChunkName: "public",
   },
   {
     path: "/dashboard",
@@ -53,15 +61,7 @@ const routes = [
       auth: true,
     },
     props: true,
-  },
-  {
-    path: "/success",
-    name: "Success",
-    view: "AuthSuccess",
-    meta: {
-      navItem: false,
-    },
-    props: true,
+    webpackChunkName: "member",
   },
   {
     path: "/:catchAll(.*)",
@@ -70,6 +70,7 @@ const routes = [
     meta: {
       navItem: false,
     },
+    webpackChunkName: "public",
   },
 ];
 

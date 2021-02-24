@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["`${route.webpackChunkName}`1"],{7277:function(e,t,a){"use strict";a.r(t);var n=a("7a23");const c=Object(n["g"])("h1",null,"Welcome to the Dashboard",-1);function o(e,t,a,o,u,r){const b=Object(n["A"])("layout-default");return Object(n["s"])(),Object(n["d"])(b,null,{default:Object(n["J"])(()=>[c]),_:1})}var u={name:"Dashboard"};u.render=o;t["default"]=u}}]);
+//# sourceMappingURL=`${route.webpackChunkName}`1.478f6c12.js.map

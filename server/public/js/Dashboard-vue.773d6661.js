@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["Dashboard-vue"],{7277:function(e,t,a){"use strict";a.r(t);var n=a("7a23");const o=Object(n["g"])("h1",null,"Welcome to the Dashboard",-1);function c(e,t,a,c,u,r){const s=Object(n["A"])("layout-default");return Object(n["s"])(),Object(n["d"])(s,null,{default:Object(n["J"])(()=>[o]),_:1})}var u={name:"Dashboard"};u.render=c;t["default"]=u}}]);
-//# sourceMappingURL=Dashboard-vue.773d6661.js.map

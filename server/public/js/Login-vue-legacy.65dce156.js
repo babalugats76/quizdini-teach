@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["Login-vue"],{a55b:function(n,e,t){"use strict";t.r(e);var o=t("7a23");function a(n,e,t,a,c,r){var u=Object(o["A"])("login-form"),i=Object(o["A"])("layout-default");return Object(o["s"])(),Object(o["d"])(i,null,{default:Object(o["J"])((function(){return[Object(o["g"])(u)]})),_:1})}var c=t("2af9"),r={name:"Login",components:{LoginForm:c["a"]}};r.render=a;e["default"]=r}}]);
-//# sourceMappingURL=Login-vue-legacy.65dce156.js.map

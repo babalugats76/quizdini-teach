@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["Register-vue"],{"73cf":function(e,t,n){"use strict";n.r(t);var r=n("7a23");function c(e,t,n,c,o,s){const a=Object(r["A"])("register-form"),u=Object(r["A"])("layout-default");return Object(r["s"])(),Object(r["d"])(u,null,{default:Object(r["J"])(()=>[Object(r["g"])(a)]),_:1})}var o=n("2af9"),s={name:"Register",components:{RegisterForm:o["b"]}};s.render=c;t["default"]=s}}]);
-//# sourceMappingURL=Register-vue.b34114a8.js.map
