@@ -31,20 +31,36 @@ mongoose.connect(keys.mongoURI, {
 });
 
 const app = express();
+
+console.log(JSON.stringify(helmet.contentSecurityPolicy(), null, 4));
+
 app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      "img-src": ["'self'", "data:"],
-      objectSrc: ["'none'"],
-      "script-src": [
-        "'self'",
-        "'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI='",
-      ],
-      upgradeInsecureRequests: [],
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        "base-uri": ["'self"],
+        "img-src": ["'self'", "data:"],
+        objectSrc: ["'none'"],
+        "script-src": [
+          "'self'",
+          "'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI='",
+        ],
+        upgradeInsecureRequests: [],
+      },
     },
   })
 );
+
+// block-all-mixed-content;
+// font-src 'self' https: data:;
+// frame-ancestors 'self';
+// img-src 'self' data:;
+// object-src 'none';
+// script-src 'self';
+// script-src-attr 'none';
+// style-src 'self' https: 'unsafe-inline';
+// upgrade-insecure-requests
 
 if (process.env.NODE_ENV === "production") {
   const enforce = require("express-sslify");
