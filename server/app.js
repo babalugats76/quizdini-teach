@@ -38,7 +38,7 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        baseUri: ["'self"],
+        baseUri: ["'self'"],
         blockAllMixedContent: [],
         defaultSrc: ["'self'"],
         fontSrc: ["'self'", "https:", "data:"],
@@ -51,7 +51,7 @@ app.use(
           "'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI='",
           "'unsafe-inline'",
         ],
-        scriptSrcAttr: ["none"],
+        scriptSrcAttr: ["'none'"],
         upgradeInsecureRequests: [],
       },
       reportOnly: true,
