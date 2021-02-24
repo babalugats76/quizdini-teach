@@ -1,4 +1,3 @@
-import ApiTester from "@/views/ApiTester";
 import AuthSuccess from "@/views/AuthSuccess";
 import Dashboard from "@/views/Dashboard";
 import Login from "@/views/Login";
@@ -10,7 +9,7 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: ApiTester,
+    component: Register,
     meta: {
       navItem: true,
     },
@@ -22,11 +21,12 @@ const routes = [
     component: Test,
     meta: {
       navItem: true,
+      guest: true,
     },
     props: false,
   },
   {
-    path: "/",
+    path: "/register",
     name: "register",
     component: Register,
     meta: {

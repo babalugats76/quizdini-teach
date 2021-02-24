@@ -14,7 +14,7 @@ export default function useStates() {
   const loading = computed(() => store.getters["states/loading"]);
 
   onMounted(() => {
-    if (!loaded.value) fetchStates(); // load once (cached in Vuex store)
+    if (!loaded.value && !loading.value) fetchStates(); // load once (cached in Vuex store)
   });
 
   return {

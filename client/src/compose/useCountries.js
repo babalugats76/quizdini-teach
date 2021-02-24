@@ -14,7 +14,7 @@ export default function useCountries() {
   const loading = computed(() => store.getters["countries/loading"]);
 
   onMounted(() => {
-    if (!loaded.value) fetchCountries(); // load once (cached in Vuex store)
+    if (!loaded.value && !loading.value) fetchCountries(); // load once (cached in Vuex store)
   });
 
   return {

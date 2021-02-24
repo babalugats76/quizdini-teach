@@ -20,7 +20,7 @@ import useForm from "@/compose/useForm";
 /* eslint-ignore-require-prop-types */
 export default {
   name: "UiForm",
-  props: ["initialValues", "schema"],
+  props: ["initialValues", "schema", "tag"],
   emits: ["submit"],
   setup(props, { emit }) {
     const initialValues = ref(props.initialValues);
@@ -57,9 +57,9 @@ export default {
     };
   },
   render() {
-    const { $slots: slots } = this;
-    const $vnodes = slots
-      ? slots.default({
+    const { $slots } = this;
+    const $vnodes = $slots
+      ? $slots.default({
           blur: this.handleBlur,
           dirty: this.dirty,
           errors: this.errors,
@@ -73,7 +73,7 @@ export default {
         })
       : [];
     if ($vnodes.length === 0) return $vnodes[0];
-    return h("div", $vnodes);
+    return h(this.tag || "form", $vnodes);
   },
 };
 </script>
