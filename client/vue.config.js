@@ -30,6 +30,7 @@ module.exports = {
       return args;
     });
     config.resolve.alias.set("styles", path.resolve(__dirname, "src/styles"));
+    config.outputDir = "../server/public";
   },
-  outputDir: "../server/public",
+  // outputDir: "../server/public",
 };

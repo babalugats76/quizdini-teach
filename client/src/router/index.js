@@ -8,13 +8,7 @@ const loggedIn = computed(() => store.getters["auth/loggedIn"]);
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: routes.map((route) => ({
-    ...route,
-    component: () =>
-      import(
-        /* webpackChunkName: [`chunk-${route.webpackChunkName}`]" */ `../views/${route.view}.vue`
-      ),
-  })),
+  routes,
 });
 /***
  * Initialization

@@ -2,50 +2,51 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    view: "Landing",
+    component: () =>
+      import(/* webpackChunkName: "public" */ "../views/Landing.vue"),
     meta: {
       navItem: true,
     },
     props: false,
-    webpackChunkName: "public",
   },
   {
     path: "/test",
     name: "Test",
-    view: "Test",
+    component: () =>
+      import(/* webpackChunkName: "public" */ "../views/Test.vue"),
     meta: {
       navItem: true,
       guest: true,
     },
     props: true,
-    webpackChunkName: "public",
   },
   {
     path: "/register",
     name: "Sign Up",
-    view: "Register",
+    component: () =>
+      import(/* webpackChunkName: "public" */ "../views/Register.vue"),
     meta: {
       navItem: true,
       guest: true,
     },
     props: true,
-    webpackChunkName: "public",
   },
   {
     path: "/login",
     name: "Login",
-    view: "Login",
+    component: () =>
+      import(/* webpackChunkName: "public" */ "../views/Login.vue"),
     meta: {
       navItem: true,
       guest: true,
     },
     props: true,
-    webpackChunkName: "public",
   },
   {
     path: "/success",
     name: "Success",
-    view: "AuthSuccess",
+    component: () =>
+      import(/* webpackChunkName: "public" */ "../views/AuthSuccess.vue"),
     meta: {
       navItem: false,
     },
@@ -55,22 +56,22 @@ const routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    view: "Dashboard",
+    component: () =>
+      import(/* webpackChunkName: "members" */ "../views/Dashboard.vue"),
     meta: {
       navItem: true,
       auth: true,
     },
     props: true,
-    webpackChunkName: "member",
   },
   {
     path: "/:catchAll(.*)",
     name: "Not Found",
-    view: "NotFound",
+    component: () =>
+      import(/* webpackChunkName: "public" */ "../views/NotFound.vue"),
     meta: {
       navItem: false,
     },
-    webpackChunkName: "public",
   },
 ];
 
