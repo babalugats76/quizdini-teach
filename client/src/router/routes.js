@@ -1,15 +1,15 @@
-import AuthSuccess from "@/views/AuthSuccess";
-import Dashboard from "@/views/Dashboard";
-import Login from "@/views/Login";
-import NotFound from "@/components/NotFound";
-import Register from "@/views/Register";
-import Test from "@/views/Test";
+// import AuthSuccess from "@/views/AuthSuccess";
+// import Dashboard from "@/views/Dashboard";
+// import Login from "@/views/Login";
+// import NotFound from "@/components/NotFound";
+// import Register from "@/views/Register";
+// import Test from "@/views/Test";
 
 const routes = [
   {
     path: "/",
-    name: "home",
-    component: Register,
+    name: "Home",
+    view: "Landing",
     meta: {
       navItem: true,
     },
@@ -17,8 +17,8 @@ const routes = [
   },
   {
     path: "/test",
-    name: "test",
-    component: Test,
+    name: "Test",
+    view: "Test",
     meta: {
       navItem: true,
       guest: true,
@@ -27,8 +27,8 @@ const routes = [
   },
   {
     path: "/register",
-    name: "register",
-    component: Register,
+    name: "Sign Up",
+    view: "Register",
     meta: {
       navItem: true,
       guest: true,
@@ -37,8 +37,8 @@ const routes = [
   },
   {
     path: "/login",
-    name: "login",
-    component: Login,
+    name: "Login",
+    view: "Login",
     meta: {
       navItem: true,
       guest: true,
@@ -46,8 +46,8 @@ const routes = [
   },
   {
     path: "/dashboard",
-    name: "dashboard",
-    component: Dashboard,
+    name: "Dashboard",
+    view: "Dashboard",
     meta: {
       navItem: true,
       auth: true,
@@ -56,8 +56,8 @@ const routes = [
   },
   {
     path: "/success",
-    name: "success",
-    component: AuthSuccess,
+    name: "Success",
+    view: "AuthSuccess",
     meta: {
       navItem: false,
     },
@@ -65,8 +65,8 @@ const routes = [
   },
   {
     path: "/:catchAll(.*)",
-    name: "notfound",
-    component: NotFound,
+    name: "Not Found",
+    view: "NotFound",
     meta: {
       navItem: false,
     },

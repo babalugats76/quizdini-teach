@@ -8,7 +8,11 @@ const loggedIn = computed(() => store.getters["auth/loggedIn"]);
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes: routes.map((route) => ({
+    ...route,
+    component: () =>
+      import(/* webpackChunkName: "[request]" */ `../views/${route.view}.vue`),
+  })),
 });
 
 /***
@@ -37,7 +41,7 @@ router.beforeEach((to, from, next) => {
 router.beforeEach((to, from, next) => {
   if (to.matched.some((r) => r.meta.guest)) {
     if (loggedIn.value) {
-      next({ name: "dashboard" });
+      next({ name: "Dashboard" });
     } else {
       next();
     }
@@ -45,7 +49,7 @@ router.beforeEach((to, from, next) => {
     if (loggedIn.value) {
       next();
     } else {
-      next({ name: "login" });
+      next({ name: "Login" });
     }
   } else {
     next();

@@ -321,7 +321,7 @@ export default {
               return data.message;
             })
             .then((message) =>
-              router.push({ name: "login", params: { message } })
+              router.push({ name: "Login", params: { message } })
             )
             .catch((err) => {
               console.error(err);

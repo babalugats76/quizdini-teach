@@ -129,7 +129,7 @@ export default {
               }
             })
             .then(() => store.dispatch(`auth/${AUTH.FETCH}`))
-            .then(() => router.push({ name: "dashboard" }))
+            .then(() => router.push({ name: "Dashboard" }))
             .catch(() => {});
         })
         .catch((err) => {

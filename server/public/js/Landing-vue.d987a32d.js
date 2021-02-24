@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["Landing-vue"],{bede:function(n,e,t){"use strict";t.r(e);var c=t("7a23");const u=Object(c["g"])("h1",null,"Landing",-1);function a(n,e,t,a,d,o){const b=Object(c["A"])("layout-default");return Object(c["s"])(),Object(c["d"])(b,null,{default:Object(c["J"])(()=>[u]),_:1})}var d={};d.render=a;e["default"]=d}}]);
+//# sourceMappingURL=Landing-vue.d987a32d.js.map

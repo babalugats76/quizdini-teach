@@ -311,7 +311,7 @@ export default {
             throw new Error("RegistrationFailed");
           }
         })
-        .then((message) => router.push({ name: "login", params: { message } }))
+        .then((message) => router.push({ name: "Login", params: { message } }))
         .catch((err) => {
           console.error(err);
         })

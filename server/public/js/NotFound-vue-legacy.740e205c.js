@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["NotFound-vue"],{9703:function(n,e,o){"use strict";o.r(e);var t=o("7a23"),u=Object(t["g"])("h1",null,"Not Found",-1);function d(n,e,o,d,c,r){return Object(t["s"])(),Object(t["d"])("div",null,[u])}var c={name:"NotFound"};c.render=d;e["default"]=c}}]);
+//# sourceMappingURL=NotFound-vue-legacy.740e205c.js.map
