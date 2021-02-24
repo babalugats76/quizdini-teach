@@ -31,7 +31,16 @@ mongoose.connect(keys.mongoURI, {
 });
 
 const app = express();
-app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": [
+        "'self'",
+        "script-src 'self' 'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI='",
+      ],
+    },
+  })
+);
 
 if (process.env.NODE_ENV === "production") {
   const enforce = require("express-sslify");
