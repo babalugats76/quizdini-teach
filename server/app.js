@@ -38,29 +38,26 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
+        baseUri: ["'self"],
+        blockAllMixedContent: [],
         defaultSrc: ["'self'"],
-        "base-uri": ["'self"],
-        "img-src": ["'self'", "data:"],
+        fontSrc: ["'self'", "https:", "data:"],
+        frameAncestors: ["'self'"],
+        imgSrc: ["'self'", "data:"],
         objectSrc: ["'none'"],
-        "script-src": [
+        scriptSrc: [
           "'self'",
+          "https",
           "'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI='",
+          "'unsafe-inline'",
         ],
+        scriptSrcAttr: ["none"],
         upgradeInsecureRequests: [],
       },
+      reportOnly: true,
     },
   })
 );
-
-// block-all-mixed-content;
-// font-src 'self' https: data:;
-// frame-ancestors 'self';
-// img-src 'self' data:;
-// object-src 'none';
-// script-src 'self';
-// script-src-attr 'none';
-// style-src 'self' https: 'unsafe-inline';
-// upgrade-insecure-requests
 
 if (process.env.NODE_ENV === "production") {
   const enforce = require("express-sslify");
