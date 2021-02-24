@@ -32,7 +32,7 @@ mongoose.connect(keys.mongoURI, {
 
 const app = express();
 
-console.log(JSON.stringify(helmet.contentSecurityPolicy(), null, 4));
+console.log(JSON.stringify(helmet.contentSecurityPolicy, null, 4));
 
 app.use(
   helmet({
