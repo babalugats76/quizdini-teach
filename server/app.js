@@ -34,10 +34,13 @@ const app = express();
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
+      defaultSrc: ["'self'"],
+      objectSrc: ["'none'"],
       "script-src": [
         "'self'",
-        "script-src 'self' 'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI='",
+        "'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI='",
       ],
+      upgradeInsecureRequests: [],
     },
   })
 );
