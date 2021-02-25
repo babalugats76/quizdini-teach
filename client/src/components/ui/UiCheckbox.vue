@@ -1,15 +1,16 @@
 <template>
-  <label :for="name" v-if="label"> {{ label }} </label>
-  <input
-    v-bind="$attrs"
-    ref="inputRef"
-    v-model="input"
-    :autocomplete="autocomplete || 'off'"
-    :class="classes"
-    :name="name"
-    :type="type"
-    novalidate="true"
-  />
+  <label :class="classes">
+    <input
+      ref="inputRef"
+      v-bind="$attrs"
+      v-model="input"
+      :autocomplete="autocomplete || 'off'"
+      :name="name"
+      type="checkbox"
+      novalidate="true"
+    />
+    <slot />
+  </label>
   <ui-error v-if="errors" :errors="errors" />
 </template>
 
@@ -19,7 +20,7 @@ import UiError from "./UiError";
 import { focus } from "./mixins";
 
 export default {
-  name: "UiInput",
+  name: "UiCheckbox",
   components: {
     UiError,
   },
@@ -36,23 +37,13 @@ export default {
       default: "",
       required: false,
     },
-    label: {
-      type: String,
-      default: "",
-      required: false,
-    },
     name: {
       type: String,
       required: true,
     },
-    type: {
-      type: String,
-      default: "text",
-      required: true,
-    },
     // eslint-disable-next-line
     value: {
-      type: String,
+      type: Boolean,
     },
   },
   emits: ["update:value"],
@@ -68,7 +59,7 @@ export default {
   computed: {
     classes() {
       return {
-        "ui-input": true,
+        "ui-checkbox": true,
       };
     },
   },
@@ -76,11 +67,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-label {
-  font-weight: bold;
-}
-
-.ui-input {
-  outline: 1px solid gray;
+.ui-checkbox {
+  > input[type="checkbox"] {
+    margin-right: 0.5rem;
+  }
 }
 </style>

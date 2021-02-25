@@ -185,6 +185,58 @@
           />
         </div>
         <div class="form-input">
+          <ui-checkbox
+            v-model:value="values.terms"
+            autocomplete="off"
+            :errors="touched.terms && errors.terms"
+            name="terms"
+            tabindex="11"
+            :disabled="submitting"
+            @blur="blur"
+            @change="input"
+          >
+            <span
+              >I agree to Quizdini's&nbsp;<router-link to="/term" exact
+                >Terms of Use</router-link
+              ></span
+            >
+          </ui-checkbox>
+        </div>
+        <div class="form-input">
+          <ui-checkbox
+            v-model:value="values.privacy"
+            autocomplete="off"
+            :errors="touched.privacy && errors.privacy"
+            name="privacy"
+            tabindex="12"
+            :disabled="submitting"
+            @blur="blur"
+            @change="input"
+            ><span
+              >I agree to Quizdini's&nbsp;<router-link to="/terms/privacy" exact
+                >Privacy Policy</router-link
+              ></span
+            >
+          </ui-checkbox>
+        </div>
+        <div class="form-input">
+          <ui-checkbox
+            v-model:value="values.cookie"
+            autocomplete="off"
+            :errors="touched.cookie && errors.cookie"
+            name="cookie"
+            tabindex="13"
+            :disabled="submitting"
+            @blur="blur"
+            @change="input"
+            ><span
+              >I agree to Quizdini's&nbsp;<router-link to="/terms/cookie" exact
+                >Cookie Policy</router-link
+              ></span
+            >
+          </ui-checkbox>
+        </div>
+        <div class="form-input">
           <ui-input
             name="test-submit"
             :disabled="submitting || hasErrors || !dirty"
@@ -202,10 +254,11 @@
 <script>
 import { /* h, inject,*/ reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { object, string, ref as yupRef } from "yup";
+import { boolean, object, string, ref as yupRef } from "yup";
 
 import { postAccount } from "@/api/account";
 
+import UiCheckbox from "@/components/ui/UiCheckbox";
 import UiDatalist from "@/components/ui/UiDatalist";
 import UiForm from "@/components/ui/UiForm";
 import UiInput from "@/components/ui/UiInput";
@@ -217,6 +270,7 @@ import useStates from "@/compose/useStates";
 export default {
   name: "TestForm",
   components: {
+    UiCheckbox,
     UiDatalist,
     UiForm,
     UiInput,
@@ -245,8 +299,12 @@ export default {
         [yupRef("password")],
         "Passwords mismatch"
       ),
+      cookie: boolean().oneOf(
+        [true],
+        "Please read and accept our Cookie policy"
+      ),
       country: string().required("Country is required"),
-      email: string().required("Email is required").email("Invalid email"),
+      email: string().required("Email is required").email("Inva lid email"),
       firstName: string().required("First Name is required"),
       lastName: string().required("Last Name is required"),
       password: string() /* Add rules for password complexity */
@@ -255,10 +313,18 @@ export default {
           /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&]{8,}$/,
           "Password must be 8 or more characters long and include upper, lower, numeric and special @$!%*#?& characters"
         ),
+      privacy: boolean().oneOf(
+        [true],
+        "Please read and accept our Privacy policy"
+      ),
       state: string().when("countryCode", {
         is: (val) => val === "US",
         then: string().required("State is required"),
       }),
+      terms: boolean().oneOf(
+        [true],
+        "Please read and accept our Terms and Conditions"
+      ),
       title: string().max(10, "Title too long (${max} characters allowed)"),
       username: string()
         .required("Username is required")
@@ -269,17 +335,17 @@ export default {
     const initialValues = reactive({
       city: "",
       confirmPassword: "",
-      // cookie: false,
+      cookie: false,
       country: "",
       countryCode: "",
       email: "",
       firstName: "",
       lastName: "",
       password: "",
-      // privacy: false,
+      privacy: false,
       state: "",
       stateCode: "",
-      // terms: false,
+      terms: false,
       title: "",
       username: "",
     });
@@ -310,6 +376,7 @@ export default {
             }
             throw new Error("RegistrationFailed");
           }
+          return data.message;
         })
         .then((message) => router.push({ name: "Login", params: { message } }))
         .catch((err) => {
