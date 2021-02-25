@@ -10,17 +10,6 @@ const routes = [
     props: false,
   },
   {
-    path: "/test",
-    name: "Test",
-    component: () =>
-      import(/* webpackChunkName: "public" */ "../views/Test.vue"),
-    meta: {
-      navItem: true,
-      guest: true,
-    },
-    props: true,
-  },
-  {
     path: "/register",
     name: "Sign Up",
     component: () =>
