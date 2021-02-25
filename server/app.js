@@ -46,6 +46,7 @@ app.use(
         scriptSrc: [
           "'self'",
           "https",
+          "*js.stripe.com",
           "'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI='" /*"'unsafe-inline'"*/,
         ],
         scriptSrcAttr: ["'none'"],
