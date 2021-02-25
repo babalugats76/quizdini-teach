@@ -6,6 +6,8 @@ import UiForm from "./ui/UiForm";
 import UiInput from "./ui/UiInput";
 import UiMessage from "./ui/UiMessage";
 
+import TestScript from "./TestScript";
+
 export {
   LoginForm,
   RegisterForm,
@@ -14,4 +16,5 @@ export {
   UiForm,
   UiInput,
   UiMessage,
+  TestScript,
 };
