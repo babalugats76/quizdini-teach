@@ -41,7 +41,7 @@ app.use(
         defaultSrc: ["'self'"],
         fontSrc: ["'self'", "https:", "data:"],
         frameAncestors: ["'self'"],
-        imgSrc: ["'self'", "data:", "googleusercontent.com"],
+        imgSrc: ["'self'", "data:", "*.googleusercontent.com"],
         objectSrc: ["'none'"],
         scriptSrc: [
           "'self'",
