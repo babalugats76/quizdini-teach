@@ -10,7 +10,7 @@ export default function useScript(src, attributes = {}) {
       //   console.log("watch fired with", src, attribs);
 
       if (document.querySelector(`script[src="${src}"]`)) {
-        // console.log("script already loaded...");
+        console.log("script already loaded...");
         state.loaded = true;
         return;
       }

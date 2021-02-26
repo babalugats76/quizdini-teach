@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["test"],{"78c1":function(t,e,c){"use strict";c.r(e);var n=c("7a23");function o(t,e,c,o,a,u){const r=Object(n["A"])("checkout-form"),s=Object(n["A"])("layout-default");return Object(n["s"])(),Object(n["d"])(s,null,{default:Object(n["J"])(()=>[Object(n["g"])(r,{credits:10})]),_:1})}var a=c("2af9"),u={name:"Test",components:{CheckoutForm:a["a"]}};u.render=o;e["default"]=u}}]);
+//# sourceMappingURL=test.daa2fc07.js.map

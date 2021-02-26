@@ -20,7 +20,21 @@ import useForm from "@/compose/useForm";
 /* eslint-ignore-require-prop-types */
 export default {
   name: "UiForm",
-  props: ["initialValues", "schema", "tag"],
+  props: {
+    initialValues: {
+      type: Object,
+      default: () => ({}),
+      required: true,
+    },
+    schema: {
+      required: true,
+    },
+    tag: {
+      type: String,
+      default: "div",
+      required: false,
+    },
+  },
   emits: ["submit"],
   setup(props, { emit }) {
     const initialValues = ref(props.initialValues);

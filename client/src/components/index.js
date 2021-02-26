@@ -6,9 +6,10 @@ import UiForm from "./ui/UiForm";
 import UiInput from "./ui/UiInput";
 import UiMessage from "./ui/UiMessage";
 
-import TestScript from "./TestScript";
+import CheckoutForm from "./CheckoutForm";
 
 export {
+  CheckoutForm,
   LoginForm,
   RegisterForm,
   UiCheckbox,
@@ -16,5 +17,4 @@ export {
   UiForm,
   UiInput,
   UiMessage,
-  TestScript,
 };

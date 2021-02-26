@@ -14,13 +14,16 @@ module.exports = (app) => {
     async (req, res, next) => {
       try {
         const { credits } = req.body;
-        console.log();
         const paymentIntent = await stripe.paymentIntents.create({
-          amount: 10.0 * 100,
+          amount: credits * 100,
           currency: "usd",
         });
+        const { amount, currency, client_secret: clientSecret } =
+          paymentIntent || {};
         res.send({
-          clientSecret: paymentIntent.client_secret,
+          amount: currency === "usd" ? amount / 100 : amount,
+          currency,
+          clientSecret,
         });
       } catch (e) {
         throw new StripeChargeError(e.message, e.code);

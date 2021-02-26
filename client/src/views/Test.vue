@@ -1,16 +1,16 @@
 <template>
   <layout-default>
-    <test-script />
+    <checkout-form :credits="10" />
   </layout-default>
 </template>
 
 <script>
-import { TestScript } from "@/components/";
+import { CheckoutForm } from "@/components/";
 
 export default {
   name: "Test",
   components: {
-    TestScript,
+    CheckoutForm,
   },
 };
 </script>

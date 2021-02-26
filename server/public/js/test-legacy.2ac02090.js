@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["test"],{"78c1":function(t,e,c){"use strict";c.r(e);var n=c("7a23");function o(t,e,c,o,r,u){var a=Object(n["A"])("checkout-form"),s=Object(n["A"])("layout-default");return Object(n["s"])(),Object(n["d"])(s,null,{default:Object(n["J"])((function(){return[Object(n["g"])(a,{credits:10})]})),_:1})}var r=c("2af9"),u={name:"Test",components:{CheckoutForm:r["a"]}};u.render=o;e["default"]=u}}]);
+//# sourceMappingURL=test-legacy.2ac02090.js.map
