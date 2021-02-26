@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["test"],{"78c1":function(t,e,c){"use strict";c.r(e);var n=c("7a23");function s(t,e,c,s,a,o){const r=Object(n["A"])("test-script"),u=Object(n["A"])("layout-default");return Object(n["s"])(),Object(n["d"])(u,null,{default:Object(n["J"])(()=>[Object(n["g"])(r)]),_:1})}var a=c("2af9"),o={name:"Test",components:{TestScript:a["c"]}};o.render=s;e["default"]=o}}]);
+//# sourceMappingURL=test.03a2e19c.js.map

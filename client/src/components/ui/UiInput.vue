@@ -1,5 +1,5 @@
 <template>
-  <label :for="name" v-if="label"> {{ label }} </label>
+  <label v-if="label" :for="name"> {{ label }} </label>
   <input
     v-bind="$attrs"
     ref="inputRef"

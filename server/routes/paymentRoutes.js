@@ -8,6 +8,26 @@ const Payment = mongoose.model("payments");
 const { StripeChargeError } = require("../errors.js");
 
 module.exports = (app) => {
+  app.post(
+    "/api/create-payment-intent",
+    requireLogin,
+    async (req, res, next) => {
+      try {
+        const { credits } = req.body;
+        console.log();
+        const paymentIntent = await stripe.paymentIntents.create({
+          amount: 10.0 * 100,
+          currency: "usd",
+        });
+        res.send({
+          clientSecret: paymentIntent.client_secret,
+        });
+      } catch (e) {
+        throw new StripeChargeError(e.message, e.code);
+      }
+    }
+  );
+
   /**
    * Processes Stripe payments using Stripe Elements API
    *

@@ -11,12 +11,11 @@ const routes = [
   },
   {
     path: "/test",
-    name: "Test Script",
-    component: () =>
-      import(/* webpackChunkName: "public" */ "../views/Test.vue"),
+    name: "Stripe",
+    component: () => import(/* webpackChunkName: "test" */ "../views/Test.vue"),
     meta: {
       navItem: true,
-      guest: true,
+      auth: true,
     },
     props: true,
   },
