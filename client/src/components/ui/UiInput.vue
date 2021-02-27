@@ -77,10 +77,12 @@ export default {
 
 <style lang="scss" scoped>
 label {
-  font-weight: bold;
+  display: block;
 }
 
 .ui-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
   outline: 1px solid gray;
 }
 </style>

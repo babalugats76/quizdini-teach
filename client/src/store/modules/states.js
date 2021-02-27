@@ -47,7 +47,7 @@ const mutations = {
     state.loading = false;
   },
   [STATES.FAILURE](state, data) {
-    state.data = null;
+    state.data = [];
     state.error = data;
     state.failed = true;
     state.loaded = false;

@@ -4,7 +4,12 @@
     <span v-if="auth.loggedIn && auth.credits >= 0" class="nav__item"
       >Credits: {{ auth.credits }}
     </span>
-    <a v-if="auth.loggedIn" href="/logout" class="nav__item" target="_self"
+    <a
+      v-if="auth.loggedIn"
+      href="/logout"
+      class="nav__item"
+      target="_self"
+      tabindex="-1"
       >logout</a
     >
     <span
@@ -23,7 +28,6 @@
     >
       {{ auth.username }}
     </span>
-    <!-- <pre>{{ JSON.stringify(auth, null, 4) }}</pre> -->
   </nav>
 </template>
 
@@ -43,7 +47,12 @@ const NavItems = ({ items, authenticated }) =>
     .map((item) => {
       const { name } = item;
       return (
-        <router-link class="nav__item" to={{ name: name }} key={name}>
+        <router-link
+          class="nav__item"
+          to={{ name: name }}
+          key={name}
+          tabIndex={-1}
+        >
           {name}
         </router-link>
       );

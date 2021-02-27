@@ -1,9 +1,9 @@
-import { getCountries } from "@/api/countries";
+import { getAccount } from "@/api/account";
 import { callApi } from "../util";
-import { COUNTRIES } from "../types";
+import { ACCOUNT } from "../types";
 
 const INITIAL_STATE = {
-  data: [],
+  data: {},
   error: null,
   failed: false,
   loaded: false,
@@ -13,16 +13,8 @@ const INITIAL_STATE = {
 const state = () => INITIAL_STATE;
 
 const getters = {
-  all: (state) => state.data,
-  options: (state) =>
-    state.data.reduce((acc, country) => {
-      acc.push({
-        key: country.countryId,
-        value: country.countryCode,
-        text: country.countryName,
-      });
-      return acc;
-    }, []),
+  account: (state) => state.data,
+  email: (state) => state.data.email,
   error: (state) => state.error,
   failed: (state) => state.failed,
   loaded: (state) => state.loaded,
@@ -30,24 +22,24 @@ const getters = {
 };
 
 const actions = {
-  // fetch: (store) => callApi(() => getCountries(), COUNTRIES)(store),
-  [COUNTRIES.FETCH]: (store) =>
-    callApi(store, { cb: () => getCountries(), types: COUNTRIES }),
+  // fetch: (store) => callApi(() => getAccount(), ACCOUNT)(store),
+  [ACCOUNT.FETCH]: (store) =>
+    callApi(store, { cb: () => getAccount(), types: ACCOUNT }),
 };
 
 const mutations = {
-  [COUNTRIES.PENDING](state) {
+  [ACCOUNT.PENDING](state) {
     state.loading = true;
   },
-  [COUNTRIES.SUCCESS](state, data) {
+  [ACCOUNT.SUCCESS](state, data) {
     state.data = data;
     state.error = null;
     state.failed = false;
     state.loaded = true;
     state.loading = false;
   },
-  [COUNTRIES.FAILURE](state, data) {
-    state.data = [];
+  [ACCOUNT.FAILURE](state, data) {
+    state.data = {};
     state.error = data;
     state.failed = true;
     state.loaded = false;

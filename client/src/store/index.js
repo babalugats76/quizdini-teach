@@ -1,5 +1,6 @@
 import { createStore, createLogger } from "vuex";
 import test from "./modules/test";
+import account from "./modules/account";
 import auth from "./modules/auth";
 import countries from "./modules/countries";
 import states from "./modules/states";
@@ -13,6 +14,7 @@ const store = createStore({
   actions: actions,
   modules: {
     test,
+    account,
     auth,
     countries,
     states,

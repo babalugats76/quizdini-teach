@@ -96,7 +96,7 @@ export default {
 
 <style lang="scss" scoped>
 label {
-  font-weight: bold;
+  display: block;
 }
 
 .ui-datalist {

@@ -67,6 +67,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+label {
+  display: block;
+}
+
 .ui-checkbox {
   > input[type="checkbox"] {
     margin-right: 0.5rem;
