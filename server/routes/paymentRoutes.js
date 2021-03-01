@@ -17,6 +17,8 @@ module.exports = (app) => {
         const paymentIntent = await stripe.paymentIntents.create({
           amount: credits * 100,
           currency: "usd",
+          payment_method_types: ["card"],
+          // metadata can go here...
         });
         const { amount, currency, client_secret: clientSecret } =
           paymentIntent || {};

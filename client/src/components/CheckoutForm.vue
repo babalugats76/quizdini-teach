@@ -8,6 +8,7 @@
         :schema="checkoutFormSchema"
         tag="div"
         class="checkout__form"
+        @submit="handleSubmit"
       >
         <template
           #default="{
@@ -77,8 +78,29 @@
               @input="input"
             />
           </div>
+          <div
+            v-if="values.countryCode === 'US' || values.countryCode === 'GB'"
+            class="form-input"
+          >
+            <ui-input
+              v-model:value="values.postalCode"
+              autocomplete="postal-code"
+              :errors="touched.postalCode && errors.postalCode"
+              :label="
+                values.countryCode === 'US'
+                  ? 'Zip Code (5-digit)'
+                  : 'Postal Code'
+              "
+              name="postalCode"
+              type="text"
+              :disabled="submitting"
+              :maxlength="values.countryCode === 'US' ? 5 : 8"
+              @blur="blur"
+              @input="input"
+            />
+          </div>
           <div class="form-input">
-            <ui-button size="lg">Pay now</ui-button>
+            <button @click.prevent="handleSubmit">Pay now</button>
           </div>
         </template>
       </ui-form>
@@ -104,7 +126,7 @@ import useCountries from "@/compose/useCountries";
 export default {
   name: "CheckoutForm",
   components: {
-    UiButton,
+    //  UiButton,
     UiDatalist,
     UiForm,
     UiInput,
@@ -138,19 +160,28 @@ export default {
       credits: number().required(""),
       cardholderName: string().required("Cardholder Name is required"),
       country: string().required("Country is required"),
-      postalCode: string().when("countryCode", {
-        is: (val) => val === "US",
-        then: string().required("State is required"),
-      }),
+      postalCode: string()
+        .when("countryCode", {
+          is: (val) => val === "US",
+          then: string().matches(/^\d{5}$/, "Invalid zip code"),
+        })
+        .when("countryCode", {
+          is: (val) => val === "GB",
+          then: string().matches(
+            /^[A-Za-z]{1,2}\d[A-Za-z\d]? ?\d[A-Za-z]{2}$/,
+            "Invalid postcode"
+          ),
+        }),
     });
 
     const initialValues = reactive({
       cardholderName: "",
-      country: computed(() =>
-        countries.value.find((c) => c.value === countryCode.value)
-          ? countries.value.find((c) => c.value === countryCode.value).text
-          : ""
-      ),
+      country: computed(() => {
+        const { text = "" } = countries.value.find(
+          (c) => c.value === countryCode.value
+        );
+        return text;
+      }),
       countryCode: countryCode,
       credits: props.credits,
       email: email,
@@ -263,6 +294,50 @@ export default {
       { immediate: true }
     );
 
+    // The card Element simplifies the form and minimizes the number of fields required by inserting a single, flexible input field that securely collects all necessary card details.
+
+    // Otherwise, combine cardNumber, cardExpiry, and cardCvc Elements for a flexible, multi-input card form.
+
+    const handleSubmit = async ({
+      errors,
+      setSubmitting,
+      setSubmitted,
+      values,
+    }) => {
+      console.log(state.cardCvc);
+      console.log(state.cardNumber.value);
+      console.log(state.cardExpiry.value);
+      console.log(values.countryCode);
+      state.stripe.confirmCardPayment(state.clientSecret, {
+        payment_method: {
+          card: {
+            ...state.cardNumber,
+            ...state.cardExpiry,
+            ...state.cardCvc,
+          },
+          billing_details: {
+            address: {
+              postal_code: values.countryCode,
+              ...(values.postalCode && { postal_code: values.postalCode }),
+            },
+            name: values.cardholderName,
+            email: values.email,
+          },
+          type: "card",
+        },
+      });
+      //   .then((res) => {
+      //     console.log(res);
+      //   })
+      //   // .then((message) => router.push({ name: "Login", params: { message } }))
+      //   .catch((err) => {
+      //     console.error(err);
+      //   });
+      // .finally(() => {
+      //   setSubmitted();
+      // });
+    };
+
     const { clientSecret, ...rest } = toRefs(state);
 
     return {
@@ -274,6 +349,7 @@ export default {
       checkoutFormRef,
       checkoutFormSchema,
       countries,
+      handleSubmit,
       initialValues,
       scriptError,
       scriptLoaded,
