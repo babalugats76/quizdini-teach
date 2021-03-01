@@ -6,7 +6,8 @@ export default function useCountries() {
   const store = useStore();
   const fetchCountries = () => store.dispatch(`countries/${COUNTRIES.FETCH}`);
 
-  const countries = computed(() => store.getters["countries/options"]); // computed for dropdowns
+  const options = computed(() => store.getters["countries/options"]); // computed for dropdowns
+  const countries = computed(() => store.getters["countries/all"]); // computed for filters, etc.
 
   const error = computed(() => store.getters["countries/error"]);
   const failed = computed(() => store.getters["countries/failed"]);
@@ -19,6 +20,7 @@ export default function useCountries() {
 
   return {
     countries,
+    options,
     error,
     failed,
     loaded,

@@ -1,79 +1,100 @@
 <template>
   <div class="checkout">
-    <ui-form
-      v-show="scriptLoaded && stripeReady"
-      ref="checkoutFormRef"
-      :initial-values="initialValues"
-      :schema="checkoutFormSchema"
-      tag="div"
-      class="checkout__form"
-    >
-      <template
-        #default="{
-          blur,
-          dirty,
-          errors,
-          handleSubmit,
-          hasErrors,
-          input,
-          submitting,
-          touched,
-          values,
-        }"
+    <div v-show="stripeReady">
+      <ui-form
+        v-if="scriptLoaded && accountLoaded && countriesLoaded"
+        ref="checkoutFormRef"
+        :initial-values="initialValues"
+        :schema="checkoutFormSchema"
+        tag="div"
+        class="checkout__form"
       >
-        <div class="form-input">
-          <ui-input
-            v-model:value="values.email"
-            autocomplete="email"
-            :errors="touched.email && errors.email"
-            label="Email"
-            name="email"
-            type="email"
-            :disabled="submitting"
-            @blur="blur"
-            @input="input"
-          />
-        </div>
-        <fieldset>
-          <label>Card Information</label>
+        <template
+          #default="{
+            blur,
+            dirty,
+            errors,
+            handleSubmit,
+            hasErrors,
+            input,
+            submitting,
+            touched,
+            values,
+          }"
+        >
           <div class="form-input">
-            <div id="card-number" ref="cardNumberRef"></div>
+            <ui-input
+              v-model:value="values.email"
+              autocomplete="email"
+              :errors="touched.email && errors.email"
+              label="Email"
+              name="email"
+              type="email"
+              :disabled="submitting"
+              @blur="blur"
+              @input="input"
+            />
+          </div>
+          <fieldset class="checkout__card-info">
+            <label>Card Information</label>
+            <div class="form-input">
+              <div id="card-number" ref="cardNumberRef"></div>
+            </div>
+            <div class="form-input">
+              <div id="card-expiry" ref="cardExpiryRef"></div>
+            </div>
+            <div class="form-input">
+              <div id="card-cvc" ref="cardCvcRef"></div>
+            </div>
+          </fieldset>
+          <div class="form-input">
+            <ui-input
+              v-model:value="values.cardholderName"
+              name="cardholder-name"
+              autocomplete="cc-name"
+              :errors="touched.cardholderName && errors.cardholderName"
+              label="Name on card"
+              tabindex="1"
+              type="text"
+              :disabled="submitting"
+              @blur="blur"
+              @input="input"
+            />
           </div>
           <div class="form-input">
-            <div id="card-expiry" ref="cardExpiryRef"></div>
-            <div id="card-cvc" ref="cardCvcRef"></div>
+            <ui-datalist
+              id="countries"
+              v-model:value="values.country"
+              v-model:code="values.countryCode"
+              autocomplete="country-name"
+              :options="countries"
+              label="Country"
+              name="country"
+              :errors="touched.country && errors.country"
+              tabindex="5"
+              :disabled="submitting"
+              @blur="blur"
+              @input="input"
+            />
           </div>
-        </fieldset>
-        <div class="form-input">
-          <ui-input
-            v-model:value="values.cardholderName"
-            name="cardholder-name"
-            autocomplete="cc-name"
-            :errors="touched.cardholderName && errors.cardholderName"
-            label="Name on card"
-            tabindex="1"
-            type="text"
-            :disabled="submitting"
-            @blur="blur"
-            @input="input"
-          />
-        </div>
-        <div class="form-input">
-          <ui-button size="lg">Pay now</ui-button>
-        </div>
-      </template>
-    </ui-form>
+          <div class="form-input">
+            <ui-button size="lg">Pay now</ui-button>
+          </div>
+        </template>
+      </ui-form>
+    </div>
   </div>
 </template>
 
 <script>
-import { reactive, ref, toRefs, watch } from "vue";
+import { computed, reactive, ref, toRefs, watch } from "vue";
 import { number, object, string } from "yup";
 
 import useScript from "@/compose/useScript";
 import { postPaymentIntent } from "@/api/payment";
 
 import UiButton from "@/components/ui/UiButton";
+import UiDatalist from "@/components/ui/UiDatalist";
 import UiForm from "@/components/ui/UiForm";
 import UiInput from "@/components/ui/UiInput";
 
@@ -84,6 +105,7 @@ export default {
   name: "CheckoutForm",
   components: {
     UiButton,
+    UiDatalist,
     UiForm,
     UiInput,
   },
@@ -94,8 +116,12 @@ export default {
     const cardNumberRef = ref();
     const checkoutFormRef = ref();
 
-    const { email = null } = useAccount();
-    const { countries } = useCountries();
+    const {
+      email = null,
+      countryCode = "",
+      loaded: accountLoaded,
+    } = useAccount();
+    const { options: countries, loaded: countriesLoaded } = useCountries();
 
     const state = reactive({
       amount: 0,
@@ -111,11 +137,22 @@ export default {
     const checkoutFormSchema = object({
       credits: number().required(""),
       cardholderName: string().required("Cardholder Name is required"),
+      country: string().required("Country is required"),
+      postalCode: string().when("countryCode", {
+        is: (val) => val === "US",
+        then: string().required("State is required"),
+      }),
     });
 
     const initialValues = reactive({
-      credits: props.credits,
       cardholderName: "",
+      country: computed(() =>
+        countries.value.find((c) => c.value === countryCode.value)
+          ? countries.value.find((c) => c.value === countryCode.value).text
+          : ""
+      ),
+      countryCode: countryCode,
+      credits: props.credits,
       email: email,
     });
 
@@ -213,9 +250,12 @@ export default {
     };
 
     watch(
-      scriptLoaded,
-      (scriptLoaded, prevScriptLoaded) => {
-        if (scriptLoaded) {
+      [scriptLoaded, accountLoaded, countriesLoaded],
+      (
+        [scriptLoaded, accountLoaded, countriesLoaded],
+        [prevScriptLoaded, prevAccountLoaded, prevCountriesLoaded]
+      ) => {
+        if (scriptLoaded && accountLoaded && countriesLoaded) {
           state.stripe = Stripe(process.env.VUE_APP_STRIPE_KEY);
           prepareStripe();
         }
@@ -226,11 +266,14 @@ export default {
     const { clientSecret, ...rest } = toRefs(state);
 
     return {
+      accountLoaded,
+      countriesLoaded,
       cardCvcRef,
       cardExpiryRef,
       cardNumberRef,
       checkoutFormRef,
       checkoutFormSchema,
+      countries,
       initialValues,
       scriptError,
       scriptLoaded,
@@ -245,7 +288,19 @@ export default {
   max-width: 380px;
   margin: 0 auto;
 }
+
+.checkout__card-info {
+  box-shadow: 0 1px 3px 0 rgb(50 50 93 / 15%),
+    0 4px 6px 0 rgb(112 157 199 / 15%);
+}
+
+.checkout__card-info .form-input:not(:last-child) {
+  border-bottom: 1px solid #f0f5fa;
+}
+
 .StripeElement {
   padding: 0.5rem 0.75rem;
+  // outline: 1px solid gray;
+  transition: none !important;
 }
 </style>

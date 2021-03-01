@@ -100,6 +100,8 @@ label {
 }
 
 .ui-datalist {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
   outline: 1px solid gray;
 }
 </style>

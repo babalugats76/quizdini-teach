@@ -282,7 +282,7 @@ export default {
 
     const router = useRouter();
 
-    const { countries } = useCountries();
+    const { options: countries } = useCountries();
     const { states } = useStates();
     const titles = [
       { key: 0, text: "Mr.", value: "Mr." },

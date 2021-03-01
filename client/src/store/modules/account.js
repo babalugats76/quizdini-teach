@@ -14,6 +14,7 @@ const state = () => INITIAL_STATE;
 
 const getters = {
   account: (state) => state.data,
+  countryCode: (state) => state.data.countryCode,
   email: (state) => state.data.email,
   error: (state) => state.error,
   failed: (state) => state.failed,

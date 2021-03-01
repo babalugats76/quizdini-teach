@@ -7,6 +7,7 @@ export default function useCountries() {
   const fetchAccount = () => store.dispatch(`account/${ACCOUNT.FETCH}`);
 
   const email = computed(() => store.getters["account/email"]);
+  const countryCode = computed(() => store.getters["account/countryCode"]);
 
   const error = computed(() => store.getters["account/error"]);
   const failed = computed(() => store.getters["account/failed"]);
@@ -18,6 +19,7 @@ export default function useCountries() {
   });
 
   return {
+    countryCode,
     email,
     error,
     failed,

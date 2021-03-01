@@ -12,11 +12,24 @@ export default function useForm({ emit, initialValues, schema }) {
   watch(
     () => values,
     (values) => {
+      console.log("dirty check");
       dirty.value =
         !JSON.stringify(values) !== JSON.stringify(unref(initialValues));
     },
     { deep: true }
   );
+
+  // watch(
+  //   () => initialValues,
+  //   (initialValues) => {
+  //     console.log("initialValues updated...");
+  //     Object.entries(initialValues.value).forEach(([key, val]) => {
+  //       console.log(key, val);
+  //       values[key] = val;
+  //     });
+  //   },
+  //   { deep: true }
+  // );
 
   const validateForm = () => {
     return schema
