@@ -152,6 +152,7 @@ export default {
       cardNumber: null,
       clientSecret: "",
       currency: "",
+      description: "",
       stripe: null,
       stripeReady: false,
     });
@@ -240,6 +241,7 @@ export default {
           state.clientSecret = data.clientSecret;
           state.amount = parseInt(data.amount);
           state.currency = data.currency;
+          state.description = data.description;
 
           // initialize Stripe elements
           const elements = state.stripe.elements();
@@ -269,11 +271,6 @@ export default {
           cardExpiry.mount(`#${cardExpiryRef.value.id}`);
 
           state.stripeReady = true;
-          // form.addEventListener("submit", function (event) {
-          //   event.preventDefault();
-          //   // Complete payment when the submit button is clicked
-          //   payWithCard(stripe, card, data.clientSecret);
-          // });
         })
         .catch((err) => {
           console.error(err);
@@ -314,7 +311,6 @@ export default {
               email: values.email,
             },
             type: "card",
-            receipt_email: values.email,
           },
         })
         .then((res) => {

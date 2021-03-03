@@ -14,18 +14,26 @@ module.exports = (app) => {
     async (req, res, next) => {
       try {
         const { credits } = req.body;
+        const { email, fullName, credits: balance } = await User.findOne({
+          _id: req.user.id,
+        });
+
         const paymentIntent = await stripe.paymentIntents.create({
           amount: credits * 100,
           currency: "usd",
           payment_method_types: ["card"],
-          // metadata can go here...
+          receipt_email: email,
+          description: `${credits} Quizdini credits for ${fullName}`,
+          metadata: { balance, credits },
         });
-        const { amount, currency, client_secret: clientSecret } =
+        const { amount, currency, client_secret: clientSecret, description } =
           paymentIntent || {};
+        console.log(paymentIntent);
         res.send({
           amount: currency === "usd" ? amount / 100 : amount,
           currency,
           clientSecret,
+          description,
         });
       } catch (e) {
         throw new StripeChargeError(e.message, e.code);
