@@ -294,45 +294,40 @@ export default {
       { immediate: true }
     );
 
-    // The card Element simplifies the form and minimizes the number of fields required by inserting a single, flexible input field that securely collects all necessary card details.
-
-    // Otherwise, combine cardNumber, cardExpiry, and cardCvc Elements for a flexible, multi-input card form.
-
     const handleSubmit = async ({
       errors,
       setSubmitting,
       setSubmitted,
       values,
     }) => {
-      console.log(state.cardCvc);
-      console.log(state.cardNumber.value);
-      console.log(state.cardExpiry.value);
-      console.log(values.countryCode);
-      state.stripe.confirmCardPayment(state.clientSecret, {
-        payment_method: {
-          card: {
-            ...state.cardNumber,
-            ...state.cardExpiry,
-            ...state.cardCvc,
-          },
-          billing_details: {
-            address: {
-              postal_code: values.countryCode,
-              ...(values.postalCode && { postal_code: values.postalCode }),
+      state.stripe
+        .confirmCardPayment(state.clientSecret, {
+          payment_method: {
+            // according to Stripe, any mounted element can be provided for 'card'
+            card: state.cardNumber,
+            billing_details: {
+              address: {
+                postal_code: values.countryCode,
+                ...(values.postalCode && { postal_code: values.postalCode }),
+              },
+              name: values.cardholderName,
+              email: values.email,
             },
-            name: values.cardholderName,
-            email: values.email,
+            type: "card",
+            receipt_email: values.email,
           },
-          type: "card",
-        },
-      });
-      //   .then((res) => {
-      //     console.log(res);
-      //   })
-      //   // .then((message) => router.push({ name: "Login", params: { message } }))
-      //   .catch((err) => {
-      //     console.error(err);
-      //   });
+        })
+        .then((res) => {
+          const { error, paymentIntent } = res || {};
+          console.log(JSON.stringify(paymentIntent, null, 4));
+          if (error || paymentIntent.status != "succeeded") {
+            throw new Error("Payment failed: " + error.code || res.status);
+          }
+        })
+        //   // .then((message) => router.push({ name: "Login", params: { message } }))
+        .catch((err) => {
+          console.error(err);
+        });
       // .finally(() => {
       //   setSubmitted();
       // });
