@@ -315,12 +315,24 @@ export default {
         })
         .then((res) => {
           const { error, paymentIntent } = res || {};
-          console.log(JSON.stringify(paymentIntent, null, 4));
-          if (error || paymentIntent.status != "succeeded") {
+          if (paymentIntent && paymentIntent.status === "succeeded") {
+            console.log(JSON.stringify(paymentIntent, null, 4));
+            return paymentIntent.id;
+          } else {
             throw new Error("Payment failed: " + error.code || res.status);
           }
         })
-        //   // .then((message) => router.push({ name: "Login", params: { message } }))
+        .then(async (id) => {
+          console.log(id, "in post success");
+          console.log(state.stripe);
+          const intent = await state.stripe.retrievePaymentIntent(
+            state.clientSecret
+          );
+          console.log(intent);
+          const charges = intent.charges.data;
+          console.log(charges);
+        })
+        // .then((message) => router.push({ name: "Login", params: { message } }))
         .catch((err) => {
           console.error(err);
         });
