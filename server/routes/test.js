@@ -15,7 +15,26 @@ const awsConfig = {
   logger: console.log,
 };
 
+const mongoose = require("mongoose");
+const Counter = mongoose.model("counters");
+
 module.exports = (app) => {
+  app.post("/initCounters", requireAdmin, async (req, res, next) => {
+    try {
+      // const results = await new Counter({ _id: "user", seq: 20000 }).save();
+
+      const { seq: userId } = await Counter.findOneAndUpdate(
+        { _id: "user" },
+        { $inc: { seq: 1 } },
+        { returnNewDocument: true }
+      );
+
+      res.send({ userId: userId });
+    } catch (e) {
+      next(e);
+    }
+  });
+
   app.get("/testEvent", requireAdmin, async (req, res, next) => {
     try {
       res.send("You have reached an admin route!");

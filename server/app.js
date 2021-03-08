@@ -4,7 +4,7 @@ const helmet = require("helmet");
 const logger = require("morgan");
 const path = require("path");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
@@ -12,6 +12,7 @@ const passport = require("passport");
 const errorHandler = require("./middlewares/errorHandler");
 const keys = require("./config/keys");
 
+require("./models/Counter"); // Used in id generation
 require("./models/Country"); // Used in various lookup routes
 require("./models/State"); // Used in various lookup routes
 require("./models/User"); // Load before passport, etc.,
@@ -71,7 +72,11 @@ app.use(logger("dev"));
 }*/
 
 app.use(cors());
-app.use(bodyParser.json({ limit: "50mb" }));
+// app.use(bodyParser.json({ limit: "50mb" }));
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "50mb" }));
+
 app.use(errorHandler); // Custom default, i.e., catch-all, error handler middleware
 
 app.use(

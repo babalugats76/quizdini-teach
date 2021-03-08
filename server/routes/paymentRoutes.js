@@ -8,6 +8,25 @@ const Payment = mongoose.model("payments");
 const { StripeChargeError } = require("../errors.js");
 
 module.exports = (app) => {
+  app.post("/stripe/webhook", async (req, res, next) => {
+    try {
+      const { body: event } = req;
+
+      switch (event.type) {
+        case "payment_intent.created":
+          break;
+        case "payment_intent.succeeded":
+          break;
+        case "charge.succeeded":
+          break;
+        default:
+          console.log(`Unhandled event type ${event.type}`);
+      }
+      res.send({ received: true });
+    } catch (e) {
+      next(e);
+    }
+  });
   app.post(
     "/api/create-payment-intent",
     requireLogin,
