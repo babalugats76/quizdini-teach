@@ -12,6 +12,8 @@ module.exports = (app) => {
     try {
       const { body: event } = req;
 
+      console.log(event);
+
       switch (event.type) {
         case "payment_intent.created":
           break;
