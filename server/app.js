@@ -12,7 +12,7 @@ const passport = require("passport");
 const errorHandler = require("./middlewares/errorHandler");
 const keys = require("./config/keys");
 
-require("./models/Counter"); // Used in id generation
+require("./models/Sequence"); // Used in id generation
 require("./models/Country"); // Used in various lookup routes
 require("./models/State"); // Used in various lookup routes
 require("./models/User"); // Load before passport, etc.,

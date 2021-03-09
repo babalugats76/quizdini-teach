@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const counterSchema = new Schema(
+const sequenceSchema = new Schema(
   {
-    _id: {
+    name: {
       type: String,
       required: true,
+      unique: true,
     },
     seq: {
       type: Number,
@@ -17,20 +18,26 @@ const counterSchema = new Schema(
     },
   },
   {
-    id: false,
+    id: true,
     toObject: {
       getters: true,
       virtuals: true,
       versionKey: false,
       minimize: false,
+      transform: function (doc, ret) {
+        delete ret._id;
+      },
     },
     toJSON: {
       getters: true,
       virtuals: true,
       versionKey: false,
       minimize: false,
+      transform: function (doc, ret) {
+        delete ret._id;
+      },
     },
   }
 );
 
-mongoose.model("counters", counterSchema);
+mongoose.model("sequences", sequenceSchema);

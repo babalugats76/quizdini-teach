@@ -3,6 +3,15 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema(
   {
+    customerId: {
+      type: Number,
+      required: true,
+      unique: true,
+      validate: {
+        validator: Number.isInteger,
+        message: "{VALUE} is not an integer value",
+      },
+    },
     googleId: String,
     googlePicture: String,
     credits: { type: Number, default: 0, required: true },

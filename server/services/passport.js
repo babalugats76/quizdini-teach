@@ -6,6 +6,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const md5 = require("md5");
 const keys = require("../config/keys");
 
+const Sequence = mongoose.model("sequences");
 const User = mongoose.model("users");
 
 /**
@@ -75,6 +76,13 @@ passport.use(
           return done(null, existingUser); // call Passport callback, providing error and User
         }
 
+        // Generate a new customer sequence
+        const { seq: customerId } = await Sequence.findOneAndUpdate(
+          { name: "customer" },
+          { $inc: { seq: 1 } },
+          { returnNewDocument: true }
+        );
+
         const user = await new User({
           googleId: sub,
           googlePicture: picture,
@@ -85,6 +93,7 @@ passport.use(
           stateCode: null,
           countryCode: null,
           email: email,
+          customerId: customerId,
           verified: email_verified,
           createDate: Date.now(),
           lastLoginDate: Date.now(),

@@ -16,20 +16,23 @@ const awsConfig = {
 };
 
 const mongoose = require("mongoose");
-const Counter = mongoose.model("counters");
+const Sequence = mongoose.model("sequences");
 
 module.exports = (app) => {
   app.post("/initCounters", requireAdmin, async (req, res, next) => {
     try {
-      // const results = await new Counter({ _id: "user", seq: 20000 }).save();
+      const results = await new Sequence({
+        name: "customer",
+        seq: 20000,
+      }).save();
 
-      const { seq: userId } = await Counter.findOneAndUpdate(
-        { _id: "user" },
+      const { seq: customerId } = await Sequence.findOneAndUpdate(
+        { name: "customer" },
         { $inc: { seq: 1 } },
         { returnNewDocument: true }
       );
 
-      res.send({ userId: userId });
+      res.send({ customerId });
     } catch (e) {
       next(e);
     }

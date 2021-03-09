@@ -178,9 +178,8 @@ export default {
     const initialValues = reactive({
       cardholderName: "",
       country: computed(() => {
-        const { text = "" } = countries.value.find(
-          (c) => c.value === countryCode.value
-        );
+        const { text = "" } =
+          countries.value.find((c) => c.value === countryCode.value) || {};
         return text;
       }),
       countryCode: countryCode,

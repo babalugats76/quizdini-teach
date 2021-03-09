@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const md5 = require("md5");
 const requireLogin = require("../middlewares/requireLogin");
+const Sequence = mongoose.model("sequences");
 const Country = mongoose.model("countries");
 const State = mongoose.model("states");
 const User = mongoose.model("users");
@@ -56,6 +57,13 @@ module.exports = (app) => {
 
       if (emailTaken) throw new DuplicateEmail(email);
 
+      // Generate a new customer sequence
+      const { seq: customerId } = await Sequence.findOneAndUpdate(
+        { name: "customer" },
+        { $inc: { seq: 1 } },
+        { returnNewDocument: true }
+      );
+
       // Create user record
       const user = await new User({
         title,
@@ -65,6 +73,7 @@ module.exports = (app) => {
         countryCode,
         stateCode,
         email,
+        customerId,
         username,
         password: md5(password),
         verified: false,
