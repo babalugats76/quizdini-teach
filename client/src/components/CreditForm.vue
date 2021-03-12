@@ -1,6 +1,11 @@
 <template>
   <div class="credit">
-    <div class="credit__form" :style="{ textAlign: 'center ' }">
+    <div
+      v-if="!checkout"
+      key="credits"
+      class="credit__form"
+      :style="{ textAlign: 'center ' }"
+    >
       <div class="credit__picker">
         <span class="credit__decrement" @click="decrement()">–</span>
         <input
@@ -18,9 +23,14 @@
       ><br />
       <span class="credit__unit-price"
         >${{ credits ? (amount / credits).toFixed(2) : 0.0 }}</span
-      >
+      ><br />
+      <input
+        type="button"
+        :value="`Buy ${credits} credits`"
+        @click="toggleCheckout()"
+      />
     </div>
-    <checkout-form v-if="false" :credits="credits" />
+    <checkout-form v-else key="checkout" :credits="credits" />
   </div>
 </template>
 
@@ -39,7 +49,12 @@ export default {
     const state = reactive({
       amount: 0,
       credits: 0,
+      checkout: false,
     });
+
+    const toggleCheckout = () => {
+      state.checkout = !state.checkout;
+    };
 
     const creditsToAmount = (
       credits = 0,
@@ -75,6 +90,7 @@ export default {
       creditsRef,
       decrement,
       increment,
+      toggleCheckout,
       ...toRefs(state),
     };
   },
