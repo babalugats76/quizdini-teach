@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["members"],{7277:function(e,t,n){"use strict";n.r(t);var a=n("7a23"),r=Object(a["g"])("h1",null,"Welcome to the Dashboard",-1);function u(e,t,n,u,c,o){var b=Object(a["A"])("layout-default");return Object(a["s"])(),Object(a["d"])(b,null,{default:Object(a["J"])((function(){return[r]})),_:1})}var c={name:"Dashboard"};c.render=u;t["default"]=c}}]);
-//# sourceMappingURL=members-legacy.f58128f9.js.map

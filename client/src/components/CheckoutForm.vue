@@ -113,7 +113,7 @@ import { computed, reactive, ref, toRefs, watch } from "vue";
 import { number, object, string } from "yup";
 
 import useScript from "@/compose/useScript";
-import { postPaymentIntent } from "@/api/payment";
+import { postPayment } from "@/api/payment";
 
 import UiButton from "@/components/ui/UiButton";
 import UiDatalist from "@/components/ui/UiDatalist";
@@ -219,7 +219,7 @@ export default {
     const prepareStripe = () => {
       console.log("Preparing Stripe...");
       // create payment intent
-      return postPaymentIntent({ credits: props.credits })
+      return postPayment({ credits: props.credits })
         .then((res) => {
           const { error, data } = res || {};
           if (error) {
@@ -238,7 +238,7 @@ export default {
 
           // secret key is returns (if intent successful)
           state.clientSecret = data.clientSecret;
-          state.amount = parseInt(data.amount);
+          state.amount = data.amount;
           state.currency = data.currency;
           state.description = data.description;
 

@@ -1,5 +1,5 @@
 import { post } from "@/utils/fetch";
-const INTENT_ENDPOINT = "/api/create-payment-intent";
-const postPaymentIntent = (credits) =>
-  post({ url: `${INTENT_ENDPOINT}`, data: credits });
-export { postPaymentIntent };
+const PAYMENT_ENDPOINT = "/api/payment";
+const postPayment = (credits) =>
+  post({ url: `${PAYMENT_ENDPOINT}`, data: credits });
+export { postPayment };

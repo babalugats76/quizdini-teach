@@ -1,16 +1,16 @@
 <template>
   <layout-default>
-    <checkout-form :credits="10" />
+    <credit-form />
   </layout-default>
 </template>
 
 <script>
-import { CheckoutForm } from "@/components/";
+import { CreditForm } from "@/components/";
 
 export default {
   name: "Test",
   components: {
-    CheckoutForm,
+    CreditForm,
   },
 };
 </script>

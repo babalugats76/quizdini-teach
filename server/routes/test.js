@@ -21,18 +21,29 @@ const Sequence = mongoose.model("sequences");
 module.exports = (app) => {
   app.post("/initCounters", requireAdmin, async (req, res, next) => {
     try {
+      // const results = await new Sequence({
+      //   name: "customer",
+      //   seq: 20000,
+      // }).save();
+
       const results = await new Sequence({
-        name: "customer",
-        seq: 20000,
+        name: "order",
+        seq: 10000,
       }).save();
 
-      const { seq: customerId } = await Sequence.findOneAndUpdate(
-        { name: "customer" },
+      // const { seq: customerId } = await Sequence.findOneAndUpdate(
+      //   { name: "customer" },
+      //   { $inc: { seq: 1 } },
+      //   { returnNewDocument: true }
+      // );
+
+      const { seq: orderId } = await Sequence.findOneAndUpdate(
+        { name: "order" },
         { $inc: { seq: 1 } },
         { returnNewDocument: true }
       );
 
-      res.send({ customerId });
+      res.send({ orderId });
     } catch (e) {
       next(e);
     }
