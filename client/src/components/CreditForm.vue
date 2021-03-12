@@ -84,36 +84,41 @@ export default {
 <style lang="scss" scoped>
 .credit {
   &__picker {
-    font-size: 1.5rem;
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
   &__input {
-    display: inline-block;
-    width: 5em;
+    max-width: 180px;
     padding: 0 0.75rem;
-    font-size: 1.25em;
+    font-size: 2em;
+    @include font("Montserrat", "extra-bold");
     text-align: center;
     -webkit-user-select: none; /* Chrome all / Safari all */
     -moz-user-select: none; /* Firefox all */
     -ms-user-select: none; /* IE 10+ */
     user-select: none; /* Likely future */
+    overflow: hidden;
     &:disabled {
       background-color: white;
     }
   }
   &__increment,
   &__decrement {
-    display: inline-block;
-    width: 3em;
     padding: 0 0.75rem;
     font-size: 1em;
+    @include font("Montserrat", "bold");
     text-align: center;
     font-weight: bold;
     background: white;
     color: #444;
     border-radius: 0.25em;
-    border: 1px solid grey;
     box-shadow: 1px 1px 1px grey;
     white-space: nowrap;
+    overflow: visible;
+    z-index: 2;
     cursor: pointer;
     &:active {
       background-color: #ddd;
