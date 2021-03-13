@@ -1,5 +1,6 @@
 <template>
   <div class="checkout">
+    <input type="button" value="<-- Back" @click="onBack" />
     <div v-show="stripeReady">
       <ui-form
         v-if="scriptLoaded && accountLoaded && countriesLoaded"
@@ -132,7 +133,8 @@ export default {
     UiInput,
   },
   props: ["credits"],
-  setup(props) {
+  emits: ["back"],
+  setup(props, { emit }) {
     const cardCvcRef = ref();
     const cardExpiryRef = ref();
     const cardNumberRef = ref();
@@ -156,6 +158,8 @@ export default {
       stripe: null,
       stripeReady: false,
     });
+
+    const onBack = () => emit("back");
 
     const checkoutFormSchema = object({
       credits: number().required(""),
@@ -342,6 +346,7 @@ export default {
       checkoutFormSchema,
       countries,
       handleSubmit,
+      onBack,
       initialValues,
       scriptError,
       scriptLoaded,

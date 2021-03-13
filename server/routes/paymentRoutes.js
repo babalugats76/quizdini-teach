@@ -11,12 +11,12 @@ const { StripeChargeError } = require("../errors.js");
 const creditsToAmount = (
   credits = 0,
   cost = 0,
-  unitCost = keys.creditBasePrice,
-  step = keys.creditDiscountStep,
-  discountFactor = keys.creditDiscountFactor,
-  minUnitCost = keys.creditMinPrice
+  unitCost = parseFloat(keys.creditBasePrice),
+  step = parseInt(keys.creditDiscountStep),
+  discountFactor = parseFloat(keys.creditDiscountFactor),
+  minUnitCost = parseFloat(keys.creditMinPrice)
 ) => {
-  if (credits === 0) return cost.toFixed(2);
+  if (credits === 0) return parseFloat(cost.toFixed(2));
   var t = ~~(credits / (step + 1)); // price tier
   var r = Math.max(-(unitCost * discountFactor * t) + unitCost, minUnitCost); // rate
   var u = !!(credits % step) ? credits % step : step; // units (in tier)
@@ -86,7 +86,7 @@ module.exports = (app) => {
 
       // register intent (on customer behalf)
       const paymentIntent = await stripe.paymentIntents.create({
-        amount: creditsToAmount(credits) * 100,
+        amount: Math.round(creditsToAmount(credits) * 100),
         currency: "usd",
         payment_method_types: ["card"],
         receipt_email: email,

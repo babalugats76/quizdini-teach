@@ -1,7 +1,7 @@
 <template>
   <div class="credit">
     <div
-      v-if="!checkout"
+      v-show="!checkout"
       key="credits"
       class="credit__form"
       :style="{ textAlign: 'center ' }"
@@ -19,18 +19,25 @@
         />
         <span class="credit__increment" @click="increment()">+</span>
       </div>
-      <span class="credit__total">${{ amount }}</span
+      <span class="credit__total">${{ parseFloat(amount).toFixed(2) }}</span
       ><br />
       <span class="credit__unit-price"
-        >${{ credits ? (amount / credits).toFixed(2) : 0.0 }}</span
+        >${{ credits ? (amount / credits).toFixed(2) : 0.0 }} per credit</span
       ><br />
       <input
         type="button"
         :value="`Buy ${credits} credits`"
+        :disabled="credits <= 0"
+        class="credit__checkout"
         @click="toggleCheckout()"
       />
     </div>
-    <checkout-form v-else key="checkout" :credits="credits" />
+    <checkout-form
+      v-if="checkout"
+      key="checkout"
+      :credits="credits"
+      @back="toggleCheckout()"
+    />
   </div>
 </template>
 
@@ -64,7 +71,7 @@ export default {
       discountFactor = parseFloat(process.env.VUE_APP_CREDIT_DISCOUNT_FACTOR),
       minUnitCost = parseFloat(process.env.VUE_APP_CREDIT_MIN_PRICE)
     ) => {
-      if (credits === 0) return cost.toFixed(2);
+      if (credits === 0) return parseFloat(cost.toFixed(2));
       var t = ~~(credits / (step + 1)); // price tier
       var r = Math.max(
         -(unitCost * discountFactor * t) + unitCost,
@@ -117,6 +124,7 @@ export default {
     -ms-user-select: none; /* IE 10+ */
     user-select: none; /* Likely future */
     overflow: hidden;
+    pointer-events: none;
     &:disabled {
       background-color: white;
     }
@@ -139,6 +147,13 @@ export default {
     &:active {
       background-color: #ddd;
     }
+  }
+  &__total {
+    font-size: 2em;
+  }
+  &__checkout {
+    padding: 0.25rem 0.75rem;
+    margin-top: 1rem;
   }
 }
 </style>
