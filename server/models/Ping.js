@@ -32,4 +32,4 @@ const pingSchema = new Schema(
   }
 );
 
-mongoose.model("pings", pingSchema);
+mongoose.model("ping", pingSchema, "pings");

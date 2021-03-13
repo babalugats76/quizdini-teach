@@ -88,8 +88,6 @@ export default {
 
     const increment = () => {
       state.credits = Math.min(state.credits + 1, creditsRef.value.max);
-      console.log(state.credits);
-      console.log(creditsToAmount(state.credits));
       state.amount = creditsToAmount(state.credits);
     };
 

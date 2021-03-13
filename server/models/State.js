@@ -29,4 +29,4 @@ const stateSchema = new Schema(
   }
 );
 
-mongoose.model("states", stateSchema);
+mongoose.model("state", stateSchema, "states");

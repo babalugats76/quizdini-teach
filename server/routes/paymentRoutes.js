@@ -1,11 +1,13 @@
 const mongoose = require("mongoose");
+
 const requireLogin = require("../middlewares/requireLogin");
 const keys = require("../config/keys");
 const stripe = require("stripe")(keys.stripeSecretKey);
 
-const Sequence = mongoose.model("sequences");
-const User = mongoose.model("users");
-const Payment = mongoose.model("payments");
+const Sequence = mongoose.model("sequence");
+const User = mongoose.model("user");
+const Payment = mongoose.model("payment");
+const Stripe = mongoose.model("stripe");
 const { StripeChargeError } = require("../errors.js");
 
 const creditsToAmount = (
@@ -26,21 +28,20 @@ const creditsToAmount = (
 module.exports = (app) => {
   app.post("/stripe/webhook", async (req, res, next) => {
     try {
-      const { body: event } = req;
-
-      console.log(event);
-
+      const { body: event, ip: ipAddress } = req;
+      // break not used because we want to "fallthrough" to default (for logging)
       switch (event.type) {
         case "payment_intent.created":
           console.log("payment intent created...");
-          break;
         case "payment_intent.succeeded":
           console.log("payment intent succeeded...");
-          break;
-        case "charge.succeeded":
-          break;
         default:
-          console.log(`Unhandled event type ${event.type}`);
+          await new Stripe({
+            ipAddress: ipAddress.replace("::ffff:", ""),
+            type: event.type,
+            event,
+            logDate: Date.now(),
+          }).save();
       }
       res.send({ received: true });
     } catch (e) {

@@ -20,6 +20,7 @@ require("./models/Match"); // Used in match routes, etc.
 require("./models/Token"); // Used in user routes
 require("./models/Payment"); // Used in payment route
 require("./models/Ping"); // Used in match routes (for stats)
+require("./models/Stripe"); // Used to log Stripe webhook data
 require("./services/passport"); // Since nothing is being exported
 
 const memcache = require("./services/memcache")(keys);

@@ -69,4 +69,4 @@ userSchema.virtual("fullName").get(function () {
   );
 });
 
-mongoose.model("users", userSchema);
+mongoose.model("user", userSchema, "users");

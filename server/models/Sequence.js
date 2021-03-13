@@ -40,4 +40,4 @@ const sequenceSchema = new Schema(
   }
 );
 
-mongoose.model("sequences", sequenceSchema);
+mongoose.model("sequence", sequenceSchema, "sequences");

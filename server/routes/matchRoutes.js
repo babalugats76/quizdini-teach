@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const shortid = require("shortid");
 const { format } = require("date-fns");
 const requireLogin = require("../middlewares/requireLogin");
-const User = mongoose.model("users");
-const Match = mongoose.model("matches");
-const Ping = mongoose.model("pings");
+const User = mongoose.model("user");
+const Match = mongoose.model("match");
+const Ping = mongoose.model("ping");
 const { InsufficientCredits } = require("../errors.js");
 
 module.exports = (app, memcache) => {

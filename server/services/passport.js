@@ -6,8 +6,8 @@ const LocalStrategy = require("passport-local").Strategy;
 const md5 = require("md5");
 const keys = require("../config/keys");
 
-const Sequence = mongoose.model("sequences");
-const User = mongoose.model("users");
+const Sequence = mongoose.model("sequence");
+const User = mongoose.model("user");
 
 /**
  * Function executed after strategy callback (user find)

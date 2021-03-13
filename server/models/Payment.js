@@ -56,4 +56,4 @@ paymentSchema.virtual("formatted").get(function () {
   return "$0.00";
 });
 
-mongoose.model("payments", paymentSchema);
+mongoose.model("payment", paymentSchema, "payments");

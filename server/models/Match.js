@@ -37,4 +37,4 @@ const matchSchema = new Schema(
   }
 );
 
-mongoose.model("matches", matchSchema);
+mongoose.model("match", matchSchema, "matches");

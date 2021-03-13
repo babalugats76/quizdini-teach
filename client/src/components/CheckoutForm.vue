@@ -24,6 +24,7 @@
             values,
           }"
         >
+          <div v-if="!dirty && message">{{ message }}</div>
           <div class="form-input">
             <ui-input
               v-model:value="values.email"
@@ -111,6 +112,7 @@
 
 <script>
 import { computed, reactive, ref, toRefs, watch } from "vue";
+import { useRouter } from "vue-router";
 import { number, object, string } from "yup";
 
 import useScript from "@/compose/useScript";
@@ -140,6 +142,8 @@ export default {
     const cardNumberRef = ref();
     const checkoutFormRef = ref();
 
+    const router = useRouter();
+
     const {
       email = null,
       countryCode = "",
@@ -155,6 +159,7 @@ export default {
       clientSecret: "",
       currency: "",
       description: "",
+      message: "",
       stripe: null,
       stripeReady: false,
     });
@@ -237,9 +242,6 @@ export default {
           return data;
         })
         .then((data) => {
-          console.log("data returned from intent...");
-          console.log(data);
-
           // secret key is returns (if intent successful)
           state.clientSecret = data.clientSecret;
           state.amount = data.amount;
@@ -300,6 +302,9 @@ export default {
       setSubmitted,
       values,
     }) => {
+      if (errors) return;
+      state.message = "";
+      setSubmitting();
       state.stripe
         .confirmCardPayment(state.clientSecret, {
           payment_method: {
@@ -319,19 +324,27 @@ export default {
         .then((res) => {
           const { error, paymentIntent } = res || {};
           if (paymentIntent && paymentIntent.status === "succeeded") {
-            console.log(JSON.stringify(paymentIntent, null, 4));
-            return paymentIntent.id;
+            // console.log(JSON.stringify(paymentIntent, null, 4));
+            setTimeout(() => {
+              router.push({
+                name: "Dashboard",
+                params: {
+                  message: `$${paymentIntent.amount} ==> ${paymentIntent.description}`,
+                },
+              });
+            }, 3000);
           } else {
-            throw new Error("Payment failed: " + error.code || res.status);
+            const { message = "" } = error || {};
+            state.message = "Payment failed: " + message;
+            throw new Error(message);
           }
         })
-        // .then((message) => router.push({ name: "Login", params: { message } }))
         .catch((err) => {
           console.error(err);
+        })
+        .finally(() => {
+          setSubmitted();
         });
-      // .finally(() => {
-      //   setSubmitted();
-      // });
     };
 
     const { clientSecret, ...rest } = toRefs(state);

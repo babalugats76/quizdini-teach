@@ -16,7 +16,7 @@ const awsConfig = {
 };
 
 const mongoose = require("mongoose");
-const Sequence = mongoose.model("sequences");
+const Sequence = mongoose.model("sequence");
 
 module.exports = (app) => {
   app.post("/initCounters", requireAdmin, async (req, res, next) => {

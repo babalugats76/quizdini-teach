@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 const md5 = require("md5");
 const requireLogin = require("../middlewares/requireLogin");
-const Sequence = mongoose.model("sequences");
-const Country = mongoose.model("countries");
-const State = mongoose.model("states");
-const User = mongoose.model("users");
-const Token = mongoose.model("tokens");
+const Sequence = mongoose.model("sequence");
+const Country = mongoose.model("country");
+const State = mongoose.model("state");
+const User = mongoose.model("user");
+const Token = mongoose.model("token");
 const {
   sendRecoveryEmail,
   sendRegisterEmail,

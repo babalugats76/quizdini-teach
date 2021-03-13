@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const countrySchema = new Schema(
+const stripeSchema = new Schema(
   {
-    countryId: { type: Number, required: true },
-    countryCode: { type: String, required: true },
-    countryName: { type: String, required: true },
+    ipAddress: { type: String }, // Posting server remote address
+    type: { type: String }, // See: https://stripe.com/docs/api/events/types
+    event: Schema.Types.Mixed, // Payload from Stripe
+    logDate: { type: Date, default: Date.now, required: true }, // When event was received
   },
   {
     id: false,
@@ -30,4 +31,4 @@ const countrySchema = new Schema(
   }
 );
 
-mongoose.model("country", countrySchema, "countries");
+mongoose.model("stripe", stripeSchema, "stripe");

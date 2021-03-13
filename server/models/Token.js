@@ -35,4 +35,4 @@ const tokenSchema = new Schema(
   }
 );
 
-mongoose.model("tokens", tokenSchema);
+mongoose.model("token", tokenSchema, "tokens");
