@@ -97,7 +97,7 @@ module.exports = (app) => {
           credits,
           customerId,
           orderId,
-          units: "pennies",
+          units: "cents",
         },
       });
 

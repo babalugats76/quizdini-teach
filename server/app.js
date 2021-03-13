@@ -55,7 +55,7 @@ app.use(
         scriptSrcAttr: ["'none'"],
         upgradeInsecureRequests: [],
       },
-      reportOnly: true,
+      reportOnly: false,
     },
   })
 );
