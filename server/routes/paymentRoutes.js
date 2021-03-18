@@ -29,18 +29,20 @@ module.exports = (app) => {
   app.post("/stripe/webhook", async (req, res, next) => {
     try {
       const { body: event, ip: ipAddress } = req;
-      // break not used because we want to "fallthrough" to default (for logging)
+
+      // LOG EVENT (for posterity and troubleshooting)
+      await new Stripe({
+        ipAddress: ipAddress.replace("::ffff:", ""),
+        type: event.type,
+        event,
+      }).save();
+
       switch (event.type) {
-        case "payment_intent.created":
-          console.log("payment intent created...");
-          break;
-        case "payment_intent.payment_failed":
-          console.log("payment intent failed...");
+        case "payment_intent.canceled":
+          console.log("payment intent canceled...");
           break;
         case "payment_intent.succeeded":
           console.log("payment intent succeeded...");
-
-          console.log(event.data.object.metadata);
 
           // DESTRUCTURE EVENT DATA
           const {
@@ -57,13 +59,6 @@ module.exports = (app) => {
             },
           } = event.data.object;
 
-          console.log(
-            "destructure: %s %s %s",
-            amount,
-            charges.data[0],
-            created
-          );
-
           // LOOKUP CUSTOMER (using customerId from metadata)
           const { id: userId } = await User.findOne({
             customerId: parseInt(customerId),
@@ -79,7 +74,7 @@ module.exports = (app) => {
             amount: parseInt(amount),
             currency,
             description,
-            status: event.type.split(".")[0],
+            status: event.type.split(".")[1],
             paymentDate: new Date(created * 1000),
             receiptUrl: charges.data[0].receipt_url,
             charge: charges.data[0],
@@ -102,22 +97,12 @@ module.exports = (app) => {
             "=>",
             newBalance
           );
-
           break;
         default:
           break;
       }
-
-      await new Stripe({
-        ipAddress: ipAddress.replace("::ffff:", ""),
-        type: event.type,
-        event,
-      }).save();
-
       res.send({ received: true });
     } catch (e) {
-      console.log(e);
-      //throw new StripeChargeError(e);
       next(e);
     }
   });
@@ -133,8 +118,7 @@ module.exports = (app) => {
    * @param path  Hard-coded to /api/payment
    * @param [middlewares]  Optional middleware to inject, e.g., requireLogin (forces authentication)
    * @param callback  Express callback for dealing with incoming request (req) and outgoing response (res)
-   * @return PaymentIntent object
-   * @throws StripeChargeError
+   * @return object
    * */
   app.post("/api/payment", requireLogin, async (req, res, next) => {
     try {
@@ -170,7 +154,6 @@ module.exports = (app) => {
           credits,
           customerId,
           orderId,
-          units: "cents",
         },
       });
 
@@ -192,86 +175,9 @@ module.exports = (app) => {
         ...metadata,
       });
     } catch (e) {
-      throw new StripeChargeError(e.message, e.code);
+      next(e);
     }
   });
-
-  /**
-   * Processes Stripe payments using Stripe Elements API
-   *
-   * Customers purchase Quizdini credits
-   * Creates Stripe charge object and serializes to payments
-   * Email information sent to Stripe (for sending of receipt)
-   * `credit` field in users is incremented
-   *
-   * @param path  Hard-coded to /api/payment
-   * @param [middlewares]  Optional middleware to inject, e.g., requireLogin (forces authentication)
-   * @param callback  Express callback for dealing with incoming request (req) and outgoing response (res)
-   * @return Payment object
-   * @throws StripeChargeError
-   */
-  // app.post("/api/payment", requireLogin, async (req, res, next) => {
-  //   try {
-  //     const { tokenId, amount, credits, cardholderName } = req.body;
-  //     const { email, fullName } = await User.findOne({ _id: req.user.id });
-
-  //     // STRIPE CHARGES MUST BE EXPRESSED IN PENNIES!
-  //     const pennies = parseInt(amount) * 100,
-  //       description = `${credits} Quizdini credits for ${fullName}`,
-  //       currency = "usd",
-  //       units = "pennies";
-
-  //     let charge;
-
-  //     try {
-  //       charge = await stripe.charges.create({
-  //         amount: pennies,
-  //         currency,
-  //         receipt_email: email,
-  //         description,
-  //         source: tokenId,
-  //         metadata: {
-  //           credits,
-  //           token: tokenId,
-  //           cardholderName,
-  //         },
-  //       });
-  //     } catch (e) {
-  //       throw new StripeChargeError(e.message, e.code);
-  //     }
-
-  //     const payment = await new Payment({
-  //       user_id: req.user.id,
-  //       paymentId: charge.id,
-  //       name: charge.billing_details.name,
-  //       email: charge.receipt_email,
-  //       description: charge.description,
-  //       credits: parseInt(charge.metadata.credits),
-  //       amount: charge.amount,
-  //       currency: charge.currency,
-  //       units,
-  //       status: charge.status,
-  //       paymentDate: new Date(charge.created * 1000),
-  //       receiptUrl: charge.receipt_url,
-  //       charge: charge,
-  //       createDate: Date.now(),
-  //     }).save();
-
-  //     const user = await User.findByIdAndUpdate(
-  //       req.user.id,
-  //       {
-  //         $inc: { credits: credits },
-  //       },
-  //       { new: true }
-  //     );
-
-  //     console.log("Credit Purchase: %s %s %s", user.fullName, payment.credits, payment.paymentId);
-  //     const message = `${credits} credits have been added to your account.`;
-  //     res.send({ message });
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // });
 
   app.get("/api/payment/:id", requireLogin, async (req, res, next) => {
     try {

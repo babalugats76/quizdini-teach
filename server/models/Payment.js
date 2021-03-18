@@ -5,7 +5,7 @@ const paymentSchema = new Schema(
   {
     user_id: { type: Schema.Types.ObjectId, required: true }, // Manual reference (like a foreign key)
     customerId: { type: Number }, // Unique customer id (from metadata)
-    orderId: { type: String }, // Unique id from payment processor (from metadata)
+    orderId: { type: Number }, // Unique id from payment processor (from metadata)
     balance: { type: Number }, // previous balance in terms of credits before purchase (from metadata)
     credits: { type: Number }, // credits (from metadata)
     amount: { type: Number }, // in pennies (Stripe convention)
@@ -15,7 +15,7 @@ const paymentSchema = new Schema(
     paymentDate: { type: Date }, // event.created (seconds since epoch converted to Date object)
     receiptUrl: { type: String }, // only if there is a charge, e.g., `payment_intent.succeeded`
     charge: { type: Schema.Types.Mixed }, // Reserved (when processor is Stripe)
-    units: { type: String, default: "pennies" }, // used for formatting / preparation for how things may change in future
+    units: { type: String, default: "cents" }, // used for formatting / preparation for how things may change in future
     processor: { type: String, default: "Stripe" }, // preparation for how things may change in future
     createDate: { type: Date, default: Date.now, required: true }, // create date/time
   },
@@ -46,7 +46,7 @@ const paymentSchema = new Schema(
 
 paymentSchema.virtual("amountFormatted").get(function () {
   if (
-    this.units.toLowerCase() === "pennies" &&
+    this.units.toLowerCase() === "cents" &&
     this.currency.toLowerCase() === "usd"
   ) {
     return Number(this.amount / 100).toLocaleString("en-US", {
