@@ -6,7 +6,7 @@ const stripeSchema = new Schema(
     ipAddress: { type: String }, // Posting server remote address
     type: { type: String }, // See: https://stripe.com/docs/api/events/types
     event: Schema.Types.Mixed, // Payload from Stripe
-    logDate: { type: Date, default: Date.now, required: true }, // When event was received
+    createDate: { type: Date, default: Date.now, required: true }, // create date/time (when event was received)
   },
   {
     id: false,

@@ -325,6 +325,8 @@ export default {
           const { error, paymentIntent } = res || {};
           if (paymentIntent && paymentIntent.status === "succeeded") {
             // console.log(JSON.stringify(paymentIntent, null, 4));
+            // call api that adds credits to account
+
             setTimeout(() => {
               router.push({
                 name: "Dashboard",

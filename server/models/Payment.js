@@ -4,19 +4,19 @@ const { Schema } = mongoose;
 const paymentSchema = new Schema(
   {
     user_id: { type: Schema.Types.ObjectId, required: true }, // Manual reference (like a foreign key)
-    processor: { type: String, default: "Stripe" },
-    paymentId: { type: String }, // Unique id from payment processor
-    name: { type: String },
-    email: { type: String, trim: true },
-    description: { type: String },
-    credits: { type: Number },
-    amount: { type: Number },
-    currency: { type: String },
-    units: { type: String },
-    status: { type: String },
-    paymentDate: { type: Date },
-    receiptUrl: { type: String },
+    customerId: { type: Number }, // Unique customer id (from metadata)
+    orderId: { type: String }, // Unique id from payment processor (from metadata)
+    balance: { type: Number }, // previous balance in terms of credits before purchase (from metadata)
+    credits: { type: Number }, // credits (from metadata)
+    amount: { type: Number }, // in pennies (Stripe convention)
+    currency: { type: String }, // See: https://www.iso.org/iso-4217-currency-codes.html
+    description: { type: String }, // e.g., 11 Quizdini credits for James Colestock
+    status: { type: String }, // second part of Stripe event, e.g., payment_intent.succeeded --> succeeded
+    paymentDate: { type: Date }, // event.created (seconds since epoch converted to Date object)
+    receiptUrl: { type: String }, // only if there is a charge, e.g., `payment_intent.succeeded`
     charge: { type: Schema.Types.Mixed }, // Reserved (when processor is Stripe)
+    units: { type: String, default: "pennies" }, // used for formatting / preparation for how things may change in future
+    processor: { type: String, default: "Stripe" }, // preparation for how things may change in future
     createDate: { type: Date, default: Date.now, required: true }, // create date/time
   },
   {
@@ -44,14 +44,15 @@ const paymentSchema = new Schema(
   }
 );
 
-paymentSchema.virtual("formatted").get(function () {
+paymentSchema.virtual("amountFormatted").get(function () {
   if (
     this.units.toLowerCase() === "pennies" &&
     this.currency.toLowerCase() === "usd"
   ) {
-    return `$${Number(this.amount / 100)
-      .toFixed(2)
-      .toLocaleString()}`;
+    return Number(this.amount / 100).toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
   }
   return "$0.00";
 });

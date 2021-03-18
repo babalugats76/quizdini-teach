@@ -33,18 +33,91 @@ module.exports = (app) => {
       switch (event.type) {
         case "payment_intent.created":
           console.log("payment intent created...");
+          break;
+        case "payment_intent.payment_failed":
+          console.log("payment intent failed...");
+          break;
         case "payment_intent.succeeded":
           console.log("payment intent succeeded...");
-        default:
-          await new Stripe({
-            ipAddress: ipAddress.replace("::ffff:", ""),
-            type: event.type,
-            event,
-            logDate: Date.now(),
+
+          console.log(event.data.object.metadata);
+
+          // DESTRUCTURE EVENT DATA
+          const {
+            amount,
+            charges,
+            created,
+            currency,
+            description,
+            metadata: {
+              balance = 0,
+              credits = 0,
+              customerId = null,
+              orderId = null,
+            },
+          } = event.data.object;
+
+          console.log(
+            "destructure: %s %s %s",
+            amount,
+            charges.data[0],
+            created
+          );
+
+          // LOOKUP CUSTOMER (using customerId from metadata)
+          const { id: userId } = await User.findOne({
+            customerId: parseInt(customerId),
+          });
+
+          // INSERT INTO PAYMENT TABLE
+          const payment = await new Payment({
+            user_id: userId,
+            customerId: parseInt(customerId),
+            orderId: parseInt(orderId),
+            balance: parseInt(balance),
+            credits: parseInt(credits),
+            amount: parseInt(amount),
+            currency,
+            description,
+            status: event.type.split(".")[0],
+            paymentDate: new Date(created * 1000),
+            receiptUrl: charges.data[0].receipt_url,
+            charge: charges.data[0],
           }).save();
+
+          // ADD CREDITS TO YOUR ACCOUNT
+          const { credits: newBalance } = await User.findByIdAndUpdate(
+            userId,
+            {
+              $inc: { credits: credits },
+            },
+            { new: true }
+          );
+
+          // OUTPUT TO LOG
+          console.log(
+            "Credit Purchase: %s %s %s %s",
+            description,
+            balance,
+            "=>",
+            newBalance
+          );
+
+          break;
+        default:
+          break;
       }
+
+      await new Stripe({
+        ipAddress: ipAddress.replace("::ffff:", ""),
+        type: event.type,
+        event,
+      }).save();
+
       res.send({ received: true });
     } catch (e) {
+      console.log(e);
+      //throw new StripeChargeError(e);
       next(e);
     }
   });
