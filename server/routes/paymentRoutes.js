@@ -37,16 +37,12 @@ module.exports = (app) => {
         event,
       }).save();
 
-      switch (event.type) {
-        case "payment_intent.canceled":
-          console.log("payment intent canceled...");
-          // still needs testing
-          break;
-        case "payment_intent.succeeded":
-          console.log("payment intent succeeded...");
+      console.log("Stripe webhook received %s", event.type);
 
+      switch (event.type) {
+        case "payment_intent.succeeded":
           // DESTRUCTURE EVENT DATA
-          const {
+          var {
             amount,
             charges,
             created,
@@ -60,43 +56,97 @@ module.exports = (app) => {
             },
           } = event.data.object;
 
-          // LOOKUP CUSTOMER (using customerId from metadata)
-          const { id: userId } = await User.findOne({
-            customerId: parseInt(customerId),
-          });
-
-          // INSERT INTO PAYMENT TABLE
-          const payment = await new Payment({
-            user_id: userId,
-            orderId: parseInt(orderId),
-            balance: parseInt(balance),
-            credits: parseInt(credits),
-            amount: parseInt(amount),
-            currency,
-            description,
-            status: event.type.split(".")[1], // grab just content after period
-            paymentDate: new Date(created * 1000), // convert to microseconds before casting
-            receiptUrl: charges.data[0].receipt_url, // should only be one charge, so index 0 is used
-            charge: charges.data[0], // ""
-          }).save();
-
-          // ADD CREDITS TO YOUR ACCOUNT
-          const { credits: newBalance } = await User.findByIdAndUpdate(
-            userId,
+          // LOOKUP CUSTOMER & ADD CREDITS
+          var { credits: newBalance, id: userId } = await User.findOneAndUpdate(
+            { customerId: parseInt(customerId) },
             {
-              $inc: { credits: credits },
+              $inc: { credits: parseInt(credits) },
             },
             { new: true }
           );
 
+          // INSERT INTO PAYMENT TABLE
+          await new Payment({
+            user_id: userId,
+            orderId: parseInt(orderId),
+            balance: parseInt(newBalance),
+            credits: parseInt(credits),
+            amount: parseInt(amount),
+            currency,
+            description,
+            receiptUrl: charges.data[0].receipt_url, // should only be one charge, so index 0 is used
+            status: event.type.split(".")[1], // grab just content after period
+            charge: charges.data[0], // charge if positive and refund if negative
+            chargeDate: new Date(created * 1000), // convert to microseconds before casting
+          }).save();
+
           // OUTPUT TO LOG
           console.log(
-            "Credit Purchase: %s %s %s %s",
+            "Purchase: %s %s %s %s",
             description,
             balance,
             "=>",
             newBalance
           );
+          break;
+        case "charge.refunded":
+          // DESTRUCTURE EVENT DATA
+          var {
+            amount, // original amount
+            amount_refunded, // vs. refund amount
+            created,
+            currency,
+            metadata: { credits = 0, customerId = null, orderId = null },
+            receipt_url,
+            refunds,
+          } = event.data.object;
+
+          // LOOKUP CUSTOMER (using customerId from metadata)
+          var { id: userId, credits: balance, fullName } = await User.findOne({
+            customerId: parseInt(customerId),
+          });
+
+          // DETERMINE # CREDITS TO CLAW BACK
+          const creditsToRefund = parseInt(
+            amount === amount_refunded ? credits : 0
+          );
+
+          // LOOKUP CUSTOMER & CLAWBACK CREDITS
+          var { credits: newBalance } = await User.findByIdAndUpdate(
+            userId,
+            {
+              $inc: { credits: -1 * creditsToRefund },
+            },
+            { new: true }
+          );
+
+          // INSERT INTO PAYMENT TABLE
+          await new Payment({
+            user_id: userId,
+            type: "REFUND",
+            orderId: parseInt(orderId), // refers to original purchase
+            balance: parseInt(newBalance), // after any applicable credits are clawed back
+            credits: creditsToRefund, // refunded credits
+            amount: parseInt(amount_refunded), // of refund (int because stored in cents)
+            currency,
+            description: "Refund issued",
+            receiptUrl: receipt_url, //charge object store this at a "higher" level (at base object level)
+            charge: refunds.data[0], // will contain refund if type is 'charge.refunded'
+            chargeDate: new Date(created * 1000), // convert to microseconds before casting
+          }).save();
+
+          // OUTPUT TO LOG
+          console.log(
+            "Refund: %s %s %s %s",
+            `${Number(parseInt(amount_refunded) / 100).toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })} refunded to ${fullName}`,
+            balance,
+            "=>",
+            newBalance
+          );
+
           break;
         default:
           break;
@@ -198,7 +248,7 @@ module.exports = (app) => {
     try {
       //throw new Error("Test payment error handling...");
       const payments = await Payment.find({ user_id: req.user.id }).sort({
-        paymentDate: -1,
+        chargeDate: -1,
       });
       if (!payments) return res.send([]); // Return empty Array to signify not found
       res.send(payments);
