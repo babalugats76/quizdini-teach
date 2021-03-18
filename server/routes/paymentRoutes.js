@@ -8,7 +8,7 @@ const Sequence = mongoose.model("sequence");
 const User = mongoose.model("user");
 const Payment = mongoose.model("payment");
 const Stripe = mongoose.model("stripe");
-const { StripeChargeError } = require("../errors.js");
+// const { StripeChargeError } = require("../errors.js");
 
 const creditsToAmount = (
   credits = 0,
@@ -30,7 +30,7 @@ module.exports = (app) => {
     try {
       const { body: event, ip: ipAddress } = req;
 
-      // LOG EVENT (for posterity and troubleshooting)
+      // LOG EVENT
       await new Stripe({
         ipAddress: ipAddress.replace("::ffff:", ""),
         type: event.type,
@@ -40,6 +40,7 @@ module.exports = (app) => {
       switch (event.type) {
         case "payment_intent.canceled":
           console.log("payment intent canceled...");
+          // still needs testing
           break;
         case "payment_intent.succeeded":
           console.log("payment intent succeeded...");
@@ -67,17 +68,16 @@ module.exports = (app) => {
           // INSERT INTO PAYMENT TABLE
           const payment = await new Payment({
             user_id: userId,
-            customerId: parseInt(customerId),
             orderId: parseInt(orderId),
             balance: parseInt(balance),
             credits: parseInt(credits),
             amount: parseInt(amount),
             currency,
             description,
-            status: event.type.split(".")[1],
-            paymentDate: new Date(created * 1000),
-            receiptUrl: charges.data[0].receipt_url,
-            charge: charges.data[0],
+            status: event.type.split(".")[1], // grab just content after period
+            paymentDate: new Date(created * 1000), // convert to microseconds before casting
+            receiptUrl: charges.data[0].receipt_url, // should only be one charge, so index 0 is used
+            charge: charges.data[0], // ""
           }).save();
 
           // ADD CREDITS TO YOUR ACCOUNT

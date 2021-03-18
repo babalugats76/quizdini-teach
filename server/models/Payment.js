@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 const paymentSchema = new Schema(
   {
     user_id: { type: Schema.Types.ObjectId, required: true }, // Manual reference (like a foreign key)
-    customerId: { type: Number }, // Unique customer id (from metadata)
     orderId: { type: Number }, // Unique id from payment processor (from metadata)
     balance: { type: Number }, // previous balance in terms of credits before purchase (from metadata)
     credits: { type: Number }, // credits (from metadata)
