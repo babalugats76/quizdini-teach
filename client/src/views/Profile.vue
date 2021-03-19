@@ -12,7 +12,7 @@
 <script>
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import { PAYMENTS } from "@/store/types";
+import { AUTH, PAYMENTS } from "@/store/types";
 import { useRoute } from "vue-router";
 
 import { PaymentTable } from "@/components";
@@ -26,11 +26,13 @@ export default {
     const store = useStore();
     const route = useRoute();
     const { message: flashMessage } = route.params;
+    const fetchAuth = () => store.dispatch(`auth/${AUTH.FETCH}`);
     const fetchPayments = () => store.dispatch(`payments/${PAYMENTS.FETCH}`);
     const payments = computed(() => store.getters["payments/all"]);
     const paymentsLoaded = computed(() => store.getters["payments/loaded"]);
     const paymentsLoading = computed(() => store.getters["payments/loading"]);
     onMounted(() => {
+      fetchAuth();
       fetchPayments();
     });
     return {
