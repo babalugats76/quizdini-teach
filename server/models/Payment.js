@@ -62,4 +62,8 @@ paymentSchema.virtual("amountFormatted").get(function () {
   return formatted;
 });
 
+paymentSchema.virtual("creditsFormatted").get(function () {
+  return this.type === "REFUND" ? `(${this.credits})` : this.credits;
+});
+
 mongoose.model("payment", paymentSchema, "payments");
