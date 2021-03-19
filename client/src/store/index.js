@@ -3,6 +3,7 @@ import test from "./modules/test";
 import account from "./modules/account";
 import auth from "./modules/auth";
 import countries from "./modules/countries";
+import payments from "./modules/payments";
 import states from "./modules/states";
 // import { apiHelperPlugin } from "./apiHelper";
 import actions from "./actions";
@@ -17,6 +18,7 @@ const store = createStore({
     account,
     auth,
     countries,
+    payments,
     states,
   },
   strict: debug,

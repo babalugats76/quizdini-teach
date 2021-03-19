@@ -170,7 +170,7 @@ module.exports = (app) => {
    * @param callback  Express callback for dealing with incoming request (req) and outgoing response (res)
    * @return object
    * */
-  app.post("/api/payment", requireLogin, async (req, res, next) => {
+  app.post("/api/payments", requireLogin, async (req, res, next) => {
     try {
       // # of credits requested
       const { credits = 0 } = req.body;
@@ -229,7 +229,7 @@ module.exports = (app) => {
     }
   });
 
-  app.get("/api/payment/:id", requireLogin, async (req, res, next) => {
+  app.get("/api/payments/:id", requireLogin, async (req, res, next) => {
     try {
       const payment = await Payment.findOne({
         paymentId: req.params.id,

@@ -64,6 +64,17 @@ const routes = [
     props: true,
   },
   {
+    path: "/profile",
+    name: "Profile",
+    component: () =>
+      import(/* webpackChunkName: "members" */ "../views/Profile.vue"),
+    meta: {
+      navItem: false,
+      auth: true,
+    },
+    props: true,
+  },
+  {
     path: "/:catchAll(.*)",
     name: "Not Found",
     component: () =>

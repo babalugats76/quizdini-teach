@@ -9,5 +9,6 @@ const generateMutations = (type, update = false) => ({
 export const ACCOUNT = generateMutations("ACCOUNT", true);
 export const AUTH = generateMutations("AUTH");
 export const COUNTRIES = generateMutations("COUNTRIES");
+export const PAYMENTS = generateMutations("PAYMENTS");
 export const STATES = generateMutations("STATES");
 export const TOGGLE_LOADING = "TOGGLE_LOADING";

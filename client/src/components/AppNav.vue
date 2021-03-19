@@ -12,22 +12,23 @@
       tabindex="-1"
       >logout</a
     >
-    <span
-      v-if="auth.loggedIn && auth.accountType === 'google'"
-      class="nav__item badge"
-    >
-      <img
-        v-if="auth.accountType === 'google'"
-        :src="auth.googlePicture"
-        class="badge--google"
-      />
-    </span>
-    <span
-      v-if="auth.loggedIn && auth.accountType === 'local'"
+    <router-link
+      v-if="auth.loggedIn"
+      key="profile"
       class="nav__item nav__item--lc"
-    >
-      {{ auth.username }}
-    </span>
+      :to="{ name: 'Profile' }"
+      tabindex="-1"
+      ><span v-if="auth.accountType === 'google'" class="badge">
+        <img
+          v-if="auth.accountType === 'google'"
+          :src="auth.googlePicture"
+          class="badge--google"
+        />
+      </span>
+      <span v-if="auth.accountType === 'local'">
+        {{ auth.username }}
+      </span>
+    </router-link>
   </nav>
 </template>
 
@@ -93,6 +94,7 @@ export default {
     @include font("Montserrat", "extra-bold");
     text-align: center;
     text-transform: capitalize;
+    outline: none;
     &--lc {
       text-transform: none;
     }

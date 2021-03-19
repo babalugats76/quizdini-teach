@@ -1,6 +1,7 @@
 import CheckoutForm from "./CheckoutForm";
 import CreditForm from "./CreditForm";
 import LoginForm from "./LoginForm";
+import PaymentTable from "./PaymentTable";
 import RegisterForm from "./RegisterForm";
 import UiButton from "./ui/UiButton";
 import UiCheckbox from "./ui/UiCheckbox";
@@ -13,6 +14,7 @@ export {
   CheckoutForm,
   CreditForm,
   LoginForm,
+  PaymentTable,
   RegisterForm,
   UiButton,
   UiCheckbox,

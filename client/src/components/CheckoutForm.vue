@@ -116,7 +116,7 @@ import { useRouter } from "vue-router";
 import { number, object, string } from "yup";
 
 import useScript from "@/compose/useScript";
-import { postPayment } from "@/api/payment";
+import { postPayment } from "@/api/payments";
 
 import UiButton from "@/components/ui/UiButton";
 import UiDatalist from "@/components/ui/UiDatalist";
