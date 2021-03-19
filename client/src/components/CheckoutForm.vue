@@ -329,7 +329,7 @@ export default {
 
             setTimeout(() => {
               router.push({
-                name: "Dashboard",
+                name: "Profile",
                 params: {
                   message: `$${paymentIntent.amount} ==> ${paymentIntent.description}`,
                 },
