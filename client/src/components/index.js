@@ -9,7 +9,14 @@ import UiDatalist from "./ui/UiDatalist";
 import UiForm from "./ui/UiForm";
 import UiInput from "./ui/UiInput";
 import UiMessage from "./ui/UiMessage";
-import UiTable from "./ui/UiTable";
+import {
+  UiTable,
+  UiTableBody,
+  UiTableHeader,
+  UiTableRow,
+  UiTableCell,
+  UiTableHeaderCell,
+} from "./ui/UiTable";
 
 export {
   CheckoutForm,
@@ -24,4 +31,9 @@ export {
   UiInput,
   UiMessage,
   UiTable,
+  UiTableBody,
+  UiTableHeader,
+  UiTableRow,
+  UiTableCell,
+  UiTableHeaderCell,
 };

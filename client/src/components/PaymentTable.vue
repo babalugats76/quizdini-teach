@@ -1,10 +1,53 @@
+<template>
+  <tbl class="payment-table">
+    <tbl-header>
+      <tbl-row>
+        <tbl-col>ID</tbl-col>
+        <tbl-col>Date</tbl-col>
+        <tbl-col>Description</tbl-col>
+        <tbl-col>Amount</tbl-col>
+        <tbl-col>Credits</tbl-col>
+        <tbl-col>Balance</tbl-col>
+      </tbl-row>
+    </tbl-header>
+    <tbl-body>
+      <tbl-row v-for="p in payments" :key="`${p.orderId} + '|' + ${p.type}`">
+        <tbl-cell
+          ><a :href="p.receiptUrl" target="_blank">{{ p.orderId }}</a></tbl-cell
+        >
+        <tbl-cell>{{
+          p.chargeDate &&
+          format(Date.parse(p.chargeDate), "MMM d, yyyy, h:mm aa")
+        }}</tbl-cell>
+        <tbl-cell>{{ p.description }}</tbl-cell>
+        <tbl-cell>{{ p.amountFormatted }}</tbl-cell>
+        <tbl-cell>{{ p.creditsFormatted }}</tbl-cell>
+        <tbl-cell>{{ p.balance }}</tbl-cell>
+      </tbl-row>
+    </tbl-body>
+  </tbl>
+</template>
 <script>
 const { format } = require("date-fns");
+
+import {
+  UiTable,
+  UiTableBody,
+  UiTableHeader,
+  UiTableRow,
+  UiTableCell,
+  UiTableHeaderCell,
+} from "@/components/ui/UiTable";
 
 export default {
   name: "PaymentTable",
   components: {
-    // UiTable,
+    tbl: UiTable,
+    "tbl-header": UiTableHeader,
+    "tbl-body": UiTableBody,
+    "tbl-row": UiTableRow,
+    "tbl-cell": UiTableCell,
+    "tbl-col": UiTableHeaderCell,
   },
   props: {
     payments: {
@@ -13,120 +56,33 @@ export default {
       required: true,
     },
   },
-  methods: {
-    header() {
-      return (
-        <div class="ui-table__row ui-table__row--header">
-          <div class="ui-table__cell ui-table__cell--heading">Order #</div>
-          <div class="ui-table__cell ui-table__cell--date ui-table__cell--heading">
-            Date
-          </div>
-          <div class="ui-table__cell ui-table__cell--heading">Description</div>
-          <div class="ui-table__cell ui-table__cell--heading">Amount</div>
-          <div class="ui-table__cell ui-table__cell--heading">Credits</div>
-          <div class="ui-table__cell ui-table__cell--heading">Balance</div>
-        </div>
-      );
-    },
-    rows() {
-      return (
-        this.payments.length &&
-        this.payments.map((row) => {
-          return (
-            <div class="ui-table__row">
-              <div class="ui-table__cell ui-table__cell--data">
-                <a
-                  href={row.receiptUrl}
-                  target="_blank"
-                  style={{ textDecoration: "underline" }}
-                >
-                  {row.orderId}
-                </a>
-              </div>
-              <div class="ui-table__cell ui-table__cell--date ui-table__cell--data">
-                {row.chargeDate &&
-                  format(Date.parse(row.chargeDate), "MMM d, yyyy, h:mm aa")}
-              </div>
-              <div class="ui-table__cell ui-table__cell--data">
-                {row.description}
-              </div>
-              <div class="ui-table__cell ui-table__cell--data">
-                {row.amountFormatted}
-              </div>
-              <div class="ui-table__cell ui-table__cell--data">
-                {row.creditsFormatted}
-              </div>
-              <div class="ui-table__cell ui-table__cell--data">
-                {row.balance}
-              </div>
-            </div>
-          );
-        })
-      );
-    },
-  },
-  render() {
-    return (
-      <div class="ui-table--responsive">
-        {this.header()}
-        {this.rows()}
-      </div>
-    );
+  setup() {
+    return {
+      format,
+    };
   },
 };
 </script>
 
 <style lang="scss">
-$breakpoint: 500px;
-
-.ui-table {
-  $tbl: &;
-  &__cell {
-    display: block;
-    padding: 0.25rem 0.5rem;
-    width: 100% !important;
+.payment-table {
+  td:nth-of-type(1):before {
+    content: "ID";
   }
-  &--responsive {
-    #{$tbl}__row {
-      &--header {
-        background-color: #ccc;
-      }
-    }
+  td:nth-of-type(2):before {
+    content: "Date";
   }
-}
-
-/* Responsive
-==================================== */
-@media all and (min-width: $breakpoint) {
-  body {
-    background-color: rgba(0, 0, 255, 0.05);
+  td:nth-of-type(3):before {
+    content: "Description";
   }
-
-  .ui-table--responsive .ui-table__cell--date {
-    width: 200px !important;
+  td:nth-of-type(4):before {
+    content: "Amount";
   }
-  .ui-table {
-    $tbl: &;
-    &--responsive {
-      #{$tbl}__row {
-        display: flex;
-      }
-      #{$tbl}__cell {
-        flex: 0;
-      }
-    }
+  td:nth-of-type(5):before {
+    content: "Credits";
   }
-}
-
-table,
-tr,
-td,
-th {
-  padding: 0.25rem 0.5rem;
-  border: 1px solid #ccc;
-}
-
-table tr:first-child {
-  text-transform: uppercase;
+  td:nth-of-type(6):before {
+    content: "Balance";
+  }
 }
 </style>
