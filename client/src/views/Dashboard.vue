@@ -2,6 +2,7 @@
   <layout-default>
     <h1 v-if="flashMessage">{{ flashMessage }}</h1>
     <h1>Welcome to the Dashboard</h1>
+    <match-list></match-list>
   </layout-default>
 </template>
 
@@ -12,8 +13,13 @@ import { useStore } from "vuex";
 import { AUTH } from "@/store/types";
 import { useRoute } from "vue-router";
 
+import { MatchList } from "@/components/";
+
 export default {
   name: "Dashboard",
+  components: {
+    MatchList,
+  },
   setup() {
     const store = useStore();
     const route = useRoute();

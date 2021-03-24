@@ -25,6 +25,27 @@ export const get = async ({ url, config = AXIOS_CONFIG }) => {
 };
 
 /***
+ * Calls PUT method of url using axios
+ * @param {string} url     server URL used in request
+ * @param {object} data    body of the request
+ * @param {string} id      (Optional) id (of item) to append to resource url
+ * @param {object} config  options used in request
+ * @returns {object}       data or error object (from server)
+ */
+export const put = async ({ url, data, id = null, config = AXIOS_CONFIG }) => {
+  try {
+    const path = url + (id ? `/${id}` : "");
+    const res = await axios.put({ path, data, config });
+    return { data: res.data };
+  } catch (err) {
+    return {
+      data: err.response.data,
+      error: true,
+    };
+  }
+};
+
+/***
  * Calls POST method of url using axios
  *
  * @param {string} url     server URL used in request

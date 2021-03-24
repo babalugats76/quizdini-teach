@@ -8,7 +8,7 @@ const Ping = mongoose.model("ping");
 const { InsufficientCredits } = require("../errors.js");
 
 module.exports = (app, memcache) => {
-  app.post("/api/match/", requireLogin, async (req, res, next) => {
+  app.post("/api/matches/", requireLogin, async (req, res, next) => {
     try {
       const { title, instructions, matches, options, published } = req.body;
 
@@ -37,7 +37,7 @@ module.exports = (app, memcache) => {
     }
   });
 
-  app.get("/api/match/:id", requireLogin, async (req, res, next) => {
+  app.get("/api/matches/:id", requireLogin, async (req, res, next) => {
     try {
       const match = await Match.findOne({
         user_id: req.user.id,
@@ -50,7 +50,7 @@ module.exports = (app, memcache) => {
     }
   });
 
-  app.put("/api/match/:id", requireLogin, async (req, res, next) => {
+  app.put("/api/matches/:id", requireLogin, async (req, res, next) => {
     try {
       //throw new Error('Test handling match update error...');
       const { title, instructions, matches, options, published } = req.body;
@@ -81,7 +81,7 @@ module.exports = (app, memcache) => {
     }
   });
 
-  app.delete("/api/match/:id", requireLogin, async (req, res, next) => {
+  app.delete("/api/matches/:id", requireLogin, async (req, res, next) => {
     try {
       const match = await Match.findOneAndDelete({
         user_id: req.user.id,
@@ -115,7 +115,7 @@ module.exports = (app, memcache) => {
     }
   });
 
-  app.get("/api/match/stats/:id", requireLogin, async (req, res, next) => {
+  app.get("/api/matches/:id/stats/", requireLogin, async (req, res, next) => {
     try {
       let results;
 

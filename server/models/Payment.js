@@ -3,7 +3,6 @@ const { Schema } = mongoose;
 
 const paymentSchema = new Schema(
   {
-    user_id: { type: Schema.Types.ObjectId, required: true }, // Manual reference (like a foreign key)
     orderId: { type: Number }, // Unique id from payment processor (from metadata)
     balance: { type: Number }, // New balance (upon update of user record)
     credits: { type: Number }, // Credits purchased (from metadata)
@@ -21,6 +20,7 @@ const paymentSchema = new Schema(
     units: { type: String, default: "cents" }, // used for formatting / preparation for how things may change in future
     processor: { type: String, default: "Stripe" }, // preparation for how things may change in future
     createDate: { type: Date, default: Date.now, required: true }, // create date/time (when event was received)
+    user_id: { type: Schema.Types.ObjectId, required: true }, // Manual reference (like a foreign key)
   },
   {
     id: false,
