@@ -1,8 +1,9 @@
 <template>
   <ui-form
+    class="register__form"
     :initial-values="initialValues"
     :schema="registerFormSchema"
-    tag="div"
+    tag="form"
     @submit="handleSubmit"
   >
     <template
@@ -18,235 +19,223 @@
         values,
       }"
     >
-      <!-- <h1>Yo</h1>
-      <div>{{ values.firstName }}</div>
-      <div>{{ values.lastName }}</div>
-      <label>Dirty</label>
-      <pre> {{ dirty }} </pre>
-      <label>Submitting</label>
-      <pre> {{ submitting }} </pre>
-      <label>Touched</label>
-      <pre> {{ JSON.stringify(touched, null, 4) }} </pre>
-      <label>Errors</label>
-      <pre> {{ JSON.stringify(errors, null, 4) }} </pre>
-      <label>Has Errors</label>
-      <pre> {{ hasErrors }}</pre> -->
       <ui-message
         v-if="message && !submitting && !dirty"
         v-bind="{ [`${severity}`]: true }"
         >{{ message }}</ui-message
       >
-      <form>
-        <div class="form-input">
-          <ui-datalist
-            id="title"
-            v-model:value="values.title"
-            autofocus
-            autocomplete="honorific-prefix"
-            :options="titles"
-            label="Title"
-            name="title"
-            :errors="touched.title && errors.title"
-            tabindex="1"
-            maxlength="10"
-            :disabled="submitting"
-            @blur="blur"
-            @input="input"
-          />
-        </div>
-        <div class="form-input">
-          <ui-input
-            v-model:value="values.firstName"
-            name="first-name"
-            autocomplete="given-name"
-            :errors="touched.firstName && errors.firstName"
-            label="First Name"
-            tabindex="2"
-            type="text"
-            :disabled="submitting"
-            @blur="blur"
-            @input="input"
-          />
-        </div>
-        <div class="form-input">
-          <ui-input
-            v-model:value="values.lastName"
-            autocomplete="family-name"
-            :errors="touched.lastName && errors.lastName"
-            label="Last Name"
-            name="last-name"
-            type="text"
-            tabindex="3"
-            :disabled="submitting"
-            @blur="blur"
-            @input="input"
-          />
-        </div>
-        <div class="form-input">
-          <ui-input
-            v-model:value="values.city"
-            autocomplete="address-level2"
-            :errors="touched.city && errors.city"
-            label="City"
-            name="city"
-            type="text"
-            tabindex="4"
-            maxlength="100"
-            :disabled="submitting"
-            @blur="blur"
-            @input="input"
-          />
-        </div>
-        <div class="form-input">
-          <ui-datalist
-            id="countries"
-            v-model:value="values.country"
-            v-model:code="values.countryCode"
-            autocomplete="country-name"
-            :options="countries"
-            label="Country"
-            name="country"
-            :errors="touched.country && errors.country"
-            tabindex="5"
-            :disabled="submitting"
-            @blur="blur"
-            @input="input"
-          />
-        </div>
-        <div v-show="values.countryCode === 'US'" class="form-input">
-          <ui-datalist
-            id="states"
-            v-model:value="values.state"
-            v-model:code="values.stateCode"
-            autocomplete="address-level1"
-            :options="states"
-            label="State"
-            name="state"
-            :errors="touched.state && errors.state"
-            tabindex="6"
-            :disabled="submitting"
-          />
-        </div>
-        <div class="form-input">
-          <ui-input
-            v-model:value="values.email"
-            autocomplete="email"
-            :errors="touched.email && errors.email"
-            label="Email"
-            name="email"
-            type="email"
-            tabindex="7"
-            :disabled="submitting"
-            @blur="blur"
-            @input="input"
-          />
-        </div>
-        <div class="form-input">
-          <ui-input
-            v-model:value="values.username"
-            autocomplete="username"
-            :errors="touched.username && errors.username"
-            label="Username"
-            name="username"
-            type="text"
-            tabindex="8"
-            maxlength="20"
-            :disabled="submitting"
-            @blur="blur"
-            @input="input"
-          />
-        </div>
-        <div class="form-input">
-          <ui-input
-            v-model:value="values.password"
-            autocomplete="new-password"
-            :errors="touched.password && errors.password"
-            label="Password"
-            name="password"
-            type="password"
-            tabindex="9"
-            :disabled="submitting"
-            @blur="blur"
-            @input="input"
-          />
-        </div>
-        <div class="form-input">
-          <ui-input
-            v-model:value="values.confirmPassword"
-            autocomplete="new-password"
-            :errors="touched.confirmPassword && errors.confirmPassword"
-            label="Confirm Password"
-            name="confirm-password"
-            type="password"
-            tabindex="10"
-            :disabled="submitting"
-            @blur="blur"
-            @input="input"
-          />
-        </div>
-        <div class="form-input">
-          <ui-checkbox
-            v-model:value="values.terms"
-            autocomplete="off"
-            :errors="touched.terms && errors.terms"
-            name="terms"
-            tabindex="11"
-            :disabled="submitting"
-            @blur="blur"
-            @change="input"
+      <!-- <form> -->
+      <div class="form-input">
+        <ui-datalist
+          id="title"
+          v-model:value="values.title"
+          autofocus
+          autocomplete="honorific-prefix"
+          :options="titles"
+          label="Title"
+          name="title"
+          :errors="touched.title && errors.title"
+          tabindex="1"
+          maxlength="10"
+          :disabled="submitting"
+          @blur="blur"
+          @input="input"
+        />
+      </div>
+      <div class="form-input">
+        <ui-input
+          v-model:value="values.firstName"
+          name="first-name"
+          autocomplete="given-name"
+          :errors="touched.firstName && errors.firstName"
+          label="First Name"
+          tabindex="2"
+          type="text"
+          :disabled="submitting"
+          @blur="blur"
+          @input="input"
+        />
+      </div>
+      <div class="form-input">
+        <ui-input
+          v-model:value="values.lastName"
+          autocomplete="family-name"
+          :errors="touched.lastName && errors.lastName"
+          label="Last Name"
+          name="last-name"
+          type="text"
+          tabindex="3"
+          :disabled="submitting"
+          @blur="blur"
+          @input="input"
+        />
+      </div>
+      <div class="form-input">
+        <ui-input
+          v-model:value="values.city"
+          autocomplete="address-level2"
+          :errors="touched.city && errors.city"
+          label="City"
+          name="city"
+          type="text"
+          tabindex="4"
+          maxlength="100"
+          :disabled="submitting"
+          @blur="blur"
+          @input="input"
+        />
+      </div>
+      <div class="form-input">
+        <ui-datalist
+          id="countries"
+          v-model:value="values.country"
+          v-model:code="values.countryCode"
+          autocomplete="country-name"
+          :options="countries"
+          label="Country"
+          name="country"
+          :errors="touched.country && errors.country"
+          tabindex="5"
+          :disabled="submitting"
+          @blur="blur"
+          @input="input"
+        />
+      </div>
+      <div v-show="values.countryCode === 'US'" class="form-input">
+        <ui-datalist
+          id="states"
+          v-model:value="values.state"
+          v-model:code="values.stateCode"
+          autocomplete="address-level1"
+          :options="states"
+          label="State"
+          name="state"
+          :errors="touched.state && errors.state"
+          tabindex="6"
+          :disabled="submitting"
+        />
+      </div>
+      <div class="form-input">
+        <ui-input
+          v-model:value="values.email"
+          autocomplete="email"
+          :errors="touched.email && errors.email"
+          label="Email"
+          name="email"
+          type="email"
+          tabindex="7"
+          :disabled="submitting"
+          @blur="blur"
+          @input="input"
+        />
+      </div>
+      <div class="form-input">
+        <ui-input
+          v-model:value="values.username"
+          autocomplete="username"
+          :errors="touched.username && errors.username"
+          label="Username"
+          name="username"
+          type="text"
+          tabindex="8"
+          maxlength="20"
+          :disabled="submitting"
+          @blur="blur"
+          @input="input"
+        />
+      </div>
+      <div class="form-input">
+        <ui-input
+          v-model:value="values.password"
+          autocomplete="new-password"
+          :errors="touched.password && errors.password"
+          label="Password"
+          name="password"
+          type="password"
+          tabindex="9"
+          :disabled="submitting"
+          @blur="blur"
+          @input="input"
+        />
+      </div>
+      <div class="form-input">
+        <ui-input
+          v-model:value="values.confirmPassword"
+          autocomplete="new-password"
+          :errors="touched.confirmPassword && errors.confirmPassword"
+          label="Confirm Password"
+          name="confirm-password"
+          type="password"
+          tabindex="10"
+          :disabled="submitting"
+          @blur="blur"
+          @input="input"
+        />
+      </div>
+      <div class="form-input">
+        <ui-checkbox
+          v-model:value="values.terms"
+          autocomplete="off"
+          :errors="touched.terms && errors.terms"
+          name="terms"
+          tabindex="11"
+          :disabled="submitting"
+          @blur="blur"
+          @change="input"
+        >
+          <span
+            >I agree to Quizdini's&nbsp;<router-link to="/term" exact
+              >Terms of Use</router-link
+            ></span
           >
-            <span
-              >I agree to Quizdini's&nbsp;<router-link to="/term" exact
-                >Terms of Use</router-link
-              ></span
-            >
-          </ui-checkbox>
-        </div>
-        <div class="form-input">
-          <ui-checkbox
-            v-model:value="values.privacy"
-            autocomplete="off"
-            :errors="touched.privacy && errors.privacy"
-            name="privacy"
-            tabindex="12"
-            :disabled="submitting"
-            @blur="blur"
-            @change="input"
-            ><span
-              >I agree to Quizdini's&nbsp;<router-link to="/terms/privacy" exact
-                >Privacy Policy</router-link
-              ></span
-            >
-          </ui-checkbox>
-        </div>
-        <div class="form-input">
-          <ui-checkbox
-            v-model:value="values.cookie"
-            autocomplete="off"
-            :errors="touched.cookie && errors.cookie"
-            name="cookie"
-            tabindex="13"
-            :disabled="submitting"
-            @blur="blur"
-            @change="input"
-            ><span
-              >I agree to Quizdini's&nbsp;<router-link to="/terms/cookie" exact
-                >Cookie Policy</router-link
-              ></span
-            >
-          </ui-checkbox>
-        </div>
-        <div class="form-input">
-          <ui-input
-            name="test-submit"
-            :disabled="submitting || hasErrors || !dirty"
-            type="button"
-            value="submit"
-            @mousedown.prevent="() => false"
-            @click.prevent="handleSubmit"
-          />
-        </div>
-      </form>
+        </ui-checkbox>
+      </div>
+      <div class="form-input">
+        <ui-checkbox
+          v-model:value="values.privacy"
+          autocomplete="off"
+          :errors="touched.privacy && errors.privacy"
+          name="privacy"
+          tabindex="12"
+          :disabled="submitting"
+          @blur="blur"
+          @change="input"
+          ><span
+            >I agree to Quizdini's&nbsp;<router-link to="/terms/privacy" exact
+              >Privacy Policy</router-link
+            ></span
+          >
+        </ui-checkbox>
+      </div>
+      <div class="form-input">
+        <ui-checkbox
+          v-model:value="values.cookie"
+          autocomplete="off"
+          :errors="touched.cookie && errors.cookie"
+          name="cookie"
+          tabindex="13"
+          :disabled="submitting"
+          @blur="blur"
+          @change="input"
+          ><span
+            >I agree to Quizdini's&nbsp;<router-link to="/terms/cookie" exact
+              >Cookie Policy</router-link
+            ></span
+          >
+        </ui-checkbox>
+      </div>
+      <div class="form-input">
+        <ui-input
+          name="register-submit"
+          tabindex="14"
+          :disabled="submitting || hasErrors || !dirty"
+          type="button"
+          value="submit"
+          @mousedown.prevent="() => false"
+          @click.prevent="handleSubmit"
+        />
+      </div>
+      <!-- </form> -->
     </template>
   </ui-form>
 </template>

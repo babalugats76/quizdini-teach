@@ -19,18 +19,6 @@ export default function useForm({ emit, initialValues, schema }) {
     { deep: true }
   );
 
-  // watch(
-  //   () => initialValues,
-  //   (initialValues) => {
-  //     console.log("initialValues updated...");
-  //     Object.entries(initialValues.value).forEach(([key, val]) => {
-  //       console.log(key, val);
-  //       values[key] = val;
-  //     });
-  //   },
-  //   { deep: true }
-  // );
-
   const validateForm = () => {
     return schema
       .validate(values, { abortEarly: false })
@@ -105,20 +93,6 @@ export default function useForm({ emit, initialValues, schema }) {
         (touched, field) => ({ ...touched, [field]: true }),
         {}
       );
-      // meta.touched = [
-      //   ...Object.entries(meta.touched),
-      //   ...Object.entries(
-      //     JSON.parse(
-      //       JSON.stringify(values, function (k, v) {
-      //         return k && v && typeof v !== "number"
-      //           ? Array.isArray(v)
-      //             ? "[object Array]"
-      //             : "" + v
-      //           : v;
-      //       })
-      //     )
-      //   ),
-      // ].reduce((touched, [key]) => ({ ...touched, [key]: true }), {});
       return emit("submit", {
         errors: meta.errors,
         values: null,

@@ -10,134 +10,144 @@
         <span class="google-signin__text">Login with Google</span>
       </div>
     </div>
-    <form class="login__form" @submit.prevent="loginUser">
-      <div v-if="errors && !isDirty && message">{{ message }}</div>
-      <div class="form-input">
-        <ui-input
-          v-model:value="username"
-          autofocus
-          :errors="errors['username']"
-          label="Username"
-          name="username"
-          type="text"
-          tabindex="1"
-          @blur="validate('username')"
-          @keyup="hasError('username') && validate('username')"
-        />
-      </div>
-      <div class="form-input">
-        <ui-input
-          v-model:value="password"
-          :errors="errors['password']"
-          label="Password"
-          name="password"
-          type="password"
-          tabindex="2"
-          @blur="validate('password')"
-          @keyup="hasError('password') && validate('password')"
-        />
-      </div>
-      <div class="form-input">
-        <input
-          type="submit"
-          value="Login"
-          :disabled="!isDirty || hasErrors || loading"
-          tabindex="3"
-        />
-      </div>
-    </form>
+    <ui-form
+      class="login__form"
+      :initial-values="initialValues"
+      :schema="loginFormSchema"
+      tag="form"
+      @submit="handleSubmit"
+    >
+      <template
+        #default="{
+          blur,
+          dirty,
+          errors,
+          handleSubmit,
+          hasErrors,
+          input,
+          submitting,
+          touched,
+          values,
+        }"
+      >
+        <ui-message
+          v-if="message && !submitting && !dirty"
+          v-bind="{ [`${severity}`]: true }"
+        >
+          {{ message }}
+        </ui-message>
+        <div class="form-input">
+          <ui-input
+            v-model:value="values.username"
+            :errors="touched.username && errors.username"
+            label="Username"
+            name="username"
+            type="text"
+            tabindex="1"
+            :disabled="submitting"
+            @blur="blur"
+            @input="input"
+          />
+        </div>
+        <div class="form-input">
+          <ui-input
+            v-model:value="values.password"
+            :errors="touched.password && errors.password"
+            label="Password"
+            name="password"
+            type="password"
+            tabindex="2"
+            :disabled="submitting"
+            @blur="blur"
+            @input="input"
+          />
+        </div>
+        <div class="form-input">
+          <ui-input
+            name="login-submit"
+            tabindex="3"
+            :disabled="submitting || hasErrors || !dirty"
+            type="button"
+            value="Login"
+            @mousedown.prevent="() => false"
+            @click.prevent="handleSubmit"
+          />
+        </div>
+      </template>
+    </ui-form>
   </div>
 </template>
 
 <script>
 import { object, string } from "yup";
-import { computed, reactive, toRefs } from "vue";
+import { reactive, ref } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { postLogin } from "@/api/auth";
 
+import UiForm from "@/components/ui/UiForm";
 import UiInput from "@/components/ui/UiInput";
+import UiMessage from "@/components/ui/UiMessage";
 
 import { AUTH } from "@/store/types";
 
 export default {
   name: "LoginForm",
   components: {
+    UiForm,
     UiInput,
+    UiMessage,
   },
   setup() {
+    const message = ref("");
+    const severity = ref("");
+
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
+
     const { message: flashMessage } = route.params;
-
-    const state = reactive({
-      username: "",
-      password: "",
-      loading: false,
-      isDirty: computed(() => !!(state.username && state.password)),
-      errors: {},
-      hasErrors: computed(() =>
-        Object.keys(state.errors).some((e) => !!state.errors[e])
-      ),
-      message: "",
-    });
-
     const loginFormSchema = object({
       username: string().required(),
       password: string().required(),
     });
 
-    function validate(field) {
-      loginFormSchema
-        .validateAt(field, {
-          username: state.username,
-          password: state.password,
-        })
-        .then(() => {
-          state.errors[field] = "";
-        })
-        .catch((err) => {
-          state.errors[field] = err.errors;
-        });
-    }
+    const initialValues = reactive({
+      username: "",
+      password: "",
+    });
 
-    function loginUser() {
-      loginFormSchema
-        .validate(
-          {
-            username: state.username,
-            password: state.password,
-          },
-          { abortEarly: false }
-        )
-        .then(() => {
-          state.loading = true;
-          return postLogin({
-            username: state.username,
-            password: state.password,
-          })
-            .then((res) => {
-              const { error, data } = res || {};
-              if (error) {
-                state.errors = {};
-                state.loading = false;
-                state.password = "";
-                state.username = "";
-                state.message = data.message;
-                throw new Error("LoginFailed");
-              }
-            })
-            .then(() => store.dispatch(`auth/${AUTH.FETCH}`))
-            .then(() => router.push({ name: "Dashboard" }))
-            .catch(() => {});
+    const handleSubmit = async ({
+      errors,
+      setSubmitting,
+      setSubmitted,
+      values,
+    }) => {
+      if (errors) return;
+      setSubmitting();
+      postLogin(values)
+        .then((res) => {
+          const { error, data } = res || {};
+          if (error) {
+            console.log("error", error);
+            console.log("data", data);
+            values.password = "";
+            values.username = "";
+            message.value = data.message;
+            severity.value = "danger";
+            throw new Error("LoginFailed");
+          }
+          return data.message;
         })
+        .then(() => store.dispatch(`auth/${AUTH.FETCH}`))
+        .then(() => router.push({ name: "Dashboard" }))
         .catch((err) => {
-          err.inner.forEach((e) => {
-            state.errors[e.path] = e.errors;
-          });
+          console.error(err);
+        })
+        .finally(() => {
+          setSubmitted();
         });
-    }
+    };
 
     const popup = (url, name, width, height, win = window) => {
       const y = win.top.outerHeight / 2 + win.top.screenY - height / 2;
@@ -146,15 +156,14 @@ export default {
       win.open(url, name, specs);
     };
 
-    const hasError = (field) => field in state.errors && !!state.errors[field];
-
     return {
-      flashMessage,
-      hasError,
-      loginUser,
       popup,
-      validate,
-      ...toRefs(state),
+      handleSubmit,
+      initialValues,
+      flashMessage,
+      message,
+      loginFormSchema,
+      severity,
     };
   },
 };
