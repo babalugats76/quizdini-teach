@@ -7,25 +7,21 @@
 @mixin bg-color($color, $opacity: 1, $important: false) {
   --bg-opacity: #{$opacity};
   background-color: $color if($important, !important, null);
-  background-color: rgba(red($color), green($color), blue($color), var(--bg-opacity))
-    if($important, !important, null);
+  background-color: rgba(red($color), green($color), blue($color), var(--bg-opacity)) if($important, !important, null);
 }
 
 @mixin border-color($color, $opacity: 1, $important: false) {
   --border-opacity: #{$opacity};
   border-color: $color if($important, !important, null);
-  border-color: rgba(red($color), green($color), blue($color), var(--border-opacity))
-    if($important, !important, null);
+  border-color: rgba(red($color), green($color), blue($color), var(--border-opacity)) if($important, !important, null);
 }
 
 @mixin text-color($color, $opacity: 1, $important: false) {
   --text-opacity: #{$opacity};
   caret-color: $color if($important, !important, null);
-  caret-color: rgba(red($color), green($color), blue($color), var(--text-opacity))
-    if($important, !important, null);
+  caret-color: rgba(red($color), green($color), blue($color), var(--text-opacity)) if($important, !important, null);
   color: $color if($important, !important, null);
-  color: rgba(red($color), green($color), blue($color), var(--text-opacity))
-    if($important, !important, null);
+  color: rgba(red($color), green($color), blue($color), var(--text-opacity)) if($important, !important, null);
 }
 
 @mixin font($family, $style: normal, $important: false) {
@@ -53,5 +49,17 @@
     &.size--#{$key} {
       font-size: #{$value};
     }
+  }
+}
+
+@mixin clamp-lines($lines: 1) {
+  @supports (-webkit-line-clamp: 2) {
+    display: -webkit-box !important;
+    -webkit-line-clamp: #{$lines};
+    /* autoprefixer: ignore next */
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    word-break: break-word !important;
   }
 }

@@ -1,5 +1,7 @@
+import CardGrid from "./CardGrid";
 import CheckoutForm from "./CheckoutForm";
 import CreditForm from "./CreditForm";
+import GameCard from "./GameCard";
 import LoginForm from "./LoginForm";
 import MatchList from "./MatchList";
 import PaymentTable from "./PaymentTable";
@@ -20,8 +22,10 @@ import {
 } from "./ui/UiTable";
 
 export {
+  CardGrid,
   CheckoutForm,
   CreditForm,
+  GameCard,
   LoginForm,
   MatchList,
   PaymentTable,
