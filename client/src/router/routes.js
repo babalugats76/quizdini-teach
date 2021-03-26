@@ -64,6 +64,29 @@ const routes = [
     props: true,
   },
   {
+    path: "/match/:id",
+    component: () =>
+      import(/* webpackChunkName: "members" */ "../views/EmptyRouterView.js"),
+    meta: {
+      navItem: false,
+      auth: true,
+    },
+    children: [
+      {
+        path: "",
+        component: () =>
+          import(/* webpackChunkName: "members" */ "../views/MatchEdit.vue"),
+        props: true,
+      },
+      {
+        path: "stats",
+        component: () =>
+          import(/* webpackChunkName: "members" */ "../views/MatchStats.vue"),
+        props: true,
+      },
+    ],
+  },
+  {
     path: "/profile",
     name: "Profile",
     component: () =>

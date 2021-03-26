@@ -11,7 +11,9 @@
         <slot name="details" />
       </div>
     </div>
-    <div class="game-card__footer"></div>
+    <div class="game-card__footer">
+      <slot name="footer" />
+    </div>
   </div>
 </template>
 
@@ -40,8 +42,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$game-card-title-lines: 1;
-$match-card-title-lines: 3;
+$game-card-title-lines: 3;
 
 .game-card {
   position: relative;
@@ -99,7 +100,7 @@ $match-card-title-lines: 3;
     overflow: hidden;
   }
   @at-root &--match &__title {
-    @include clamp-lines($match-card-title-lines);
+    background-color: lime;
   }
 }
 </style>

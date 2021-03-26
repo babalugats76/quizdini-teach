@@ -34,6 +34,7 @@ router.beforeEach((to, from, next) => {
  *
  */
 router.beforeEach((to, from, next) => {
+  console.log(to.matched.some((r) => console.log(JSON.stringify(r, null, 4))));
   if (to.matched.some((r) => r.meta.guest)) {
     if (loggedIn.value) {
       next({ name: "Dashboard" });
