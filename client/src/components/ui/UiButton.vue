@@ -81,7 +81,7 @@ $btn-sizes: (
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.375rem 0.75rem;
+  padding: 0.375em 0.75em;
   border-radius: $btn-border-radius;
   @include font("Montserrat", "semi-bold");
   line-height: 1.25;
