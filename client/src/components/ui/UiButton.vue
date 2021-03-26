@@ -9,6 +9,10 @@ export const UiButton = {
       type: Boolean,
       default: false,
     },
+    tag: {
+      type: String,
+      default: "input",
+    },
     type: {
       type: String,
       default: "button",
@@ -26,13 +30,37 @@ export const UiButton = {
     },
   },
   render() {
+    const Tag = `${this.tag}`;
     return (
-      <button ref="inputRef" class={this.classes}>
-        {this.$slots.default()}
-      </button>
+      <Tag
+        ref="inputRef"
+        class={this.classes}
+        type={this.tag.toLowerCase() === "input" ? this.type : null}
+      >
+        {this.$slots.default && this.$slots.default()}
+      </Tag>
     );
   },
 };
+
+export const UiButtonGroup = {
+  name: "UiButtonGroup",
+  computed: {
+    classes() {
+      return {
+        "ui-btn-group": true,
+      };
+    },
+  },
+  render() {
+    return (
+      <div class={this.classes}>
+        {this.$slots.default && this.$slots.default()}
+      </div>
+    );
+  },
+};
+
 export default UiButton;
 </script>
 
@@ -83,5 +111,11 @@ $btn-sizes: (
   &:focus {
     opacity: 0.5;
   }
+}
+
+.ui-btn-group {
+  display: inline-flex;
+  flex-direction: row;
+  vertical-align: baseline;
 }
 </style>

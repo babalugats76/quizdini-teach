@@ -24,7 +24,17 @@
         </ul>
       </template>
       <template #footer>
-        <a :href="`${baseGameUrl}/${matchId}`" target="_blank">{{ title }}</a>
+        <ui-button-group>
+          <ui-link :href="`${baseGameUrl}/${matchId}`" :target="`_${matchId}`">
+            <ui-button tag="button">Play</ui-button>
+          </ui-link>
+          <router-link :to="{ path: `/match/${matchId}/stats` }">
+            <ui-button tag="button">Stats</ui-button>
+          </router-link>
+          <router-link :to="{ path: `/match/${matchId}` }">
+            <ui-button tag="button">Edit</ui-button>
+          </router-link>
+        </ui-button-group>
       </template>
     </game-card>
   </card-grid>
@@ -33,12 +43,17 @@
 <script>
 import CardGrid from "@/components/CardGrid";
 import GameCard from "@/components/GameCard";
+import { UiButton, UiButtonGroup } from "@/components/ui/UiButton";
+import UiLink from "@/components/ui/UiLink";
 
 export default {
   name: "MatchList",
   components: {
     CardGrid,
     GameCard,
+    UiButton,
+    UiButtonGroup,
+    UiLink,
   },
   props: {
     matches: {

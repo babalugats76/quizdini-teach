@@ -65,8 +65,9 @@ const routes = [
   },
   {
     path: "/match/:id",
+    name: "Match",
     component: () =>
-      import(/* webpackChunkName: "members" */ "../views/EmptyRouterView.js"),
+      import(/* webpackChunkName: "members" */ "../views/EmptyRouterView.vue"),
     meta: {
       navItem: false,
       auth: true,
@@ -74,12 +75,14 @@ const routes = [
     children: [
       {
         path: "",
+        name: "MatchEdit",
         component: () =>
           import(/* webpackChunkName: "members" */ "../views/MatchEdit.vue"),
         props: true,
       },
       {
         path: "stats",
+        name: "MatchStats",
         component: () =>
           import(/* webpackChunkName: "members" */ "../views/MatchStats.vue"),
         props: true,

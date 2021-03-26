@@ -7,9 +7,6 @@
 <script>
 export default {
   name: "MatchStats",
-  setup() {
-    return {};
-  },
 };
 </script>
 

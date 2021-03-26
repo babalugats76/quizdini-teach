@@ -9,7 +9,11 @@ export const UiTable = {
     },
   },
   render() {
-    return <table class={this.classes}>{this.$slots.default()}</table>;
+    return (
+      <table class={this.classes}>
+        {this.$slots.default && this.$slots.default()}
+      </table>
+    );
   },
 };
 
@@ -23,7 +27,11 @@ export const UiTableRow = {
     },
   },
   render() {
-    return <tr class={this.classes}>{this.$slots.default()}</tr>;
+    return (
+      <tr class={this.classes}>
+        {this.$slots.default && this.$slots.default()}
+      </tr>
+    );
   },
 };
 
@@ -37,7 +45,11 @@ export const UiTableHeader = {
     },
   },
   render() {
-    return <thead class={this.classes}>{this.$slots.default()}</thead>;
+    return (
+      <thead class={this.classes}>
+        {this.$slots.default && this.$slots.default()}
+      </thead>
+    );
   },
 };
 
@@ -51,7 +63,11 @@ export const UiTableBody = {
     },
   },
   render() {
-    return <tbody class={this.classes}>{this.$slots.default()}</tbody>;
+    return (
+      <tbody class={this.classes}>
+        {this.$slots.default && this.$slots.default()}
+      </tbody>
+    );
   },
 };
 
@@ -73,7 +89,11 @@ export const UiTableHeaderCell = {
     },
   },
   render() {
-    return <th class={this.classes}>{this.$slots.default()}</th>;
+    return (
+      <th class={this.classes}>
+        {this.$slots.default && this.$slots.default()}
+      </th>
+    );
   },
 };
 
@@ -95,7 +115,11 @@ export const UiTableCell = {
     },
   },
   render() {
-    return <td class={this.classes}>{this.$slots.default()}</td>;
+    return (
+      <td class={this.classes}>
+        {this.$slots.default && this.$slots.default()}
+      </td>
+    );
   },
 };
 

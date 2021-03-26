@@ -7,9 +7,6 @@
 <script>
 export default {
   name: "MatchEdit",
-  setup() {
-    return {};
-  },
 };
 </script>
 
