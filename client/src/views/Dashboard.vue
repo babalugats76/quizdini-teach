@@ -5,24 +5,24 @@
     <h1>
       <strong>{{ matchCount }} matches</strong>
     </h1>
-    <match-list :matches="matches"></match-list>
+    <match-view :matches="matches" :credits="credits" />
   </layout-default>
 </template>
 
 <script>
-import { onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 
 import { AUTH } from "@/store/types";
 import { useRoute } from "vue-router";
 
 import useMatches from "@/compose/useMatches";
-import { MatchList } from "@/components/";
+import { MatchView } from "@/components/";
 
 export default {
   name: "Dashboard",
   components: {
-    MatchList,
+    MatchView,
   },
   setup() {
     const store = useStore();
@@ -30,6 +30,7 @@ export default {
 
     const { message: flashMessage } = route.params;
     const fetchAuth = () => store.dispatch(`auth/${AUTH.FETCH}`);
+    const credits = computed(() => store.getters["auth/credits"]);
 
     const { matches, count: matchCount } = useMatches();
 
@@ -38,6 +39,7 @@ export default {
     });
 
     return {
+      credits,
       matches,
       matchCount,
       flashMessage,

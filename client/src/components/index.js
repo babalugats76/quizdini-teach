@@ -4,6 +4,8 @@ import CreditForm from "./CreditForm";
 import GameCard from "./GameCard";
 import LoginForm from "./LoginForm";
 import MatchList from "./MatchList";
+import MatchView from "./MatchView";
+import NavButton from "./ui/NavButton";
 import PaymentTable from "./PaymentTable";
 import RegisterForm from "./RegisterForm";
 import { UiButton, UiButtonGroup } from "./ui/UiButton";
@@ -29,6 +31,8 @@ export {
   GameCard,
   LoginForm,
   MatchList,
+  MatchView,
+  NavButton,
   PaymentTable,
   RegisterForm,
   UiButton,

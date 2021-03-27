@@ -5,6 +5,7 @@
     :href="href"
     :target="target"
     rel="noopener noreferrer"
+    role="link"
   >
     <slot />
   </component>

@@ -10,30 +10,23 @@
       :key="matchId"
       type="match"
     >
-      <template #badge>{{
-        colorScheme.toLowerCase() != "basic"
-          ? "basic icon here"
-          : "rainbow icon here"
-      }}</template>
+      <template #badge>{{ getBadgeType(colorScheme) }}</template>
       <template #title>{{ title }}</template>
       <template #details>
         <ul>
-          <li>{{ duration }}</li>
-          <li>{{ itemsPerBoard }}</li>
-          <li>{{ termCount }}</li>
+          <li>Duration: {{ duration }}</li>
+          <li>ItemsPerBoard: {{ itemsPerBoard }}</li>
+          <li>Term Count: {{ termCount }}</li>
         </ul>
       </template>
       <template #footer>
         <ui-button-group>
-          <ui-link :href="`${baseGameUrl}/${matchId}`" :target="`_${matchId}`">
-            <ui-button tag="button">Play</ui-button>
+          <ui-link :href="getGameUrl(matchId)" :target="`_${matchId}`">
+            <ui-button>Play</ui-button>
           </ui-link>
-          <router-link :to="{ path: `/match/${matchId}/stats` }">
-            <ui-button tag="button">Stats</ui-button>
-          </router-link>
-          <router-link :to="{ path: `/match/${matchId}` }">
-            <ui-button tag="button">Edit</ui-button>
-          </router-link>
+          <nav-button :to="getEditUri(matchId)">Edit</nav-button>
+          <nav-button :to="getStatsUri(matchId)">Stats</nav-button>
+          <ui-button @click.prevent="handleCopy(matchId)">Copy</ui-button>
         </ui-button-group>
       </template>
     </game-card>
@@ -44,13 +37,17 @@
 import CardGrid from "@/components/CardGrid";
 import GameCard from "@/components/GameCard";
 import { UiButton, UiButtonGroup } from "@/components/ui/UiButton";
+import NavButton from "@/components/ui/NavButton";
 import UiLink from "@/components/ui/UiLink";
+
+import useClipboard from "@/compose/useClipboard";
 
 export default {
   name: "MatchList",
   components: {
     CardGrid,
     GameCard,
+    NavButton,
     UiButton,
     UiButtonGroup,
     UiLink,
@@ -63,8 +60,25 @@ export default {
     },
   },
   setup() {
+    const { copy: copyToClipboard } = useClipboard();
+    const getEditUri = (id) => `/match/${id}`;
+    const getGameUrl = (id) =>
+      `${process.env.VUE_APP_GAME_BASE_URL}/match/${id}`;
+    const getStatsUri = (id) => `/match/${id}/stats`;
+    const getBadgeType = (colorScheme) =>
+      colorScheme.toLowerCase() != "basic"
+        ? "basic-icon-name"
+        : "rainbow-icon-name";
+    const handleCopy = async (id) => {
+      await copyToClipboard(getGameUrl(id));
+    };
+
     return {
-      baseGameUrl: `${process.env.VUE_APP_GAME_BASE_URL}/match`,
+      getBadgeType,
+      getEditUri,
+      getGameUrl,
+      getStatsUri,
+      handleCopy,
     };
   },
 };

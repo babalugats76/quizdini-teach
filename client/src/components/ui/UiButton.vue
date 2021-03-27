@@ -11,7 +11,8 @@ export const UiButton = {
     },
     tag: {
       type: String,
-      default: "input",
+      required: false,
+      default: "button",
     },
     type: {
       type: String,
@@ -31,12 +32,11 @@ export const UiButton = {
   },
   render() {
     const Tag = `${this.tag}`;
+    if (this.tag.toLowerCase() === "input") {
+      return <Tag ref="inputRef" class={this.classes} type={this.type} />;
+    }
     return (
-      <Tag
-        ref="inputRef"
-        class={this.classes}
-        type={this.tag.toLowerCase() === "input" ? this.type : null}
-      >
+      <Tag ref="inputRef" class={this.classes}>
         {this.$slots.default && this.$slots.default()}
       </Tag>
     );
