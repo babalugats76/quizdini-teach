@@ -20,9 +20,7 @@ const router = createRouter({
  *
  */
 router.beforeEach((to, from, next) => {
-  storeInit
-    .then(next)
-    .catch((e) => console.log("Unable to initialize store", e));
+  storeInit.then(next).catch((e) => console.log("Unable to initialize store", e));
 });
 
 /***

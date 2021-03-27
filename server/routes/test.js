@@ -1,10 +1,6 @@
 const AWS = require("aws-sdk");
 const keys = require("../config/keys");
-const {
-  sendRecoveryEmail,
-  sendRegisterEmail,
-  sendResetEmail,
-} = require("../services/email");
+const { sendRecoveryEmail, sendRegisterEmail, sendResetEmail } = require("../services/email");
 
 const requireAdmin = require("../middlewares/requireAdmin.js");
 
@@ -91,13 +87,7 @@ module.exports = (app) => {
 
   app.post("/testResetEmail", async (req, res, next) => {
     try {
-      const {
-        toAddress,
-        firstName,
-        fullName,
-        resetUrl,
-        resetExpiryDate,
-      } = req.body;
+      const { toAddress, firstName, fullName, resetUrl, resetExpiryDate } = req.body;
       const email = await sendResetEmail({
         toAddress,
         firstName,

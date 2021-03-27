@@ -43,14 +43,10 @@ module.exports = (app) => {
     })
   );
 
-  app.get(
-    "/auth/google/callback",
-    passport.authenticate("google"),
-    (req, res) => {
-      //console.log(JSON.stringify(req.user, null, 4));
-      res.redirect("/success");
-    }
-  );
+  app.get("/auth/google/callback", passport.authenticate("google"), (req, res) => {
+    //console.log(JSON.stringify(req.user, null, 4));
+    res.redirect("/success");
+  });
 
   app.get("/logout", (req, res) => {
     req.logout();

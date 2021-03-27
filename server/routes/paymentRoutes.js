@@ -48,12 +48,7 @@ module.exports = (app) => {
             created,
             currency,
             description,
-            metadata: {
-              balance = 0,
-              credits = 0,
-              customerId = null,
-              orderId = null,
-            },
+            metadata: { balance = 0, credits = 0, customerId = null, orderId = null },
           } = event.data.object;
 
           // LOOKUP CUSTOMER & ADD CREDITS
@@ -81,13 +76,7 @@ module.exports = (app) => {
           }).save();
 
           // OUTPUT TO LOG
-          console.log(
-            "Purchase: %s %s %s %s",
-            description,
-            balance,
-            "=>",
-            newBalance
-          );
+          console.log("Purchase: %s %s %s %s", description, balance, "=>", newBalance);
           break;
         case "charge.refunded":
           // DESTRUCTURE EVENT DATA
@@ -107,9 +96,7 @@ module.exports = (app) => {
           });
 
           // DETERMINE # CREDITS TO CLAW BACK
-          const creditsToRefund = parseInt(
-            amount === amount_refunded ? credits : 0
-          );
+          const creditsToRefund = parseInt(amount === amount_refunded ? credits : 0);
 
           // LOOKUP CUSTOMER & CLAWBACK CREDITS
           var { credits: newBalance } = await User.findByIdAndUpdate(
@@ -176,12 +163,7 @@ module.exports = (app) => {
       const { credits = 0 } = req.body;
 
       // customer metadata (from session)
-      const {
-        customerId,
-        email,
-        fullName,
-        credits: balance,
-      } = await User.findOne({
+      const { customerId, email, fullName, credits: balance } = await User.findOne({
         _id: req.user.id,
       });
 
@@ -208,13 +190,8 @@ module.exports = (app) => {
       });
 
       // destructure PaymentIntent
-      const {
-        amount,
-        currency,
-        client_secret: clientSecret,
-        description,
-        metadata = {},
-      } = paymentIntent || {};
+      const { amount, currency, client_secret: clientSecret, description, metadata = {} } =
+        paymentIntent || {};
 
       // return data needed to finalize transaction, e.g., client secret, amount (in USD)
       res.send({

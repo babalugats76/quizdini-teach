@@ -31,8 +31,7 @@ const getters = {
 
 const actions = {
   // fetch: (store) => callApi(() => getCountries(), COUNTRIES)(store),
-  [COUNTRIES.FETCH]: (store) =>
-    callApi(store, { cb: () => getCountries(), types: COUNTRIES }),
+  [COUNTRIES.FETCH]: (store) => callApi(store, { cb: () => getCountries(), types: COUNTRIES }),
 };
 
 const mutations = {

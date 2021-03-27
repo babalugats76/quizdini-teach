@@ -13,8 +13,7 @@ export default function useForm({ emit, initialValues, schema }) {
     () => values,
     (values) => {
       console.log("dirty check");
-      dirty.value =
-        !JSON.stringify(values) !== JSON.stringify(unref(initialValues));
+      dirty.value = !JSON.stringify(values) !== JSON.stringify(unref(initialValues));
     },
     { deep: true }
   );

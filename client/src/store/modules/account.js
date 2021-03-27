@@ -24,8 +24,7 @@ const getters = {
 
 const actions = {
   // fetch: (store) => callApi(() => getAccount(), ACCOUNT)(store),
-  [ACCOUNT.FETCH]: (store) =>
-    callApi(store, { cb: () => getAccount(), types: ACCOUNT }),
+  [ACCOUNT.FETCH]: (store) => callApi(store, { cb: () => getAccount(), types: ACCOUNT }),
 };
 
 const mutations = {

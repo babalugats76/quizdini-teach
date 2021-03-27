@@ -4,14 +4,7 @@
     <span v-if="auth.loggedIn && auth.credits >= 0" class="nav__item"
       >Credits: {{ auth.credits }}
     </span>
-    <a
-      v-if="auth.loggedIn"
-      href="/logout"
-      class="nav__item"
-      target="_self"
-      tabindex="-1"
-      >logout</a
-    >
+    <a v-if="auth.loggedIn" href="/logout" class="nav__item" target="_self" tabindex="-1">logout</a>
     <router-link
       v-if="auth.loggedIn"
       key="profile"
@@ -19,11 +12,7 @@
       :to="{ name: 'Profile' }"
       tabindex="-1"
       ><span v-if="auth.accountType === 'google'" class="badge">
-        <img
-          v-if="auth.accountType === 'google'"
-          :src="auth.googlePicture"
-          class="badge--google"
-        />
+        <img v-if="auth.accountType === 'google'" :src="auth.googlePicture" class="badge--google" />
       </span>
       <span v-if="auth.accountType === 'local'">
         {{ auth.username }}
@@ -40,20 +29,13 @@ import routes from "@/router/routes";
 const NavItems = ({ items, authenticated }) =>
   items
     .filter((item) => {
-      const {
-        meta: { navItem = false, auth = false, guest = false } = {},
-      } = item;
+      const { meta: { navItem = false, auth = false, guest = false } = {} } = item;
       return navItem ? (authenticated ? auth || !guest : !auth) : false;
     })
     .map((item) => {
       const { name } = item;
       return (
-        <router-link
-          class="nav__item"
-          to={{ name: name }}
-          key={name}
-          tabIndex={-1}
-        >
+        <router-link class="nav__item" to={{ name: name }} key={name} tabIndex={-1}>
           {name}
         </router-link>
       );

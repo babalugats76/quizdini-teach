@@ -62,13 +62,10 @@ export default {
   setup() {
     const { copy: copyToClipboard } = useClipboard();
     const getEditUri = (id) => `/match/${id}`;
-    const getGameUrl = (id) =>
-      `${process.env.VUE_APP_GAME_BASE_URL}/match/${id}`;
+    const getGameUrl = (id) => `${process.env.VUE_APP_GAME_BASE_URL}/match/${id}`;
     const getStatsUri = (id) => `/match/${id}/stats`;
     const getBadgeType = (colorScheme) =>
-      colorScheme.toLowerCase() != "basic"
-        ? "basic-icon-name"
-        : "rainbow-icon-name";
+      colorScheme.toLowerCase() != "basic" ? "basic-icon-name" : "rainbow-icon-name";
     const handleCopy = async (id) => {
       await copyToClipboard(getGameUrl(id));
     };

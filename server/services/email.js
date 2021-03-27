@@ -20,13 +20,7 @@ const awsConfig = {
  * @param {string} email.loginUrl Fully-qualified URL of login page.
  * @returns Promise Caller must handle fulfillment, rejection, etc.
  */
-const sendRecoveryEmail = async function ({
-  toAddress,
-  firstName,
-  fullName,
-  username,
-  loginUrl,
-}) {
+const sendRecoveryEmail = async function ({ toAddress, firstName, fullName, username, loginUrl }) {
   const config = new AWS.Config({ ...awsConfig, apiVersion: "2010-12-01" });
   const ses = new AWS.SES(config);
 
@@ -63,12 +57,7 @@ const sendRecoveryEmail = async function ({
  * @param {string} email.verifyUrl Fully-qualified URL of link to verify recipient email.
  * @returns Promise Caller must handle fulfillment, rejection, etc.
  */
-const sendRegisterEmail = async function ({
-  toAddress,
-  firstName,
-  fullName,
-  verifyUrl,
-}) {
+const sendRegisterEmail = async function ({ toAddress, firstName, fullName, verifyUrl }) {
   const config = new AWS.Config({ ...awsConfig, apiVersion: "2010-12-01" });
   const ses = new AWS.SES(config);
 

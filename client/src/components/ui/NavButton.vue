@@ -1,11 +1,6 @@
 <template>
   <router-link v-slot="{ navigate }" :to="to" custom>
-    <ui-button
-      v-bind="$attrs"
-      role="link"
-      @click="navigate"
-      @keypress.enter="navigate"
-    >
+    <ui-button v-bind="$attrs" role="link" @click="navigate" @keypress.enter="navigate">
       <slot />
     </ui-button>
   </router-link>

@@ -59,14 +59,7 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const {
-          email,
-          email_verified,
-          family_name,
-          given_name,
-          picture,
-          sub,
-        } = profile._json;
+        const { email, email_verified, family_name, given_name, picture, sub } = profile._json;
 
         const existingUser = await User.findOne({
           $and: [{ googleId: sub }, { googleId: { $exists: true } }],

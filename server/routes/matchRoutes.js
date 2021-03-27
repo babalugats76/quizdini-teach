@@ -158,10 +158,7 @@ module.exports = (app, memcache) => {
                           {
                             $multiply: [
                               {
-                                $divide: [
-                                  "$correct",
-                                  { $add: ["$correct", "$incorrect"] },
-                                ],
+                                $divide: ["$correct", { $add: ["$correct", "$incorrect"] }],
                               },
                               100,
                             ],
@@ -180,9 +177,7 @@ module.exports = (app, memcache) => {
                 $match: {
                   gameId: req.params.id,
                   createDate: {
-                    $gte: new Date(
-                      new Date().getTime() - 30 * 24 * 60 * 60 * 1000
-                    ),
+                    $gte: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000),
                   },
                 },
               },
@@ -193,10 +188,7 @@ module.exports = (app, memcache) => {
                       $subtract: [
                         { $toLong: "$createDate" },
                         {
-                          $mod: [
-                            { $toLong: "$createDate" },
-                            1000 * 60 * 60 * 24,
-                          ],
+                          $mod: [{ $toLong: "$createDate" }, 1000 * 60 * 60 * 24],
                         },
                       ],
                     },
@@ -239,16 +231,10 @@ module.exports = (app, memcache) => {
                   hits: 1,
                   misses: 1,
                   hitRate: {
-                    $round: [
-                      { $multiply: [{ $divide: ["$hits", "$tries"] }, 100] },
-                      0,
-                    ],
+                    $round: [{ $multiply: [{ $divide: ["$hits", "$tries"] }, 100] }, 0],
                   },
                   missRate: {
-                    $round: [
-                      { $multiply: [{ $divide: ["$misses", "$tries"] }, 100] },
-                      0,
-                    ],
+                    $round: [{ $multiply: [{ $divide: ["$misses", "$tries"] }, 100] }, 0],
                   },
                 },
               },

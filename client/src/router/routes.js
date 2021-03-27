@@ -2,8 +2,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: () =>
-      import(/* webpackChunkName: "public" */ "../views/Landing.vue"),
+    component: () => import(/* webpackChunkName: "public" */ "../views/Landing.vue"),
     meta: {
       navItem: true,
     },
@@ -22,8 +21,7 @@ const routes = [
   {
     path: "/register",
     name: "Sign Up",
-    component: () =>
-      import(/* webpackChunkName: "public" */ "../views/Register.vue"),
+    component: () => import(/* webpackChunkName: "public" */ "../views/Register.vue"),
     meta: {
       navItem: true,
       guest: true,
@@ -33,8 +31,7 @@ const routes = [
   {
     path: "/login",
     name: "Login",
-    component: () =>
-      import(/* webpackChunkName: "public" */ "../views/Login.vue"),
+    component: () => import(/* webpackChunkName: "public" */ "../views/Login.vue"),
     meta: {
       navItem: true,
       guest: true,
@@ -44,8 +41,7 @@ const routes = [
   {
     path: "/success",
     name: "Success",
-    component: () =>
-      import(/* webpackChunkName: "public" */ "../views/AuthSuccess.vue"),
+    component: () => import(/* webpackChunkName: "public" */ "../views/AuthSuccess.vue"),
     meta: {
       navItem: false,
     },
@@ -55,8 +51,7 @@ const routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    component: () =>
-      import(/* webpackChunkName: "members" */ "../views/Dashboard.vue"),
+    component: () => import(/* webpackChunkName: "members" */ "../views/Dashboard.vue"),
     meta: {
       navItem: true,
       auth: true,
@@ -66,8 +61,7 @@ const routes = [
   {
     path: "/match/:id",
     name: "Match",
-    component: () =>
-      import(/* webpackChunkName: "members" */ "../views/EmptyRouterView.vue"),
+    component: () => import(/* webpackChunkName: "members" */ "../views/EmptyRouterView.vue"),
     meta: {
       navItem: false,
       auth: true,
@@ -76,15 +70,13 @@ const routes = [
       {
         path: "",
         name: "MatchEdit",
-        component: () =>
-          import(/* webpackChunkName: "members" */ "../views/MatchEdit.vue"),
+        component: () => import(/* webpackChunkName: "members" */ "../views/MatchEdit.vue"),
         props: true,
       },
       {
         path: "stats",
         name: "MatchStats",
-        component: () =>
-          import(/* webpackChunkName: "members" */ "../views/MatchStats.vue"),
+        component: () => import(/* webpackChunkName: "members" */ "../views/MatchStats.vue"),
         props: true,
       },
     ],
@@ -92,8 +84,7 @@ const routes = [
   {
     path: "/profile",
     name: "Profile",
-    component: () =>
-      import(/* webpackChunkName: "members" */ "../views/Profile.vue"),
+    component: () => import(/* webpackChunkName: "members" */ "../views/Profile.vue"),
     meta: {
       navItem: false,
       auth: true,
@@ -103,8 +94,7 @@ const routes = [
   {
     path: "/:catchAll(.*)",
     name: "Not Found",
-    component: () =>
-      import(/* webpackChunkName: "public" */ "../views/NotFound.vue"),
+    component: () => import(/* webpackChunkName: "public" */ "../views/NotFound.vue"),
     meta: {
       navItem: false,
     },

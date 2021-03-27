@@ -49,10 +49,7 @@ const paymentSchema = new Schema(
 
 paymentSchema.virtual("amountFormatted").get(function () {
   var formatted = "$0.00";
-  if (
-    this.units.toLowerCase() === "cents" &&
-    this.currency.toLowerCase() === "usd"
-  ) {
+  if (this.units.toLowerCase() === "cents" && this.currency.toLowerCase() === "usd") {
     formatted = Number(this.amount / 100).toLocaleString("en-US", {
       style: "currency",
       currency: "USD",

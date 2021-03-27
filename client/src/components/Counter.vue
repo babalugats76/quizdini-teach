@@ -25,14 +25,7 @@
     >
       Reset
     </button>
-    <input
-      v-model="c"
-      type="number"
-      step="5"
-      min="1"
-      max="1000"
-      @change.prevent="onInputChange"
-    />
+    <input v-model="c" type="number" step="5" min="1" max="1000" @change.prevent="onInputChange" />
   </div>
 </template>
 

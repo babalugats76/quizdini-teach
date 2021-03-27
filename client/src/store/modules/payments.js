@@ -22,8 +22,7 @@ const getters = {
 
 const actions = {
   // fetch: (store) => callApi(() => getPayments(), PAYMENTS)(store),
-  [PAYMENTS.FETCH]: (store) =>
-    callApi(store, { cb: () => getPayments(), types: PAYMENTS }),
+  [PAYMENTS.FETCH]: (store) => callApi(store, { cb: () => getPayments(), types: PAYMENTS }),
 };
 
 const mutations = {

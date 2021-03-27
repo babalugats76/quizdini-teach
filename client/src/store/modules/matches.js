@@ -23,8 +23,7 @@ const getters = {
 
 const actions = {
   // fetch: (store) => callApi(() => getMatches(), MATCHES)(store),
-  [MATCHES.FETCH]: (store) =>
-    callApi(store, { cb: () => getMatches(), types: MATCHES }),
+  [MATCHES.FETCH]: (store) => callApi(store, { cb: () => getMatches(), types: MATCHES }),
 };
 
 const mutations = {

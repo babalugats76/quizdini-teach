@@ -80,19 +80,12 @@
               @input="input"
             />
           </div>
-          <div
-            v-if="values.countryCode === 'US' || values.countryCode === 'GB'"
-            class="form-input"
-          >
+          <div v-if="values.countryCode === 'US' || values.countryCode === 'GB'" class="form-input">
             <ui-input
               v-model:value="values.postalCode"
               autocomplete="postal-code"
               :errors="touched.postalCode && errors.postalCode"
-              :label="
-                values.countryCode === 'US'
-                  ? 'Zip Code (5-digit)'
-                  : 'Postal Code'
-              "
+              :label="values.countryCode === 'US' ? 'Zip Code (5-digit)' : 'Postal Code'"
               name="postalCode"
               type="text"
               :disabled="submitting"
@@ -144,11 +137,7 @@ export default {
 
     const router = useRouter();
 
-    const {
-      email = null,
-      countryCode = "",
-      loaded: accountLoaded,
-    } = useAccount();
+    const { email = null, countryCode = "", loaded: accountLoaded } = useAccount();
     const { options: countries, loaded: countriesLoaded } = useCountries();
 
     const state = reactive({
@@ -177,18 +166,14 @@ export default {
         })
         .when("countryCode", {
           is: (val) => val === "GB",
-          then: string().matches(
-            /^[A-Za-z]{1,2}\d[A-Za-z\d]? ?\d[A-Za-z]{2}$/,
-            "Invalid postcode"
-          ),
+          then: string().matches(/^[A-Za-z]{1,2}\d[A-Za-z\d]? ?\d[A-Za-z]{2}$/, "Invalid postcode"),
         }),
     });
 
     const initialValues = reactive({
       cardholderName: "",
       country: computed(() => {
-        const { text = "" } =
-          countries.value.find((c) => c.value === countryCode.value) || {};
+        const { text = "" } = countries.value.find((c) => c.value === countryCode.value) || {};
         return text;
       }),
       countryCode: countryCode,
@@ -296,12 +281,7 @@ export default {
       { immediate: true }
     );
 
-    const handleSubmit = async ({
-      errors,
-      setSubmitting,
-      setSubmitted,
-      values,
-    }) => {
+    const handleSubmit = async ({ errors, setSubmitting, setSubmitted, values }) => {
       if (errors) return;
       state.message = "";
       setSubmitting();
@@ -378,8 +358,7 @@ export default {
 }
 
 .checkout__card-info {
-  box-shadow: 0 1px 3px 0 rgb(50 50 93 / 15%),
-    0 4px 6px 0 rgb(112 157 199 / 15%);
+  box-shadow: 0 1px 3px 0 rgb(50 50 93 / 15%), 0 4px 6px 0 rgb(112 157 199 / 15%);
 }
 
 .checkout__card-info .form-input:not(:last-child) {

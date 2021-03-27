@@ -16,8 +16,7 @@
           ><a :href="p.receiptUrl" target="_blank">{{ p.orderId }}</a></tbl-cell
         >
         <tbl-cell>{{
-          p.chargeDate &&
-          format(Date.parse(p.chargeDate), "MMM d, yyyy, h:mm aa")
+          p.chargeDate && format(Date.parse(p.chargeDate), "MMM d, yyyy, h:mm aa")
         }}</tbl-cell>
         <tbl-cell>{{ p.description }}</tbl-cell>
         <tbl-cell>{{ p.amountFormatted }}</tbl-cell>

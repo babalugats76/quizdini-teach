@@ -1,8 +1,6 @@
 <template>
   <div class="matches">
-    <nav-button :to="{ path: `/match/new` }" :disabled="credits <= 0"
-      >Press Me</nav-button
-    >
+    <nav-button :to="{ path: `/match/new` }" :disabled="credits <= 0">Press Me</nav-button>
     <match-list :matches="matches" class="matches__list" />
   </div>
 </template>

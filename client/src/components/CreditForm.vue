@@ -1,11 +1,6 @@
 <template>
   <div class="credit">
-    <div
-      v-show="!checkout"
-      key="credits"
-      class="credit__form"
-      :style="{ textAlign: 'center ' }"
-    >
+    <div v-show="!checkout" key="credits" class="credit__form" :style="{ textAlign: 'center ' }">
       <div class="credit__picker">
         <span class="credit__decrement" @click="decrement()">–</span>
         <input
@@ -32,12 +27,7 @@
         @click="toggleCheckout()"
       />
     </div>
-    <checkout-form
-      v-if="checkout"
-      key="checkout"
-      :credits="credits"
-      @back="toggleCheckout()"
-    />
+    <checkout-form v-if="checkout" key="checkout" :credits="credits" @back="toggleCheckout()" />
   </div>
 </template>
 
@@ -73,10 +63,7 @@ export default {
     ) => {
       if (credits === 0) return parseFloat(cost.toFixed(2));
       var t = ~~(credits / (step + 1)); // price tier
-      var r = Math.max(
-        -(unitCost * discountFactor * t) + unitCost,
-        minUnitCost
-      ); // rate
+      var r = Math.max(-(unitCost * discountFactor * t) + unitCost, minUnitCost); // rate
       var u = !!(credits % step) ? credits % step : step; // units (in tier)
       return creditsToAmount(credits - u, cost + u * r); // recurse, price tier by price tier
     };

@@ -240,17 +240,10 @@ export default {
       changed: false,
       dirty: {},
       errors: {},
-      isDirty: computed(
-        () =>
-          meta.changed || Object.keys(meta.dirty).some((e) => !!meta.dirty[e])
-      ),
+      isDirty: computed(() => meta.changed || Object.keys(meta.dirty).some((e) => !!meta.dirty[e])),
       isSubmitting: false,
-      isTouched: computed(
-        () => !Object.keys(meta.touched).some((e) => !!meta.touched[e])
-      ),
-      isValid: computed(
-        () => !Object.keys(meta.errors).some((e) => !!meta.errors[e])
-      ),
+      isTouched: computed(() => !Object.keys(meta.touched).some((e) => !!meta.touched[e])),
+      isValid: computed(() => !Object.keys(meta.errors).some((e) => !!meta.errors[e])),
       message: "",
       touched: {},
     });
@@ -320,9 +313,7 @@ export default {
               }
               return data.message;
             })
-            .then((message) =>
-              router.push({ name: "Login", params: { message } })
-            )
+            .then((message) => router.push({ name: "Login", params: { message } }))
             .catch((err) => {
               console.error(err);
             });

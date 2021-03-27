@@ -6,11 +6,7 @@ const Country = mongoose.model("country");
 const State = mongoose.model("state");
 const User = mongoose.model("user");
 const Token = mongoose.model("token");
-const {
-  sendRecoveryEmail,
-  sendRegisterEmail,
-  sendResetEmail,
-} = require("../services/email");
+const { sendRecoveryEmail, sendRegisterEmail, sendResetEmail } = require("../services/email");
 const {
   DuplicateEmail,
   DuplicateUsername,
@@ -96,17 +92,9 @@ module.exports = (app) => {
           fullName: user.fullName,
           verifyUrl: "https://" + req.hostname + "/verify/" + token.secret,
         });
-        console.log(
-          "Queued email (registration): %s, %s",
-          user.fullName,
-          user.email
-        );
+        console.log("Queued email (registration): %s, %s", user.fullName, user.email);
       } catch (e) {
-        console.log(
-          "Unable to queue email (registration): %s, %s",
-          user.fullName,
-          user.email
-        );
+        console.log("Unable to queue email (registration): %s, %s", user.fullName, user.email);
       }
 
       console.log("User Registration: %s, %s", user.fullName, user.email);
@@ -130,14 +118,7 @@ module.exports = (app) => {
     try {
       //throw new Error("Test account update error handling...");
       // Limit user updates to a narrow subset of fields
-      const {
-        city,
-        countryCode,
-        firstName,
-        lastName,
-        stateCode,
-        title,
-      } = req.body;
+      const { city, countryCode, firstName, lastName, stateCode, title } = req.body;
 
       const user = await User.findOneAndUpdate(
         { _id: req.user.id },
@@ -215,11 +196,7 @@ module.exports = (app) => {
           });
           console.log("Queued email (recovery): %s, %s", fullName, toAddress);
         } catch (e) {
-          console.log(
-            "Unable to queue email (recovery): %s, %s",
-            fullName,
-            toAddress
-          );
+          console.log("Unable to queue email (recovery): %s, %s", fullName, toAddress);
         }
       } else {
         const loginUrl = "https://" + req.hostname + "/login";
@@ -234,11 +211,7 @@ module.exports = (app) => {
           });
           console.log("Queued email (recovery): %s, %s", fullName, toAddress);
         } catch (e) {
-          console.log(
-            "Unable to queue email (recovery): %s, %s",
-            fullName,
-            toAddress
-          );
+          console.log("Unable to queue email (recovery): %s, %s", fullName, toAddress);
         }
       }
 
@@ -282,22 +255,14 @@ module.exports = (app) => {
       const { newPassword, secret } = req.body;
 
       const token = await Token.findOne({
-        $and: [
-          { secret },
-          { claimed: false },
-          { expiryDate: { $gte: new Date().toISOString() } },
-        ],
+        $and: [{ secret }, { claimed: false }, { expiryDate: { $gte: new Date().toISOString() } }],
       });
 
       if (!token) throw new InvalidToken();
 
       await User.findOneAndUpdate(
         {
-          $and: [
-            { _id: token.user_id },
-            { verified: true },
-            { googleId: { $exists: false } },
-          ],
+          $and: [{ _id: token.user_id }, { verified: true }, { googleId: { $exists: false } }],
         },
         { password: md5(newPassword), updateDate: new Date() },
         { new: true, useFindAndModify: false }
@@ -329,11 +294,7 @@ module.exports = (app) => {
 
       const user = await User.findOneAndUpdate(
         {
-          $and: [
-            { _id: token.user_id },
-            { verified: false },
-            { googleId: { $exists: false } },
-          ],
+          $and: [{ _id: token.user_id }, { verified: false }, { googleId: { $exists: false } }],
         },
         { verified: true, updateDate: new Date() },
         { new: true, useFindAndModify: false }

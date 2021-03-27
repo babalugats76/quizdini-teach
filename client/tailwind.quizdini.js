@@ -1,14 +1,7 @@
 module.exports = {
   important: true,
   darkMode: false,
-  corePlugins: [
-    "fontFamily",
-    "fontWeight",
-    "margin",
-    "padding",
-    "preflight",
-    "textTransform",
-  ],
+  corePlugins: ["fontFamily", "fontWeight", "margin", "padding", "preflight", "textTransform"],
   theme: {
     fontFamily: {
       montserrat: ["montserrat", "sans-serif"],

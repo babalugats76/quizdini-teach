@@ -19,11 +19,9 @@
         values,
       }"
     >
-      <ui-message
-        v-if="message && !submitting && !dirty"
-        v-bind="{ [`${severity}`]: true }"
-        >{{ message }}</ui-message
-      >
+      <ui-message v-if="message && !submitting && !dirty" v-bind="{ [`${severity}`]: true }">{{
+        message
+      }}</ui-message>
       <!-- <form> -->
       <div class="form-input">
         <ui-datalist
@@ -284,14 +282,8 @@ export default {
 
     const registerFormSchema = object({
       city: string().max(100, "City is too long (${max} characters allowed)"),
-      confirmPassword: string().oneOf(
-        [yupRef("password")],
-        "Passwords mismatch"
-      ),
-      cookie: boolean().oneOf(
-        [true],
-        "Please read and accept our Cookie policy"
-      ),
+      confirmPassword: string().oneOf([yupRef("password")], "Passwords mismatch"),
+      cookie: boolean().oneOf([true], "Please read and accept our Cookie policy"),
       country: string().required("Country is required"),
       email: string().required("Email is required").email("Inva lid email"),
       firstName: string().required("First Name is required"),
@@ -302,18 +294,12 @@ export default {
           /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&]{8,}$/,
           "Password must be 8 or more characters long and include upper, lower, numeric and special @$!%*#?& characters"
         ),
-      privacy: boolean().oneOf(
-        [true],
-        "Please read and accept our Privacy policy"
-      ),
+      privacy: boolean().oneOf([true], "Please read and accept our Privacy policy"),
       state: string().when("countryCode", {
         is: (val) => val === "US",
         then: string().required("State is required"),
       }),
-      terms: boolean().oneOf(
-        [true],
-        "Please read and accept our Terms and Conditions"
-      ),
+      terms: boolean().oneOf([true], "Please read and accept our Terms and Conditions"),
       title: string().max(10, "Title too long (${max} characters allowed)"),
       username: string()
         .required("Username is required")
@@ -339,12 +325,7 @@ export default {
       username: "",
     });
 
-    const handleSubmit = async ({
-      errors,
-      setSubmitting,
-      setSubmitted,
-      values,
-    }) => {
+    const handleSubmit = async ({ errors, setSubmitting, setSubmitted, values }) => {
       if (errors) return;
       setSubmitting();
       postAccount(values)

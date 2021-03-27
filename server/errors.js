@@ -1,8 +1,4 @@
-const {
-  BAD_REQUEST,
-  INTERNAL_SERVER_ERROR,
-  UNAUTHORIZED,
-} = require("http-status-codes");
+const { BAD_REQUEST, INTERNAL_SERVER_ERROR, UNAUTHORIZED } = require("http-status-codes");
 
 const DUPLICATE_EMAIL = "%email% is already associated with another account.";
 const DUPLICATE_USERNAME = "%username% already exists";

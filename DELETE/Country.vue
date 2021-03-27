@@ -99,13 +99,7 @@ export default {
     // const selectedCountry = ref("");
     // const store = useStore();
 
-    const {
-      countries,
-      failed,
-      getCountryCode,
-      loaded,
-      loading,
-    } = useCountries();
+    const { countries, failed, getCountryCode, loaded, loading } = useCountries();
 
     const state = reactive({
       // countries: computed(() => store.getters["countries/options"]),
@@ -114,9 +108,7 @@ export default {
       loading: false,
       // isDirty: computed(() => !!(state.username && state.password)),
       errors: {},
-      hasErrors: computed(() =>
-        Object.keys(state.errors).some((e) => !!state.errors[e])
-      ),
+      hasErrors: computed(() => Object.keys(state.errors).some((e) => !!state.errors[e])),
       message: "",
     });
 

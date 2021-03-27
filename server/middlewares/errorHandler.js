@@ -8,10 +8,7 @@ module.exports = (err, req, res, next) => {
       : {
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
           code: err.constructor.name,
-          message:
-            err.message ||
-            HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR) ||
-            "",
+          message: err.message || HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR) || "",
         };
   res.status(error.statusCode).send(error);
   //next(err);

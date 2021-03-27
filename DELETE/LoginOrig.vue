@@ -1,10 +1,7 @@
 <template>
   <div class="login">
     <div class="login__google-signin google-signin">
-      <div
-        class="google-signin__btn"
-        @click="popup('/auth/google', 'google_login', 500, 500)"
-      >
+      <div class="google-signin__btn" @click="popup('/auth/google', 'google_login', 500, 500)">
         <span class="google-signin__icon" />
         <span class="google-signin__text">Login with Google</span>
       </div>
@@ -179,8 +176,7 @@ $google-icon-size: "42px";
   &__icon {
     display: inline-block;
     vertical-align: middle;
-    background: url("~@/assets/images/g-normal.png") transparent 5px 50%
-      no-repeat;
+    background: url("~@/assets/images/g-normal.png") transparent 5px 50% no-repeat;
     width: #{$google-icon-size};
     height: #{$google-icon-size};
 

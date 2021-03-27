@@ -11,11 +11,7 @@
     @input="onInputChange($event)"
   />
   <datalist :id="id">
-    <option
-      v-for="option in options"
-      :key="option.key"
-      :data-value="option.value"
-    >
+    <option v-for="option in options" :key="option.key" :data-value="option.value">
       {{ option.text }}
     </option>
   </datalist>

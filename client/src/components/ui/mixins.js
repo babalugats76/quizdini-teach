@@ -109,12 +109,7 @@ export const size = {
         [`size--lg`]: this.large,
         [`size--xl`]: this.xLarge,
         [`size--${this.size}`]:
-          this.size &&
-          !this.xSmall &&
-          !this.small &&
-          !this.medium &&
-          !this.large &&
-          !this.xLarge,
+          this.size && !this.xSmall && !this.small && !this.medium && !this.large && !this.xLarge,
       };
     },
   },

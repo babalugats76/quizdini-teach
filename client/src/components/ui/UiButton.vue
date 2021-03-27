@@ -53,11 +53,7 @@ export const UiButtonGroup = {
     },
   },
   render() {
-    return (
-      <div class={this.classes}>
-        {this.$slots.default && this.$slots.default()}
-      </div>
-    );
+    return <div class={this.classes}>{this.$slots.default && this.$slots.default()}</div>;
   },
 };
 

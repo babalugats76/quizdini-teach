@@ -7,11 +7,9 @@
     Loading: {{ loading }}<br />
     Reloading: {{ reloading }} <br />
     In Error: {{ inError }} <br />
-    <pre
-      v-show="auth"
-      :style="{ fontSize: '10px', maxHeight: '200px', overflow: 'scroll' }"
-      >{{ JSON.stringify(auth, null, 4) }}</pre
-    >
+    <pre v-show="auth" :style="{ fontSize: '10px', maxHeight: '200px', overflow: 'scroll' }">{{
+      JSON.stringify(auth, null, 4)
+    }}</pre>
     <pre v-show="inError">There was an error!</pre>
     <pre v-show="hasData">There were {{ count }} records found!</pre>
     <pre v-show="reloading">reloading...</pre>

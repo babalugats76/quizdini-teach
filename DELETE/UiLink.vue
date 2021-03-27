@@ -29,12 +29,7 @@ export default {
      * and need to mark one to have an `id`, for example
      **/
     return (
-      <a
-        class={this.classes}
-        href={this.href}
-        rel="noopener noreferrer"
-        target={this.target}
-      >
+      <a class={this.classes} href={this.href} rel="noopener noreferrer" target={this.target}>
         {this.$slots.default()}
       </a>
     );
