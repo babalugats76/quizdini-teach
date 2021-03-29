@@ -16,7 +16,7 @@
     "vue/html-closing-bracket-newline": "off",
     "vue/no-unused-vars": "off",
     "vue/require-prop-types": "off",
-    "vue/no-multiple-template-root": "off" 
+    "vue/no-multiple-template-root": "off"
   },
   "parserOptions": {
     "ecmaFeatures": {

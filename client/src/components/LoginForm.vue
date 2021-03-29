@@ -31,6 +31,7 @@
           {{ message }}
         </ui-message>
         <div class="form-input">
+          <!-- eslint-disable vue/no-v-model-argument -->
           <ui-input
             v-model:value="values.username"
             :errors="touched.username && errors.username"
@@ -44,6 +45,7 @@
           />
         </div>
         <div class="form-input">
+          <!-- eslint-disable vue/no-v-model-argument -->
           <ui-input
             v-model:value="values.password"
             :errors="touched.password && errors.password"

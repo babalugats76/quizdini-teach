@@ -8,5 +8,6 @@ const updateMatch = (match) => {
   const { matchId = null } = match;
   return put({ url: `${ENDPOINT}`, data: match, id: matchId });
 };
+const getMatchStats = (matchId) => get({ url: `${ENDPOINT}/${matchId}/stats` });
 
-export { getMatch, getMatches, postMatch, updateMatch };
+export { getMatch, getMatches, postMatch, updateMatch, getMatchStats };
