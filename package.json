@@ -16,7 +16,7 @@
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "prettier": "prettier **/*.{js,ts,vue,json} --print-width=100 --write",
-    "deploy-to-prod": "npm run prettier && npm run build --prefix client && git add . && cross-env git commit --allow-empty-message && git push origin main && git push heroku main",
+    "deploy-to-prod": "npm run prettier && npm run build --prefix client && git add . && cross-env git commit --allow-empty-message --no-verify && git push origin main && git push heroku main",
     "heroku-prebuild": "echo Hook for Heroku prebuild...",
     "heroku-postbuild": "echo Hook for Heroku postbuild..."
   },
