@@ -2,7 +2,7 @@
   "name": "server",
   "description": "Quizdini teach app",
   "config": {
-    "comment": "Updated quizdini-teach source code"
+    "comment": "Quizdini teacher site source code"
   },
   "version": "0.0.0",
   "private": true,
