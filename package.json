@@ -4,7 +4,7 @@
   "config": {
     "comment": "Quizdini teacher site source code"
   },
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "engines": {
     "node": "15.x",
