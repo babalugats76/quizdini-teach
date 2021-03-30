@@ -14,6 +14,7 @@
     <h1><label>Initialized</label>{{ initialized }}</h1>
     <h1><label>Loaded</label>{{ loaded }}</h1>
     <h1><label>Loading</label>{{ loading }}</h1>
+    <ping-chart v-if="loaded" :create-date="stats.createDate" :pings="stats.pings" />
   </div>
 </template>
 
@@ -22,9 +23,13 @@ import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { getMatchStats } from "@/api/matches";
 import useLoader from "@/compose/useLoader";
+import { PingChart } from "@/components/";
 
 export default {
   name: "MatchStats",
+  components: {
+    PingChart,
+  },
   setup() {
     const refresh = ref(0);
     const route = useRoute();

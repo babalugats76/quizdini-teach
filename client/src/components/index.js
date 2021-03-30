@@ -7,6 +7,7 @@ import MatchList from "./MatchList";
 import MatchView from "./MatchView";
 import NavButton from "./ui/NavButton";
 import PaymentTable from "./PaymentTable";
+import PingChart from "./PingChart";
 import RegisterForm from "./RegisterForm";
 import { UiButton, UiButtonGroup } from "./ui/UiButton";
 import UiCheckbox from "./ui/UiCheckbox";
@@ -34,6 +35,7 @@ export {
   MatchView,
   NavButton,
   PaymentTable,
+  PingChart,
   RegisterForm,
   UiButton,
   UiButtonGroup,
