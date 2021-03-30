@@ -16,7 +16,7 @@
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "prettier": "prettier **/*.{js,ts,vue,json} --print-width=100 --write",
-    "deploy-to-prod": "npm run prettier && npm run build --prefix client && git add . && cross-env git commit --allow-empty-message --no-verify && git push origin main && git push heroku main",
+    "deploy-to-prod": "npm run prettier && npm run build --prefix client && git add . && git commit --allow-empty-message --no-verify && git push origin main && git push heroku main",
     "heroku-prebuild": "echo Hook for Heroku prebuild...",
     "heroku-postbuild": "echo Hook for Heroku postbuild..."
   },
@@ -26,7 +26,6 @@
     "cookie-parser": "~1.4.4",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
-    "cross-env": "^7.0.3",
     "date-fns": "^2.17.0",
     "date-fns-tz": "^1.1.1",
     "debug": "~2.6.9",
