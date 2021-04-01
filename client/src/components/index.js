@@ -25,6 +25,8 @@ import {
   UiTableHeaderCell,
 } from "./ui/UiTable";
 
+import { UiGrid, UiGridRow, UiGridColumn } from "./ui/UiGrid";
+
 export {
   CardGrid,
   CheckoutForm,
@@ -42,6 +44,9 @@ export {
   UiCheckbox,
   UiDatalist,
   UiForm,
+  UiGrid,
+  UiGridRow,
+  UiGridColumn,
   UiInput,
   UiLink,
   UiMessage,

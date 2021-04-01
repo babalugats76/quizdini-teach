@@ -63,3 +63,17 @@
     word-break: break-word !important;
   }
 }
+
+@mixin column-width($width) {
+  $widthPct: (1 / $width);
+  width: percentage($widthPct);
+}
+
+@mixin column($gap: 1rem, $align: top) {
+  position: relative;
+  display: inline-block;
+  padding: 0 $gap;
+  margin-top: 0;
+  margin-bottom: 0;
+  vertical-align: $align;
+}

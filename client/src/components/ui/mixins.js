@@ -19,6 +19,42 @@ export const color = {
   },
 };
 
+export const columns = {
+  props: {
+    columns: {
+      type: [String, Number],
+      default: "equal",
+    },
+  },
+  computed: {
+    columnClasses() {
+      const numWords = [
+        "zero",
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine",
+        "ten",
+        "eleven",
+        "twelve",
+        "thirteen",
+        "fourteen",
+        "fifteen",
+        "sixteen",
+      ];
+      return {
+        [`columns--${numWords[this.columns] ? numWords[this.columns] : "equal"}`]: this.columns,
+        ["columns--full"]: this.columns === "full",
+      };
+    },
+  },
+};
+
 export const focus = {
   props: {
     autofocus: {
@@ -152,6 +188,7 @@ export const theme = {
 
 export default {
   color,
+  columns,
   focus,
   severity,
   size,
