@@ -1,4 +1,4 @@
-const HttpStatus = require("http-status-codes");
+const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 const { CustomError } = require("../errors.js");
 
 module.exports = (err, req, res, next) => {
@@ -6,9 +6,9 @@ module.exports = (err, req, res, next) => {
     err instanceof CustomError
       ? err.getError()
       : {
-          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
           code: err.constructor.name,
-          message: err.message || HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR) || "",
+          message: err.message || getReasonPhrase(HttpStatus.INTERNAL_SERVER_ERROR) || "",
         };
   res.status(error.statusCode).send(error);
   //next(err);

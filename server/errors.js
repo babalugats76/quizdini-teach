@@ -1,4 +1,4 @@
-const { BAD_REQUEST, INTERNAL_SERVER_ERROR, UNAUTHORIZED } = require("http-status-codes");
+const { StatusCodes } = require("http-status-codes");
 
 const DUPLICATE_EMAIL = "%email% is already associated with another account.";
 const DUPLICATE_USERNAME = "%username% already exists";
@@ -10,7 +10,7 @@ const NOT_AUTHENTICATED = "You must be logged in to access %path%.";
 const NOT_ADMIN = "You must be a logged in super user to access %path%.";
 
 class CustomError extends Error {
-  constructor(msg, statusCode = INTERNAL_SERVER_ERROR, code = undefined) {
+  constructor(msg, statusCode = StatusCodes.INTERNAL_SERVER_ERROR, code = undefined) {
     super(msg);
     this.statusCode = statusCode;
     this.code = code || this.constructor.name;
@@ -26,55 +26,55 @@ class CustomError extends Error {
 
 class DuplicateEmail extends CustomError {
   constructor(email, msg = DUPLICATE_EMAIL) {
-    super(msg.replace("%email%", email), BAD_REQUEST);
+    super(msg.replace("%email%", email), StatusCodes.BAD_REQUEST);
   }
 }
 
 class DuplicateUsername extends CustomError {
   constructor(username, msg = DUPLICATE_USERNAME) {
-    super(msg.replace("%username%", username), BAD_REQUEST);
+    super(msg.replace("%username%", username), StatusCodes.BAD_REQUEST);
   }
 }
 
 class InsufficientCredits extends CustomError {
   constructor(msg = INSUFFICIENT_CREDITS) {
-    super(msg, BAD_REQUEST);
+    super(msg, StatusCodes.BAD_REQUEST);
   }
 }
 
 class IncorrectPassword extends CustomError {
   constructor(msg = INCORRECT_PASSWORD) {
-    super(msg, BAD_REQUEST);
+    super(msg, StatusCodes.BAD_REQUEST);
   }
 }
 
 class InvalidToken extends CustomError {
   constructor(msg = INVALID_TOKEN) {
-    super(msg, BAD_REQUEST);
+    super(msg, StatusCodes.BAD_REQUEST);
   }
 }
 
 class LoginFailed extends CustomError {
   constructor(msg = LOGIN_FAILED) {
-    super(msg, UNAUTHORIZED);
+    super(msg, StatusCodes.UNAUTHORIZED);
   }
 }
 
 class NotAdmin extends CustomError {
   constructor(path, msg = NOT_ADMIN) {
-    super(msg.replace("%path%", path), UNAUTHORIZED);
+    super(msg.replace("%path%", path), StatusCodes.UNAUTHORIZED);
   }
 }
 
 class NotAuthenticated extends CustomError {
   constructor(path, msg = NOT_AUTHENTICATED) {
-    super(msg.replace("%path%", path), UNAUTHORIZED);
+    super(msg.replace("%path%", path), StatusCodes.UNAUTHORIZED);
   }
 }
 
 class StripeChargeError extends CustomError {
   constructor(msg, code) {
-    super(msg, BAD_REQUEST, code);
+    super(msg, StatusCodes.BAD_REQUEST, code);
   }
 }
 
