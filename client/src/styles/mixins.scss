@@ -77,3 +77,7 @@
   margin-bottom: 0;
   vertical-align: $align;
 }
+
+@mixin bp($point) {
+  @media (min-width: 1600px) { @content; }
+}
