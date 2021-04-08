@@ -51,6 +51,7 @@ app.use(
           "https",
           "*.stripe.com",
           "'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI='",
+          "'sha256-kwpt3lQZ21rs4cld7/uEm9qI5yAbjYzx+9FGm/XmwNU='",
           "'unsafe-eval'" /*"'unsafe-inline'"*/,
         ],
         scriptSrcAttr: ["'none'"],
