@@ -64,20 +64,31 @@
   }
 }
 
-@mixin column-width($width) {
+@mixin column-width($width, $gap: 1rem, $align: top) {
   $widthPct: (1 / $width);
-  width: percentage($widthPct);
-}
-
-@mixin column($gap: 1rem, $align: top) {
-  position: relative;
-  display: inline-block;
-  padding: 0 $gap;
-  margin-top: 0;
-  margin-bottom: 0;
+  width:  calc(#{percentage($widthPct)} - #{$gap});
   vertical-align: $align;
 }
 
-@mixin bp($point) {
-  @media (min-width: 1600px) { @content; }
+@mixin column($gap: 1rem) {
+  position: relative;
+  display: inline-block;
+  width: calc(100% - #{$gap});
+  padding: 0 $gap;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+@mixin breakpoint($bp, $direction: min) {
+  $px: map-get($breakpoints, $bp);
+  @if $direction == max {
+    @media (max-width: ($px - 1)) {
+      @content;
+    }
+  }
+  @if $direction == min {
+    @media (min-width: $px) {
+      @content;
+    }
+  }
 }

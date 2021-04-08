@@ -1,3 +1,4 @@
+@import 'config', 'mixins', 'functions';
 @each $font, $styles in $fonts {
   @each $style, $values in $styles {
     @include font-face($font, map-get($values, "path"), map-get($values, "weight"));

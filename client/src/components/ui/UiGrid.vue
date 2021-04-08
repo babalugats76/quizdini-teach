@@ -3,6 +3,11 @@ import { columns } from "./mixins";
 
 export const UiGrid = {
   name: "UiGrid",
+  props: {
+    stackable: {
+      type: Boolean,
+    },
+  },
   computed: {
     classes() {
       return {
@@ -22,6 +27,7 @@ export const UiGridRow = {
     classes() {
       return {
         "ui-grid__row": true,
+        stackable: true,
         ...this.columnClasses,
       };
     },
@@ -49,7 +55,16 @@ export default UiGrid;
 </script>
 
 <style lang="scss">
-$gridGap: 1rem;
+$grid-gap: 1rem;
+
+// map screen to globally-defined breakpoints
+$screens: (
+  "mobile": "sm",
+  "tablet": "md",
+  "computer": "lg",
+  "monitor": "xl",
+  "widescreen": "2xl",
+);
 
 $columns: (
   "zero",
@@ -80,7 +95,7 @@ $columns: (
   flex-wrap: wrap;
   padding: 0;
   align-items: stretch;
-  margin: -1 * $gridGap;
+  margin: -1 * $grid-gap;
 
   &__row {
     position: relative;
@@ -89,41 +104,47 @@ $columns: (
     flex-wrap: wrap;
     justify-content: inherit;
     align-items: stretch;
-    width: 100% !important;
-    padding-top: $gridGap;
-    padding-bottom: $gridGap;
-  }
-
-  @at-root #{$grid} > #{$row}[class*="columns--"] > #{$column} {
-    @include column();
-  }
-
-  @for $i from 1 through length($columns) {
-    @if $i > 1 {
-      $label: nth($columns, $i);
-      @at-root #{$grid} > #{$row}.columns--#{$label} > #{$column} {
-        @include column-width($i - 1);
-      }
-    }
-  }
-
-  @at-root #{$grid} > #{$row}.columns--full > #{$column} {
-    @include column-width((length($columns) - 1));
-  }
-
-  @at-root #{$grid} > #{$row}.columns--equal > #{$column} {
-    flex-grow: 1;
+    width: calc(100% + #{$grid-gap}) !important;
+    padding-top: $grid-gap;
+    padding-bottom: $grid-gap;
+    margin: (-$grid-gap) 0 0 (-$grid-gap);
   }
 
   @at-root #{$grid} > #{$row} > #{$column} {
-    &:first-child {
-      padding-left: 0;
-    }
-    &:last-child {
-      padding-right: 0;
-    }
-    &:only-child {
-      width: 100%;
+    @include column();
+    margin: $grid-gap 0 0 $grid-gap;
+  }
+
+  @each $screen, $bp in $screens {
+    @include breakpoint($bp) {
+      @for $i from 1 through length($columns) {
+        @if $i > 1 {
+          $column-count: nth($columns, $i);
+          @at-root #{$grid} > #{$row}.stackable.#{$screen}--#{$column-count} > #{$column} {
+            @include column-width($i - 1);
+          }
+        }
+      }
+
+      @at-root #{$grid} > #{$row}.stackable[class*="#{$screen}--"] > #{$column} {
+        // &:first-child {
+        //   padding-left: 0;
+        // }
+        // &:last-child {
+        //   padding-right: 0;
+        // }
+        &:only-child {
+          width: 100%;
+        }
+      }
+
+      @at-root #{$grid} > #{$row}.stackable.#{$screen}--full > #{$column} {
+        @include column-width((length($columns) - 1));
+      }
+
+      @at-root #{$grid} > #{$row}.stackable.#{$screen}--equal > #{$column} {
+        flex-grow: 1;
+      }
     }
   }
 }
