@@ -126,6 +126,24 @@ $grid-gap: 1rem;
     vertical-align: top;
   }
 
+  @at-root #{$grid} > #{$row}[class$="--full"] > #{$column} {
+    @include column-width((length($columns) - 1));
+  }
+
+  @at-root #{$grid} > #{$row}[class$="--equal"] > #{$column} {
+    flex-grow: 1;
+    width: unset;
+  }
+
+  @for $i from 1 through length($columns) {
+    @if $i > 1 {
+      $column-count: nth($columns, $i);
+      @at-root #{$grid} > #{$row}:not(.stackable).columns--#{$column-count} > #{$column} {
+        @include column-width($i - 1);
+      }
+    }
+  }
+
   @each $screen, $bp in $screens {
     @include breakpoint($bp) {
       @for $i from 1 through length($columns) {
@@ -135,15 +153,6 @@ $grid-gap: 1rem;
             @include column-width($i - 1);
           }
         }
-      }
-
-      @at-root #{$grid} > #{$row}.stackable.#{$screen}--full > #{$column} {
-        @include column-width((length($columns) - 1));
-      }
-
-      @at-root #{$grid} > #{$row}.stackable.#{$screen}--equal > #{$column} {
-        flex-grow: 1;
-        width: unset;
       }
     }
   }

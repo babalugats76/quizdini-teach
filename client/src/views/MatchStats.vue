@@ -16,23 +16,7 @@
       />
       <h1>Match Stats</h1>
       <grid stackable>
-        <grid-row :desktop="4" mobile="equal">
-          <!-- <grid-column>
-            <p>Hello</p>
-          </grid-column>
-
-          <grid-column>
-            <p>Hello</p>
-          </grid-column>
-          <grid-column>
-            <p>Hello</p>
-          </grid-column>
-          <grid-column>
-            <p>Hello</p>
-          </grid-column> -->
-          <grid-column>
-            <ping-chart v-if="!!stats" :create-date="stats.createDate" :pings="stats.pings" />
-          </grid-column>
+        <grid-row :tablet="2">
           <grid-column>
             <ping-chart v-if="!!stats" :create-date="stats.createDate" :pings="stats.pings" />
           </grid-column>
