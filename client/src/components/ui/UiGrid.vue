@@ -55,14 +55,12 @@ export default UiGrid;
 </script>
 
 <style lang="scss">
-$grid-gap: 1rem;
-
 // map screen to globally-defined breakpoints
 $screens: (
   "mobile": "sm",
   "tablet": "md",
-  "computer": "lg",
-  "monitor": "xl",
+  "laptop": "lg",
+  "desktop": "xl",
   "widescreen": "2xl",
 );
 
@@ -86,6 +84,13 @@ $columns: (
   "sixteen"
 );
 
+$grid-gap: 1rem;
+
+@mixin column-width($frac, $gap: #{$grid-gap}) {
+  $widthPct: (1 / $frac);
+  width: calc(#{percentage($widthPct)} - #{$gap});
+}
+
 .ui-grid {
   $grid: &;
   $row: #{$grid}__row;
@@ -104,15 +109,21 @@ $columns: (
     flex-wrap: wrap;
     justify-content: inherit;
     align-items: stretch;
-    width: calc(100% + #{$grid-gap}) !important;
+    width: calc(
+      100% + #{$grid-gap}
+    ) !important; /* hack until gap property supported with flexbox on all browsers */
     padding-top: $grid-gap;
     padding-bottom: $grid-gap;
     margin: (-$grid-gap) 0 0 (-$grid-gap);
   }
 
   @at-root #{$grid} > #{$row} > #{$column} {
-    @include column();
+    position: relative;
+    display: inline-block;
+    @include column-width(1);
+    padding: 0 $grid-gap;
     margin: $grid-gap 0 0 $grid-gap;
+    vertical-align: top;
   }
 
   @each $screen, $bp in $screens {
@@ -126,24 +137,13 @@ $columns: (
         }
       }
 
-      @at-root #{$grid} > #{$row}.stackable[class*="#{$screen}--"] > #{$column} {
-        // &:first-child {
-        //   padding-left: 0;
-        // }
-        // &:last-child {
-        //   padding-right: 0;
-        // }
-        &:only-child {
-          width: 100%;
-        }
-      }
-
       @at-root #{$grid} > #{$row}.stackable.#{$screen}--full > #{$column} {
         @include column-width((length($columns) - 1));
       }
 
       @at-root #{$grid} > #{$row}.stackable.#{$screen}--equal > #{$column} {
         flex-grow: 1;
+        width: unset;
       }
     }
   }

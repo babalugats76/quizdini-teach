@@ -23,13 +23,26 @@ export const columns = {
   props: {
     columns: {
       type: [String, Number],
-      default: "equal",
+    },
+    mobile: {
+      type: [String, Number],
+    },
+    tablet: {
+      type: [String, Number],
+    },
+    laptop: {
+      type: [String, Number],
+    },
+    desktop: {
+      type: [String, Number],
+    },
+    widescreen: {
+      type: [String, Number],
     },
   },
   computed: {
     columnClasses() {
       const numWords = [
-        "zero",
         "one",
         "two",
         "three",
@@ -47,9 +60,17 @@ export const columns = {
         "fifteen",
         "sixteen",
       ];
+      const numToWord = (num, fallback = "equal") => {
+        if (isNaN(num)) return num;
+        if (!Number.isInteger(num) || num <= 0 || num > numWords.Length + 1) return fallback;
+        return numWords[num - 1];
+      };
       return {
-        [`columns--${numWords[this.columns] ? numWords[this.columns] : "equal"}`]: this.columns,
-        ["columns--full"]: this.columns === "full",
+        [`columns--${numToWord(this.columns)}`]: this.columns,
+        [`mobile--${numToWord(this.mobile)}`]: this.mobile,
+        [`tablet--${numToWord(this.tablet)}`]: this.tablet,
+        [`desktop--${numToWord(this.desktop)}`]: this.desktop,
+        [`widescreen--${numToWord(this.widescreen)}`]: this.widescreen,
       };
     },
   },

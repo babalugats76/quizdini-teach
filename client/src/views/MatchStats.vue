@@ -16,7 +16,20 @@
       />
       <h1>Match Stats</h1>
       <grid stackable>
-        <grid-row :columns="3">
+        <grid-row :desktop="4" mobile="equal">
+          <!-- <grid-column>
+            <p>Hello</p>
+          </grid-column>
+
+          <grid-column>
+            <p>Hello</p>
+          </grid-column>
+          <grid-column>
+            <p>Hello</p>
+          </grid-column>
+          <grid-column>
+            <p>Hello</p>
+          </grid-column> -->
           <grid-column>
             <ping-chart v-if="!!stats" :create-date="stats.createDate" :pings="stats.pings" />
           </grid-column>
@@ -44,6 +57,7 @@ import { PingChart } from "@/components/";
 import { UiGrid, UiGridRow, UiGridColumn } from "@/components/ui/UiGrid";
 
 export default {
+  /* eslint-disable vue/no-unused-components */
   name: "MatchStats",
   components: {
     PingChart,
