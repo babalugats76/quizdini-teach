@@ -42,7 +42,7 @@ app.use(
         blockAllMixedContent: [],
         defaultSrc: [
           "'self'",
-          "'unsafe-inline'",
+          // "'unsafe-inline'",
           "'sha256-kwpt3lQZ21rs4cld7/uEm9qI5yAbjYzx+9FGm/XmwNU='",
         ],
         fontSrc: ["'self'", "https:", "data:"],
@@ -58,6 +58,7 @@ app.use(
           "'unsafe-eval'" /*"'unsafe-inline'"*/,
         ],
         scriptSrcAttr: ["'none'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
         upgradeInsecureRequests: [],
       },
       reportOnly: false,
