@@ -15,8 +15,13 @@
         @click.prevent="refreshStats()"
       />
       <h1>Match Stats</h1>
-      <grid stackable>
-        <grid-row :tablet="2">
+      <grid>
+        <grid-row stackable :tablet="3">
+          <grid-column>100%</grid-column>
+          <grid-column>2.5</grid-column>
+          <grid-column>45</grid-column>
+        </grid-row>
+        <grid-row stackable :tablet="2">
           <grid-column>
             <ping-chart v-if="!!stats" :create-date="stats.createDate" :pings="stats.pings" />
           </grid-column>

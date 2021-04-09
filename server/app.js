@@ -40,7 +40,11 @@ app.use(
       directives: {
         baseUri: ["'self'"],
         blockAllMixedContent: [],
-        defaultSrc: ["'self'", "'sha256-kwpt3lQZ21rs4cld7/uEm9qI5yAbjYzx+9FGm/XmwNU='"],
+        defaultSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "'sha256-kwpt3lQZ21rs4cld7/uEm9qI5yAbjYzx+9FGm/XmwNU='",
+        ],
         fontSrc: ["'self'", "https:", "data:"],
         frameAncestors: ["'self'"],
         frameSrc: ["'self'", "*.stripe.com"],
