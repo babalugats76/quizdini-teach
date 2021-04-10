@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { severity } from "./mixins";
+import { severity } from "@mixins/";
 
 export default {
   name: "UiMessage",

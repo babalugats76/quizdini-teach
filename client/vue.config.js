@@ -32,6 +32,7 @@ module.exports = {
       return args;
     });
     config.resolve.alias.set("styles", path.resolve(__dirname, "src/styles"));
+    config.resolve.alias.set("@mixins", path.resolve(__dirname, "src/components/mixins"));
   },
   outputDir: "../server/public",
   configureWebpack: {
