@@ -21,12 +21,12 @@ export default {
     },
     target: {
       type: String,
-      required: true,
+      required: false,
       default: "_blank",
     },
     as: {
       type: String,
-      required: true,
+      required: false,
       default: "a",
     },
   },

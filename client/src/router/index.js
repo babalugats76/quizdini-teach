@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import { computed } from "vue";
 import routes from "./routes";
-import store from "@/store";
+import store from "@vuex";
 
 const storeInit = store.dispatch("init");
 const loggedIn = computed(() => store.getters["auth/loggedIn"]);

@@ -38,6 +38,7 @@ module.exports = {
     config.resolve.alias.set("@mixins", path.resolve(__dirname, "src/components/mixins"));
     config.resolve.alias.set("@ui", path.resolve(__dirname, "src/components/ui"));
     config.resolve.alias.set("@utils", path.resolve(__dirname, "src/utils"));
+    config.resolve.alias.set("@views", path.resolve(__dirname, "src/views"));
     config.resolve.alias.set("@vuex", path.resolve(__dirname, "src/store"));
   },
   outputDir: "../server/public",

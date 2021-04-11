@@ -60,7 +60,7 @@ export const UiTableHeaderCell = {
   props: {
     collapsing: {
       type: Boolean,
-      required: true,
+      required: false,
       default: false,
     },
   },
@@ -117,8 +117,7 @@ export default UiTable;
   }
 }
 
-@media only screen and (max-width: 760px),
-  (min-device-width: 768px) and (max-device-width: 1024px) {
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
   .ui-table,
   .ui-table__row,
   .ui-table__header,
