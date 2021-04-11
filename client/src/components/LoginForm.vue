@@ -79,13 +79,9 @@ import { object, string } from "yup";
 import { reactive, ref } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
-import { postLogin } from "@/api/auth";
-
-import UiForm from "@/components/ui/UiForm";
-import UiInput from "@/components/ui/UiInput";
-import UiMessage from "@/components/ui/UiMessage";
-
-import { AUTH } from "@/store/types";
+import { postLogin } from "@api";
+import { UiForm, UiInput, UiMessage } from "@ui";
+import { AUTH } from "@vuex/types";
 
 export default {
   name: "LoginForm",

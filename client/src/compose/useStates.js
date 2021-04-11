@@ -1,6 +1,6 @@
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import { STATES } from "@/store/types";
+import { STATES } from "@vuex/types";
 
 export default function useStates() {
   const store = useStore();

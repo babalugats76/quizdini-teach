@@ -34,13 +34,10 @@
 </template>
 
 <script>
-import CardGrid from "@/components/CardGrid";
-import GameCard from "@/components/GameCard";
-import { UiButton, UiButtonGroup } from "@/components/ui/UiButton";
-import NavButton from "@/components/ui/NavButton";
-import UiLink from "@/components/ui/UiLink";
-
-import useClipboard from "@/compose/useClipboard";
+import CardGrid from "./CardGrid";
+import GameCard from "./GameCard";
+import { NavButton, UiButton, UiButtonGroup, UiLink } from "@ui";
+import { useClipboard } from "@hooks";
 
 export default {
   name: "MatchList",

@@ -20,7 +20,7 @@
 
 <script>
 import { computed } from "vue";
-import { focus } from "@mixins/";
+import { focus } from "@mixins";
 import UiError from "./UiError";
 export default {
   name: "UiDatalist",

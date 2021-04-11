@@ -12,12 +12,10 @@
 <script>
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
-
-import { AUTH } from "@/store/types";
 import { useRoute } from "vue-router";
-
-import useMatches from "@/compose/useMatches";
-import { MatchView } from "@/components/";
+import { AUTH } from "@vuex/types";
+import { useMatches } from "@hooks";
+import { MatchView } from "@components";
 
 export default {
   name: "Dashboard",

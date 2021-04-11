@@ -242,17 +242,9 @@
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { boolean, object, string, ref as yupRef } from "yup";
-
-import { postAccount } from "@/api/account";
-
-import UiCheckbox from "@/components/ui/UiCheckbox";
-import UiDatalist from "@/components/ui/UiDatalist";
-import UiForm from "@/components/ui/UiForm";
-import UiInput from "@/components/ui/UiInput";
-import UiMessage from "@/components/ui/UiMessage";
-
-import useCountries from "@/compose/useCountries";
-import useStates from "@/compose/useStates";
+import { postAccount } from "@api";
+import { UiCheckbox, UiDatalist, UiForm, UiInput, UiMessage } from "@ui";
+import { useCountries, useStates } from "@hooks";
 
 export default {
   name: "RegisterForm",

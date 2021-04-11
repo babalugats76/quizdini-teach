@@ -107,17 +107,9 @@
 import { computed, reactive, ref, toRefs, watch } from "vue";
 import { useRouter } from "vue-router";
 import { number, object, string } from "yup";
-
-import useScript from "@/compose/useScript";
-import { postPayment } from "@/api/payments";
-
-import UiButton from "@/components/ui/UiButton";
-import UiDatalist from "@/components/ui/UiDatalist";
-import UiForm from "@/components/ui/UiForm";
-import UiInput from "@/components/ui/UiInput";
-
-import useAccount from "@/compose/useAccount";
-import useCountries from "@/compose/useCountries";
+import { useAccount, useCountries, useScript } from "@hooks";
+import { postPayment } from "@api";
+import { /*UiButton, */ UiDatalist, UiForm, UiInput } from "@ui";
 
 export default {
   name: "CheckoutForm",

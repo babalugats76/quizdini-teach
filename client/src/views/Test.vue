@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { CreditForm } from "@/components/";
+import { CreditForm } from "@components";
 
 export default {
   name: "Test",

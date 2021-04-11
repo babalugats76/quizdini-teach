@@ -1,6 +1,6 @@
-import { getPayments } from "@/api/payments";
-import { callApi } from "../util";
-import { PAYMENTS } from "../types";
+import { getPayments } from "@api";
+import { callApi } from "@utils/fetch";
+import { PAYMENTS } from "@vuex/types";
 
 const INITIAL_STATE = {
   data: [],

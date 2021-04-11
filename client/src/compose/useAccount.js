@@ -1,6 +1,6 @@
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import { ACCOUNT } from "@/store/types";
+import { ACCOUNT } from "@vuex/types";
 
 export default function useCountries() {
   const store = useStore();

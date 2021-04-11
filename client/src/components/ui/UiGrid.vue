@@ -1,5 +1,5 @@
 <script>
-import { columns } from "@mixins/";
+import { columns } from "@mixins";
 
 export const UiGrid = {
   name: "UiGrid",

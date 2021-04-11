@@ -1,5 +1,5 @@
 <script>
-import { focus, severity, size, theme } from "@mixins/";
+import { focus, severity, size, theme } from "@mixins";
 
 export const UiButton = {
   name: "UiButton",

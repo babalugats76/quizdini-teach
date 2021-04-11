@@ -1,6 +1,6 @@
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import { MATCHES } from "@/store/types";
+import { MATCHES } from "@vuex/types";
 
 export default function useMatches() {
   const store = useStore();

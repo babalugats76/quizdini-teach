@@ -12,10 +12,9 @@
 <script>
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import { AUTH, PAYMENTS } from "@/store/types";
+import { AUTH, PAYMENTS } from "@vuex/types";
 import { useRoute } from "vue-router";
-
-import { PaymentTable } from "@/components";
+import { PaymentTable } from "@components";
 
 export default {
   name: "Profile",

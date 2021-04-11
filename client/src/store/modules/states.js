@@ -1,6 +1,6 @@
-import { getStates } from "@/api/states";
-import { callApi } from "../util";
-import { STATES } from "../types";
+import { getStates } from "@api";
+import { callApi } from "@utils/fetch";
+import { STATES } from "@vuex/types";
 
 const INITIAL_STATE = {
   data: [],

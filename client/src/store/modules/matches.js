@@ -1,6 +1,6 @@
-import { getMatches } from "@/api/matches";
-import { callApi } from "../util";
-import { MATCHES } from "../types";
+import { getMatches } from "@api";
+import { callApi } from "@utils/fetch";
+import { MATCHES } from "@vuex/types";
 
 const INITIAL_STATE = {
   data: [],

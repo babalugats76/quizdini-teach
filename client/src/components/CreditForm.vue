@@ -33,7 +33,7 @@
 
 <script>
 import { reactive, ref, toRefs } from "vue";
-import { CheckoutForm } from "@/components/";
+import CheckoutForm from "./CheckoutForm";
 
 export default {
   name: "CreditForm",

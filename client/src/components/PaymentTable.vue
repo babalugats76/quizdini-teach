@@ -36,7 +36,7 @@ import {
   UiTableRow,
   UiTableCell,
   UiTableHeaderCell,
-} from "@/components/ui/UiTable";
+} from "@ui";
 
 export default {
   name: "PaymentTable",

@@ -40,10 +40,10 @@
 <script>
 import { ref } from "vue";
 import { useRoute } from "vue-router";
-import { getMatchStats } from "@/api/matches";
-import useLoader from "@/compose/useLoader";
-import { PingChart } from "@/components/";
-import { UiGrid, UiGridRow, UiGridColumn } from "@/components/ui/UiGrid";
+import { getMatchStats } from "@api";
+import { useLoader } from "@hooks";
+import { PingChart } from "@components";
+import { UiGrid, UiGridRow, UiGridColumn } from "@ui";
 
 export default {
   /* eslint-disable vue/no-unused-components */

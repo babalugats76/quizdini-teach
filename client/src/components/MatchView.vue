@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import NavButton from "@/components/ui/NavButton";
-import MatchList from "@/components/MatchList";
+import { NavButton } from "@ui";
+import MatchList from "./MatchList";
 
 export default {
   name: "MatchView",

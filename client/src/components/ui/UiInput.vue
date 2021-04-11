@@ -16,7 +16,7 @@
 <script>
 import { computed } from "vue";
 import UiError from "./UiError";
-import { focus } from "@mixins/";
+import { focus } from "@mixins";
 
 export default {
   name: "UiInput",

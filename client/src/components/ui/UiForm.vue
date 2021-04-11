@@ -15,7 +15,7 @@
 </template> */
 
 import { h, /* inject */ ref } from "vue";
-import useForm from "@/compose/useForm";
+import { useForm } from "@hooks";
 
 /* eslint-ignore-require-prop-types */
 export default {
