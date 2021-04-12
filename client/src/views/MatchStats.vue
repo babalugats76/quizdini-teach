@@ -17,9 +17,24 @@
       <h1>Match Stats</h1>
       <grid v-if="!!stats">
         <grid-row stackable :tablet="3">
-          <grid-column>{{ stats.totals.plays }}</grid-column>
-          <grid-column>{{ stats.totals.avgScore }}</grid-column>
-          <grid-column>{{ stats.totals.avgHitRate }}</grid-column>
+          <grid-column>
+            <game-stat>
+              <template #stat>{{ stats.totals.plays }}</template>
+              <template #label>All Time Plays</template>
+            </game-stat>
+          </grid-column>
+          <grid-column>
+            <game-stat>
+              <template #stat>{{ stats.totals.avgHitRate }}%</template>
+              <template #label>All Time Hit Rate</template>
+            </game-stat>
+          </grid-column>
+          <grid-column>
+            <game-stat>
+              <template #stat>{{ stats.totals.avgScore }}</template>
+              <template #label>All Time Score (Avg)</template>
+            </game-stat></grid-column
+          >
         </grid-row>
         <grid-row stackable :tablet="2">
           <grid-column>
@@ -42,17 +57,18 @@ import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { getMatchStats } from "@api";
 import { useLoader } from "@hooks";
-import { PingChart } from "@components";
+import { PingChart, GameStat } from "@components";
 import { UiGrid, UiGridRow, UiGridColumn } from "@ui";
 
 export default {
   /* eslint-disable vue/no-unused-components */
   name: "MatchStats",
   components: {
-    PingChart,
     grid: UiGrid,
     "grid-row": UiGridRow,
     "grid-column": UiGridColumn,
+    PingChart,
+    GameStat,
   },
   setup() {
     const refresh = ref(0);

@@ -2,6 +2,7 @@ import CardGrid from "./CardGrid";
 import CheckoutForm from "./CheckoutForm";
 import CreditForm from "./CreditForm";
 import GameCard from "./GameCard";
+import GameStat from "./GameStat";
 import LoginForm from "./LoginForm";
 import MatchList from "./MatchList";
 import MatchView from "./MatchView";
@@ -14,6 +15,7 @@ export {
   CheckoutForm,
   CreditForm,
   GameCard,
+  GameStat,
   LoginForm,
   MatchList,
   MatchView,

@@ -1,6 +1,5 @@
 <script>
 import { columns } from "@mixins";
-
 export const UiGrid = {
   name: "UiGrid",
   props: {
