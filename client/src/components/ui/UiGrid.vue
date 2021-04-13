@@ -84,6 +84,7 @@ $columns: (
 );
 
 $grid-gap: 1rem;
+$column-gap: 0rem;
 
 @mixin column-width($frac, $gap: #{$grid-gap}) {
   $widthPct: (1 / $frac);
@@ -97,7 +98,7 @@ $grid-gap: 1rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  padding: 0;
+  padding: 1rem;
   align-items: stretch;
   margin: -1 * $grid-gap;
 
@@ -120,7 +121,7 @@ $grid-gap: 1rem;
     position: relative;
     display: inline-block;
     @include column-width(1);
-    padding: 0 $grid-gap;
+    // padding: 0 $column-gap;
     margin: $grid-gap 0 0 $grid-gap;
     vertical-align: top;
   }

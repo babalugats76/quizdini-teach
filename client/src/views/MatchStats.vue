@@ -16,33 +16,30 @@
       />
       <h1>Match Stats</h1>
       <grid v-if="!!stats">
-        <grid-row stackable :tablet="3">
+        <grid-row stackable :mobile="3">
           <grid-column>
             <game-stat>
+              <template #header>Plays</template>
               <template #stat>{{ stats.totals.plays }}</template>
               <template #label>All Time Plays</template>
             </game-stat>
           </grid-column>
           <grid-column>
             <game-stat>
+              <template #header>Hit Rate</template>
               <template #stat>{{ stats.totals.avgHitRate }}%</template>
               <template #label>All Time Hit Rate</template>
             </game-stat>
           </grid-column>
           <grid-column>
             <game-stat>
+              <template #header>Score</template>
               <template #stat>{{ stats.totals.avgScore }}</template>
               <template #label>All Time Score (Avg)</template>
             </game-stat></grid-column
           >
         </grid-row>
-        <grid-row stackable :tablet="2">
-          <grid-column>
-            <ping-chart :create-date="stats.createDate" :pings="stats.pings" />
-          </grid-column>
-          <grid-column>
-            <ping-chart :create-date="stats.createDate" :pings="stats.pings" />
-          </grid-column>
+        <grid-row>
           <grid-column>
             <ping-chart :create-date="stats.createDate" :pings="stats.pings" />
           </grid-column>
