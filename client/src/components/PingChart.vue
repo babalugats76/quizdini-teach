@@ -6,7 +6,32 @@
 import { ref, toRefs, watch, onMounted } from "vue";
 import { zonedTimeToUtc, format, utcToZonedTime } from "date-fns-tz";
 import { addDays, eachDayOfInterval, max, parse, parseISO } from "date-fns";
-import Chart from "chart.js";
+import {
+  BarController,
+  BarElement,
+  Chart,
+  CategoryScale,
+  Legend,
+  LinearScale,
+  TimeScale,
+  Title,
+  Tooltip,
+} from "chart.js";
+import "chartjs-adapter-date-fns";
+Chart.register(
+  BarController,
+  BarElement,
+  CategoryScale,
+  Legend,
+  LinearScale,
+  TimeScale,
+  Title,
+  Tooltip
+);
+
+Chart.defaults.font.family = "'Montserrat', sans-serif";
+Chart.defaults.font.size = 13;
+Chart.defaults.color = "rgba(10,10,10,.75)";
 
 export default {
   name: "PingChart",
@@ -16,6 +41,11 @@ export default {
       //   default: () => Date.now(),
       required: true,
     },
+    days: {
+      type: Number,
+      default: 7,
+      required: false,
+    },
     pings: {
       type: Array,
       default: () => [],
@@ -23,21 +53,21 @@ export default {
     },
   },
   setup(props) {
-    const { createDate, pings } = toRefs(props);
+    const { createDate, days, pings } = toRefs(props);
     const canvasRef = ref();
     let pingChart;
 
     onMounted(() => {
       watch(
-        [createDate, pings],
-        ([createDate, pings], [prevCreateDate, prevPings]) => {
+        [createDate, days, pings],
+        ([createDate, days, pings], [prevCreateDate, prevDays, prevPings]) => {
           let end, maxTick, minTick, playsByDay, start, x, y, yMax;
 
           function renderChart() {
             if (typeof pingChart !== "undefined") pingChart.destroy();
             start = max([
               zonedTimeToUtc(
-                addDays(Date.now(), -30),
+                addDays(Date.now(), -1 * days),
                 Intl.DateTimeFormat().resolvedOptions().timeZone
               ),
               zonedTimeToUtc(
@@ -80,76 +110,89 @@ export default {
                 ],
               },
               options: {
-                responsive: true,
-                title: {
-                  display: true,
-                  fontSize: 18,
-                  fontStyle: "normal",
-                  fontFamily: "'marcher-medium', sans-serif",
-                  lineHeight: 1.3,
-                  position: "top",
-                  text: "Daily Activity",
-                },
-                tooltips: {
-                  callbacks: {
-                    title: function (tooltipItem) {
-                      return format(
-                        zonedTimeToUtc(
-                          parse(tooltipItem[0].xLabel, "MM/dd/yyyy", new Date()),
-                          Intl.DateTimeFormat().resolvedOptions().timeZone
-                        ),
-                        "EEE, LLL do"
-                      );
+                plugins: {
+                  legend: {
+                    display: true,
+                    position: "bottom",
+                    labels: {
+                      // color: "rgba(255, 0, 0, 1.0)",
+                      boxWidth: 20,
+                      font: {
+                        family: "'Montserrat', sans-serif",
+                        lineHeight: 1,
+                        size: 13,
+                        weight: "400",
+                      },
                     },
                   },
-                },
-                legend: {
-                  display: true,
+                  title: {
+                    align: "center",
+                    color: "rgba(0,0,0,1.0)",
+                    display: true,
+                    font: {
+                      family: "'Montserrat', sans-serif",
+                      lineHeight: 1.15,
+                      size: 26,
+                      weight: "500",
+                    },
+                    padding: 24,
+                    position: "top",
+                    text: "Daily Activity",
+                  },
+                  tooltip: {
+                    callbacks: {
+                      title: function (tooltipItems) {
+                        return format(
+                          zonedTimeToUtc(
+                            parse(tooltipItems[0].label, "MMM dd, yyyy, h:mm:ss aaaa", new Date()),
+                            Intl.DateTimeFormat().resolvedOptions().timeZone
+                          ),
+                          "EEE, LLL do"
+                        );
+                      },
+                    },
+                  },
                 },
                 animation: {
                   easing: "easeInQuart",
                 },
                 scales: {
-                  xAxes: [
-                    {
-                      gridLines: {
-                        offsetGridLines: false,
-                      },
-                      type: "time",
-                      ticks: {
-                        fontSize: 12,
-                        max: maxTick,
-                        maxRotation: 180,
-                        maxTicksLimit: 5,
-                        min: minTick,
-                        minRotation: 0,
-                      },
-                      time: {
-                        unit: "week",
-                        parser: "MM/DD/YYYY",
-                        isoWeekday: true,
-                        displayFormats: {
-                          week: "ddd, MMM D",
-                        },
-                      },
-                      scaleLabel: {
-                        display: true,
-                        labelString: "Date (GMT/UTC)",
+                  x: {
+                    gridLines: {
+                      offsetGridLines: false,
+                    },
+                    type: "time",
+                    ticks: {
+                      fontSize: 12,
+                      max: maxTick,
+                      maxRotation: 180,
+                      maxTicksLimit: 5,
+                      min: minTick,
+                      minRotation: 0,
+                    },
+                    time: {
+                      unit: "week",
+                      parser: "MM/dd/yyyy",
+                      isoWeekday: true,
+                      displayFormats: {
+                        week: "E, MMM d",
                       },
                     },
-                  ],
-                  yAxes: [
-                    {
-                      type: "linear",
-                      ticks: {
-                        beginAtZero: true,
-                        fontSize: 12,
-                        maxTicksLimit: 5,
-                        precision: 0,
-                        suggestedMax: Math.max(yMax + yMax / 5, 10),
-                      },
+                    scaleLabel: {
+                      display: true,
+                      labelString: "Date (GMT/UTC)",
                     },
-                  ],
+                  },
+                  y: {
+                    type: "linear",
+                    ticks: {
+                      beginAtZero: true,
+                      fontSize: 12,
+                      maxTicksLimit: 5,
+                      precision: 0,
+                      suggestedMax: Math.max(yMax + yMax / 5, 10),
+                    },
+                  },
                 },
               },
             });

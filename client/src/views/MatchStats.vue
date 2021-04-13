@@ -41,7 +41,7 @@
         </grid-row>
         <grid-row>
           <grid-column>
-            <ping-chart :create-date="stats.createDate" :pings="stats.pings" />
+            <ping-chart :create-date="stats.createDate" :days="30" :pings="stats.pings" />
           </grid-column>
         </grid-row>
       </grid>
