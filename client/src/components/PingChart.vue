@@ -165,15 +165,16 @@ export default {
                       font: {
                         size: 12,
                       },
-                      maxRotation: 180,
-                      maxTicksLimit: 5,
+                      maxRotation: 360,
+                      maxTicksLimit: days < 8 ? 7 : 5,
                       minRotation: 0,
                     },
                     time: {
-                      unit: "week",
+                      unit: days < 8 ? "day" : "week",
                       parser: "MM/dd/yyyy",
                       isoWeekday: true,
                       displayFormats: {
+                        day: "E, MMM d",
                         week: "E, MMM d",
                       },
                     },

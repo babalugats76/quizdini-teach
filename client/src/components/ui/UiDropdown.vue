@@ -1,20 +1,19 @@
 <template>
-  <label :for="name"> {{ label }} </label>
-  <input
+  <label v-if="label" :for="name"> {{ label }} </label>
+  <select
     v-bind="$attrs"
     ref="inputRef"
     v-model="input"
-    :list="id"
+    :autocomplete="autocomplete || 'off'"
     :class="classes"
     :name="name"
+    :multiple="multiple"
     novalidate="true"
-    @input="onInputChange($event)"
-  />
-  <datalist :id="id">
-    <option v-for="option in options" :key="option.key" :data-value="option.value">
+  >
+    <option v-for="option in options" :key="option.key" :value="option.value">
       {{ option.text }}
     </option>
-  </datalist>
+  </select>
   <ui-error v-if="errors" :errors="errors" />
 </template>
 
@@ -23,31 +22,35 @@ import { computed } from "vue";
 import { focus } from "@mixins";
 import UiError from "./UiError";
 export default {
-  name: "UiDatalist",
+  name: "UiDropdown",
   components: {
     UiError,
   },
   mixins: [focus],
   inheritAttr: false,
   props: {
-    // eslint-disable-next-line
-    code: {
+    autocomplete: {
       type: String,
+      default: "off",
       required: false,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
     errors: {
       type: [Array, String],
       default: "",
       required: false,
     },
-    id: {
-      type: String,
-      required: true,
-    },
     label: {
       type: String,
       default: "",
       required: false,
+    },
+    multiple: {
+      type: Boolean,
+      default: false,
     },
     name: {
       type: String,
@@ -58,46 +61,28 @@ export default {
       required: true,
     },
     value: {
-      type: [String],
+      type: [String, Number],
       required: true,
     },
   },
-  emits: ["update:value", "update:code"],
+  emits: ["update:value"],
   setup(props, { emit }) {
     const input = computed({
       get: () => props.value,
       set: (value) => emit("update:value", value),
     });
-    const onInputChange = (evt) => {
-      const match = Array.from(evt.target.list.options).find(
-        (o) => o.innerHTML === evt.target.value
-      );
-      emit("update:code", match ? match.dataset["value"] : "");
-    };
-
     return {
       input,
-      onInputChange,
     };
   },
   computed: {
     classes() {
       return {
-        "ui-datalist": true,
+        "ui-dropdown": true,
       };
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
-label {
-  display: block;
-}
-
-.ui-datalist {
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  outline: 1px solid gray;
-}
-</style>
+<style lang="scss" scoped></style>

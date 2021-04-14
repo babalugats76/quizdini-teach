@@ -2,6 +2,7 @@ import NavButton from "./NavButton";
 import { UiButton, UiButtonGroup } from "./UiButton";
 import UiCheckbox from "./UiCheckbox";
 import UiDatalist from "./UiDatalist";
+import UiDropdown from "./UiDropdown";
 import UiError from "./UiError";
 import UiForm from "./UiForm";
 import UiInput from "./UiInput";
@@ -23,6 +24,7 @@ export {
   UiButtonGroup,
   UiCheckbox,
   UiDatalist,
+  UiDropdown,
   UiError,
   UiForm,
   UiGrid,

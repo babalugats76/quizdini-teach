@@ -50,9 +50,8 @@ export default {
       default: "text",
       required: true,
     },
-    // eslint-disable-next-line
     value: {
-      type: String,
+      required: true,
     },
   },
   emits: ["update:value"],

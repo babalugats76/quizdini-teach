@@ -18,21 +18,21 @@
       <grid v-if="!!stats">
         <grid-row stackable :mobile="3">
           <grid-column>
-            <game-stat>
+            <game-stat class="match-stats__plays">
               <template #header>Plays</template>
               <template #stat>{{ stats.totals.plays }}</template>
               <template #label>All Time Plays</template>
             </game-stat>
           </grid-column>
           <grid-column>
-            <game-stat>
+            <game-stat class="match-stats__hit-rate">
               <template #header>Hit Rate</template>
               <template #stat>{{ stats.totals.avgHitRate }}%</template>
               <template #label>All Time Hit Rate</template>
             </game-stat>
           </grid-column>
           <grid-column>
-            <game-stat>
+            <game-stat class="match-stats__score">
               <template #header>Score</template>
               <template #stat>{{ stats.totals.avgScore }}</template>
               <template #label>All Time Score (Avg)</template>
@@ -41,7 +41,25 @@
         </grid-row>
         <grid-row>
           <grid-column>
-            <ping-chart :create-date="stats.createDate" :days="30" :pings="stats.pings" />
+            <div class="match-stats__options">
+              <ui-dropdown
+                v-model:value="pingDays"
+                :options="[
+                  { key: 0, value: 7, text: '7' },
+                  { key: 1, value: 14, text: '14' },
+                  { key: 2, value: 30, text: '30' },
+                ]"
+                name="pingDays"
+                class="match-stats__ping-days"
+                label="Days"
+              />
+            </div>
+            <ping-chart
+              class="match-stats__daily-activity"
+              :create-date="stats.createDate"
+              :days="pingDays"
+              :pings="stats.pings"
+            />
           </grid-column>
         </grid-row>
       </grid>
@@ -55,12 +73,13 @@ import { useRoute } from "vue-router";
 import { getMatchStats } from "@api";
 import { useLoader } from "@hooks";
 import { PingChart, GameStat } from "@components";
-import { UiGrid, UiGridRow, UiGridColumn } from "@ui";
+import { UiDropdown, UiGrid, UiGridRow, UiGridColumn } from "@ui";
 
 export default {
   /* eslint-disable vue/no-unused-components */
   name: "MatchStats",
   components: {
+    UiDropdown,
     grid: UiGrid,
     "grid-row": UiGridRow,
     "grid-column": UiGridColumn,
@@ -69,6 +88,7 @@ export default {
   },
   setup() {
     const refresh = ref(0);
+    const pingDays = ref(7);
     const route = useRoute();
     const { id: matchId = undefined } = route.params;
 
@@ -82,21 +102,22 @@ export default {
     });
 
     return {
-      stats,
       error,
       failed,
       initialized,
       loaded,
       loading,
+      pingDays,
       matchId,
       refresh,
       refreshStats,
+      stats,
     };
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .page-wrapper {
   position: relative;
   margin-top: 1rem;
@@ -106,5 +127,16 @@ export default {
 
 .container {
   padding: 1rem;
+}
+
+.match-stats {
+  &__options {
+    position: absolute;
+    top: 0rem;
+    right: 1rem;
+    > label {
+      display: block;
+    }
+  }
 }
 </style>
