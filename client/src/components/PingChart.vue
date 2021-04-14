@@ -118,10 +118,7 @@ export default {
                       // color: "rgba(255, 0, 0, 1.0)",
                       boxWidth: 20,
                       font: {
-                        family: "'Montserrat', sans-serif",
-                        lineHeight: 1,
                         size: 13,
-                        weight: "400",
                       },
                     },
                   },
@@ -158,16 +155,18 @@ export default {
                 },
                 scales: {
                   x: {
-                    gridLines: {
-                      offsetGridLines: false,
-                    },
                     type: "time",
+                    grid: {
+                      offset: false,
+                    },
+                    max: maxTick,
+                    min: minTick,
                     ticks: {
-                      fontSize: 12,
-                      max: maxTick,
+                      font: {
+                        size: 12,
+                      },
                       maxRotation: 180,
                       maxTicksLimit: 5,
-                      min: minTick,
                       minRotation: 0,
                     },
                     time: {
@@ -185,12 +184,14 @@ export default {
                   },
                   y: {
                     type: "linear",
+                    beginAtZero: true,
+                    suggestedMax: Math.max(yMax + yMax / 5, 10),
                     ticks: {
-                      beginAtZero: true,
-                      fontSize: 12,
+                      font: {
+                        size: 12,
+                      },
                       maxTicksLimit: 5,
                       precision: 0,
-                      suggestedMax: Math.max(yMax + yMax / 5, 10),
                     },
                   },
                 },
@@ -198,7 +199,6 @@ export default {
             });
           }
           renderChart();
-          // });
         },
         { immediate: true }
       );
