@@ -6,7 +6,7 @@ module.exports = {
   css: {
     loaderOptions: {
       scss: {
-        additionalData: `@import "~styles/style.scss";`,
+        additionalData: `@import "~styles/_config.scss"; @import "~styles/_mixins.scss"; @import "~styles/_functions.scss";`,
       },
       postcss: {
         plugins: [require("tailwindcss"), require("autoprefixer")],
