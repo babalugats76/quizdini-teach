@@ -43,26 +43,44 @@ export default {
 
 <style lang="scss" scoped>
 $game-card-title-lines: 3;
+$game-card-radius: 0.75rem;
 
 .game-card {
   position: relative;
   display: flex;
   flex-direction: column;
   border-width: 1px;
-  border-radius: 0.75rem;
-  --border-opacity: 1;
-  border-color: #2d3748;
-  border-color: rgba(45, 55, 72, var(--border-opacity));
-  --border-opacity: 0.1;
-  --bg-opacity: 1;
-  background-color: #fff;
-  background-color: rgba(255, 255, 255, var(--bg-opacity));
+  border-radius: $game-card-radius;
+  @include border-color($charcoal, 0.1);
+  @include bg-color($white);
   z-index: 0;
-  box-shadow: none;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 5%);
   transition-property: all;
   transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: $game-card-radius;
+    opacity: 0;
+    z-index: -1;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -1px rgb(0 0 0 / 6%);
+    transition-property: all;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  &:hover {
+    --border-opacity: 0.25;
+    overflow: visible;
+    &::after {
+      opacity: 1;
+    }
+  }
   &__body {
     position: relative;
     flex: 1 1 0%;
