@@ -6,6 +6,7 @@ import useLoader from "./useLoader";
 import useMatches from "./useMatches";
 import useScript from "./useScript";
 import useStates from "./useStates";
+import useVerify from "./useVerify";
 
 export {
   useAccount,
@@ -16,4 +17,5 @@ export {
   useMatches,
   useScript,
   useStates,
+  useVerify,
 };

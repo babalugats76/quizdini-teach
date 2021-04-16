@@ -39,6 +39,15 @@ const routes = [
     props: true,
   },
   {
+    path: "/verify/:secret",
+    name: "Verify",
+    component: () => import(/* webpackChunkName: "public" */ "../views/Verify.js"),
+    meta: {
+      navItem: false,
+      guest: true,
+    },
+  },
+  {
     path: "/success",
     name: "Success",
     component: () => import(/* webpackChunkName: "public" */ "../views/AuthSuccess.vue"),
@@ -46,7 +55,6 @@ const routes = [
       navItem: false,
     },
     props: false,
-    webpackChunkName: "public",
   },
   {
     path: "/dashboard",
