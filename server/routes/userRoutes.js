@@ -16,10 +16,29 @@ const {
 const { nanoid } = require("nanoid");
 const { format, utcToZonedTime } = require("date-fns-tz");
 
-const buildTokenUrl = ({ request, protocol = "https://", path = "", token = "" }) =>
-  `${protocol}${
-    process.env.NODE_ENV === "production" ? request.host : request.headers["x-forwarded-host"]
-  }/${path}/${token}`;
+/**
+ * Basic URL helper for user routes
+ *
+ * To build URLs suitable for inclusion in emails, etc.
+ *
+ * @param {Object}   request           Express request object
+ * @param {Object}   options           URL components
+ * @param {string}   options.path      resource path for URI
+ * @param {string}   options.protocol  HTTP protocol
+ * @param {string}   options.token     (Optional) secret id
+ * @returns {string}                   complete URL
+ */
+const buildUrl = (request, { path = "", protocol = "https://", token = "" }) => {
+  // build base URL (based on environment)
+  var url =
+    protocol +
+    (process.env.NODE_ENV === "production" ? request.host : request.headers["x-forwarded-host"]);
+  // append URI path
+  url += path ? "/" + path : "";
+  // append and encode secret (optional)
+  url += token ? "/" + encodeURIComponent(token) : "";
+  return url;
+};
 
 module.exports = (app) => {
   app.post("/api/account", async (req, res, next) => {
@@ -95,7 +114,7 @@ module.exports = (app) => {
           toAddress: user.email,
           firstName: user.firstName,
           fullName: user.fullName,
-          verifyUrl: buildTokenUrl({ path: "verify", request: req, token: token.secret }),
+          verifyUrl: buildUrl(req, { path: "verify", token: token.secret }),
         });
         console.log("Queued email (registration): %s, %s", user.fullName, user.email);
       } catch (e) {
@@ -188,15 +207,12 @@ module.exports = (app) => {
           }
         );
 
-        // generate resetUrl
-        const resetUrl = "https://" + req.hostname + "/reset/" + token.secret;
-
         try {
           await sendResetEmail({
             toAddress,
             firstName,
             fullName,
-            resetUrl,
+            resetUrl: buildUrl(req, { path: "reset", token: token.secret }),
             resetExpiryDate: localExpiryDate,
           });
           console.log("Queued email (recovery): %s, %s", fullName, toAddress);
@@ -204,7 +220,7 @@ module.exports = (app) => {
           console.log("Unable to queue email (recovery): %s, %s", fullName, toAddress);
         }
       } else {
-        const loginUrl = "https://" + req.hostname + "/login";
+        const loginUrl = buildUrl(req, { path: "login" });
 
         try {
           await sendRecoveryEmail({
