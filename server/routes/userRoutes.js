@@ -16,6 +16,11 @@ const {
 const { nanoid } = require("nanoid");
 const { format, utcToZonedTime } = require("date-fns-tz");
 
+const buildTokenUrl = ({ request, protocol = "https://", path = "", token = "" }) =>
+  `${protocol}${
+    process.env.NODE_ENV === "production" ? request.host : request.headers["x-forwarded-host"]
+  }/${path}/${token}`;
+
 module.exports = (app) => {
   app.post("/api/account", async (req, res, next) => {
     try {
@@ -78,7 +83,7 @@ module.exports = (app) => {
 
       // Generate secret token (for account verification)
       const token = await new Token({
-        secret: nanoid(),
+        secret: nanoid(), // generates URL-friendly symbols
         expiryDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
         user_id: user.id,
         createDate: new Date(),
@@ -90,7 +95,7 @@ module.exports = (app) => {
           toAddress: user.email,
           firstName: user.firstName,
           fullName: user.fullName,
-          verifyUrl: "https://" + req.hostname + "/verify/" + token.secret,
+          verifyUrl: buildTokenUrl({ path: "verify", request: req, token: token.secret }),
         });
         console.log("Queued email (registration): %s, %s", user.fullName, user.email);
       } catch (e) {
@@ -168,7 +173,7 @@ module.exports = (app) => {
       if (recoveryType === "password") {
         // Generate secret token (for reset verification)
         const token = await new Token({
-          secret: nanoid(),
+          secret: nanoid(), // generates URL-friendly symbols
           expiryDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000), // A day from the time on the server
           user_id: user.id,
           createDate: new Date(),
