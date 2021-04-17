@@ -35,7 +35,7 @@ export const get = async ({ url, config = AXIOS_CONFIG }) => {
 export const put = async ({ url, data, id = null, config = AXIOS_CONFIG }) => {
   try {
     const path = url + (id ? `/${id}` : "");
-    const res = await axios.put({ path, data, config });
+    const res = await axios.put(path, data, config);
     return { data: res.data };
   } catch (err) {
     return {

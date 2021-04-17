@@ -27,6 +27,8 @@ const updateMatch = (match) => {
   return put({ url: `${MATCHES_ENDPOINT}`, data: match, id: matchId });
 };
 
+const verifyAccount = (secret) => put({ url: `${ACCOUNT_ENDPOINT}/verify`, data: secret });
+
 export {
   getAccount,
   getAuth,
@@ -41,4 +43,5 @@ export {
   postMatch,
   postPayment,
   updateMatch,
+  verifyAccount,
 };

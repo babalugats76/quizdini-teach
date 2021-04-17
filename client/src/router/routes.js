@@ -100,8 +100,8 @@ const routes = [
     props: true,
   },
   {
-    path: "/:catchAll(.*)",
-    name: "Not Found",
+    path: "/:catchAll(.*)*",
+    name: "NotFound",
     component: () => import(/* webpackChunkName: "public" */ "../views/NotFound.vue"),
     meta: {
       navItem: false,

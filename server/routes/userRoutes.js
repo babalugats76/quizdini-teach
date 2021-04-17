@@ -28,13 +28,16 @@ const { format, utcToZonedTime } = require("date-fns-tz");
  * @param {string}   options.token     (Optional) secret id
  * @returns {string}                   complete URL
  */
-const buildUrl = (request, { path = "", protocol = "https://", token = "" }) => {
+const buildUrl = (request, { path = "", protocol = "https", token = "" }) => {
   // build base URL (based on environment)
   var url =
-    protocol +
-    (process.env.NODE_ENV === "production" ? request.host : request.headers["x-forwarded-host"]);
+    (process.env.NODE_ENV != "production" ? "http" : protocol) +
+    "://" +
+    (process.env.NODE_ENV != "production" ? request.headers["x-forwarded-host"] : request.host);
+
   // append URI path
   url += path ? "/" + path : "";
+
   // append and encode secret (optional)
   url += token ? "/" + encodeURIComponent(token) : "";
   return url;
