@@ -9,8 +9,9 @@ export default function useVerify() {
 
   const verify = () => {
     return verifyAccount({ secret })
-      .then((results) => {
-        const { data = null, error = null } = results || {};
+      .then((response) => {
+        console.log(JSON.stringify(response, null, 4));
+        const { data = null, error = null } = response;
         const { message } = data;
         const redirectTo = error ? "NotFound" : "Login";
         return router.push({ name: redirectTo, params: { message } });
