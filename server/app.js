@@ -71,7 +71,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(enforce.HTTPS({ trustProtoHeader: true }));
 }
 
-app.use(logger("dev"));
+app.use(logger("combined"));
 
 /*var corsOptions = {
   origin: 'http://example.com',
