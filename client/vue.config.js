@@ -41,7 +41,7 @@ module.exports = {
     config.resolve.alias.set("@views", path.resolve(__dirname, "src/views"));
     config.resolve.alias.set("@vuex", path.resolve(__dirname, "src/store"));
   },
-  outputDir: "../server/public",
+  outputDir: "../server/public", // places build in server (Express.js) directory
   configureWebpack: {
     plugins: [
       new webpack.DefinePlugin({

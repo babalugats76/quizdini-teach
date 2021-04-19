@@ -4,7 +4,6 @@ const helmet = require("helmet");
 const logger = require("morgan");
 const path = require("path");
 const mongoose = require("mongoose");
-//const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
@@ -79,7 +78,6 @@ app.use(logger("combined"));
 }*/
 
 app.use(cors());
-// app.use(bodyParser.json({ limit: "50mb" }));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "50mb" }));
@@ -105,6 +103,13 @@ require("./routes/userRoutes")(app);
 app.use(errorHandler); // Custom default, i.e., catch-all, error handler middleware
 
 app.use(express.static(path.join(__dirname, "public")));
+
+// app.get("*", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "public", "robots.txt"));
+// });
+
+app.use("/robots.txt", express.static(path.join(__dirname, "public", "robots.txt")));
+
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "public", "index.html"));
 });

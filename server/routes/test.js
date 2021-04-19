@@ -170,7 +170,7 @@ module.exports = (app) => {
                                  <div id="message"> \
                                    <p>Your Quizdini account has been created.</p> \
                                    <p>Just one more step and you will be creating fun activities for your students.</p> \
-                                   <p>Please click the following link to verify your account (or copy and paste into your browser): <br/><a class="link" href="{{verifyUrl}}" target="_blank" title="Verify Your Account">{{verifyUrl}}</a></p> \
+                                   <p>Please click the following link to verify your account (or copy and paste into your browser): <br/><a class="link" href="{{verifyUrl}}" rel="noopener noreferrer nofollow" target="_blank" title="Verify Your Account">{{verifyUrl}}</a></p> \
                                    <p>Thank you for using Quizdini!</p> \
                                    <p>--The Quizdini Team--</p> \
                                  </div> \
@@ -184,8 +184,8 @@ module.exports = (app) => {
                            <table id="emailFooter" align="center" border="0" cellpadding="0" cellspacing="8" width="100%"> \
                              <tr align="center"> \
                                <td align="center" valign="top"> \
-                                 <p id="footer-links"><a class="link" href="mailto:support@quizdini.com?subject=I%20Need%20Help!" target="_blank" title="Email Quizdini">Email</a> &bull; <a class="link" href="https://twitter.com/quizdini" target="_blank" title="Quizdini on Twitter">Twitter</a> &bull; <a class="link" href="https://www.youtube.com/channel/UCWyG9yOngwM0w5CHBnvMZEA" target="_blank" title="Quizdini YouTube Channel">YouTube Channel</a></p> \
-                                 <p id="copyright">Quizdini &copy; 2013-2019</p> \
+                                 <p id="footer-links"><a class="link" href="mailto:support@quizdini.com?subject=I%20Need%20Help!" rel="noopener noreferrer nofollow" target="_blank" title="Email Quizdini">Email</a> &bull; <a class="link" href="https://twitter.com/quizdini" rel="noopener noreferrer nofollow" target="_blank" title="Quizdini on Twitter">Twitter</a> &bull; <a class="link" href="https://www.youtube.com/channel/UCWyG9yOngwM0w5CHBnvMZEA" rel="noopener noreferrer nofollow" target="_blank" title="Quizdini YouTube Channel">YouTube Channel</a></p> \
+                                 <p id="copyright">Quizdini &copy; 2013-2021</p> \
                                </td> \
                              </tr> \
                            </table> \
@@ -280,7 +280,7 @@ module.exports = (app) => {
                                    <div id="message"> \
                                      <p>A request has been made to recover your username.</p> \
                                      <p>The username associated with your account is <strong>{{username}}</strong>.</p> \
-                                     <p>Please click the following link to log in to your account (or copy and paste into your browser): <br/><a class="link" href="{{loginUrl}}" target="_blank" title="Log in to your Account">{{loginUrl}}</a></p> \
+                                     <p>Please click the following link to log in to your account (or copy and paste into your browser): <br/><a class="link" href="{{loginUrl}}" rel="noopener noreferrer nofollow" target="_blank" title="Log in to your Account">{{loginUrl}}</a></p> \
                                      <p>Thank you for using Quizdini!</p> \
                                      <p>--The Quizdini Team--</p> \
                                    </div> \
@@ -294,8 +294,8 @@ module.exports = (app) => {
                              <table id="emailFooter" align="center" border="0" cellpadding="0" cellspacing="8" width="100%"> \
                                <tr align="center"> \
                                  <td align="center" valign="top"> \
-                                   <p id="footer-links"><a class="link" href="mailto:support@quizdini.com?subject=I%20Need%20Help!" target="_blank" title="Email Quizdini">Email</a> &bull; <a class="link" href="https://twitter.com/quizdini" target="_blank" title="Quizdini on Twitter">Twitter</a> &bull; <a class="link" href="https://www.youtube.com/channel/UCWyG9yOngwM0w5CHBnvMZEA" target="_blank" title="Quizdini YouTube Channel">YouTube Channel</a></p> \
-                                   <p id="copyright">Quizdini &copy; 2013-2019</p> \
+                                   <p id="footer-links"><a class="link" href="mailto:support@quizdini.com?subject=I%20Need%20Help!" rel="noopener noreferrer nofollow" target="_blank" title="Email Quizdini">Email</a> &bull; <a class="link" href="https://twitter.com/quizdini" rel="noopener noreferrer nofollow" target="_blank" title="Quizdini on Twitter">Twitter</a> &bull; <a class="link" href="https://www.youtube.com/channel/UCWyG9yOngwM0w5CHBnvMZEA" rel="noopener noreferrer nofollow" target="_blank" title="Quizdini YouTube Channel">YouTube Channel</a></p> \
+                                   <p id="copyright">Quizdini &copy; 2013-2021</p> \
                                  </td> \
                                </tr> \
                              </table> \
@@ -389,7 +389,7 @@ module.exports = (app) => {
                                    <p id="greeting">Dear {{firstName}},</p> \
                                    <div id="message"> \
                                      <p>A request has been made to reset your password.</p> \
-                                     <p>Please click the following link to complete your password reset (or copy and paste into your browser): <br/><a class="link" href="{{resetUrl}}" target="_blank" title="Reset Your Password">{{resetUrl}}</a></p> \
+                                     <p>Please click the following link to complete your password reset (or copy and paste into your browser): <br/><a class="link" href="{{resetUrl}}" rel="noopener noreferrer nofollow" target="_blank" title="Reset Your Password">{{resetUrl}}</a></p> \
                                      <p>This link will expire <strong>{{resetExpiryDate}}</strong>.</p> \
                                      <p>Thank you for using Quizdini!</p> \
                                      <p>--The Quizdini Team--</p> \
@@ -404,8 +404,8 @@ module.exports = (app) => {
                              <table id="emailFooter" align="center" border="0" cellpadding="0" cellspacing="8" width="100%"> \
                                <tr align="center"> \
                                  <td align="center" valign="top"> \
-                                   <p id="footer-links"><a class="link" href="mailto:support@quizdini.com?subject=I%20Need%20Help!" target="_blank" title="Email Quizdini">Email</a> &bull; <a class="link" href="https://twitter.com/quizdini" target="_blank" title="Quizdini on Twitter">Twitter</a> &bull; <a class="link" href="https://www.youtube.com/channel/UCWyG9yOngwM0w5CHBnvMZEA" target="_blank" title="Quizdini YouTube Channel">YouTube Channel</a></p> \
-                                   <p id="copyright">Quizdini &copy; 2013-2019</p> \
+                                   <p id="footer-links"><a class="link" href="mailto:support@quizdini.com?subject=I%20Need%20Help!" rel="noopener noreferrer nofollow" target="_blank" title="Email Quizdini">Email</a> &bull; <a class="link" href="https://twitter.com/quizdini" rel="noopener noreferrer nofollow" target="_blank" title="Quizdini on Twitter">Twitter</a> &bull; <a class="link" href="https://www.youtube.com/channel/UCWyG9yOngwM0w5CHBnvMZEA" target="_blank" title="Quizdini YouTube Channel">YouTube Channel</a></p> \
+                                   <p id="copyright">Quizdini &copy; 2013-2021</p> \
                                  </td> \
                                </tr> \
                              </table> \
