@@ -39,7 +39,7 @@ const routes = [
     props: true,
   },
   {
-    path: "/verify/:secret",
+    path: "/verify",
     name: "Verify",
     component: () => import(/* webpackChunkName: "public" */ "../views/Verify.js"),
     meta: {

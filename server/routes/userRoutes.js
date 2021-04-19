@@ -39,7 +39,8 @@ const buildUrl = (request, { path = "", protocol = "https", token = "" }) => {
   url += path ? "/" + path : "";
 
   // append and encode secret (optional)
-  url += token ? "/" + encodeURIComponent(token) : "";
+  // url += token ? "/" + encodeURIComponent(token) : "";
+  url += token ? "?secret=" + encodeURIComponent(token) : "";
   return url;
 };
 

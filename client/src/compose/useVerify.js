@@ -5,7 +5,8 @@ import { verifyAccount } from "@api";
 export default function useVerify() {
   const router = useRouter();
   const route = useRoute();
-  const { secret = undefined } = route.params;
+  // const { secret = undefined } = route.params;
+  const { secret = undefined } = route.query;
 
   const verify = () => {
     return verifyAccount({ secret })
