@@ -1,4 +1,4 @@
-import { watch } from "vue";
+// import { watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { verifyAccount } from "@api";
 
@@ -21,9 +21,6 @@ export default function useVerify() {
         console.error(err);
       });
   };
-  watch(
-    () => [],
-    () => verify(),
-    { immediate: true }
-  );
+
+  verify();
 }
