@@ -22,5 +22,7 @@ export default function useVerify() {
       });
   };
 
-  verify();
+  return {
+    verify,
+  };
 }
