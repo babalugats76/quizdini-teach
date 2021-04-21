@@ -309,7 +309,6 @@ module.exports = (app) => {
 
   app.put("/api/account/verify", async (req, res, next) => {
     try {
-      console.log("made it to the server");
       const { secret } = req.body;
       const token = await Token.findOne({
         $and: [
