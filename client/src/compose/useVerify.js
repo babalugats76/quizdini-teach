@@ -1,27 +1,23 @@
-// import { watch } from "vue";
+import { watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { verifyAccount } from "@api";
+import useLoader from "./useLoader";
 
 export default function useVerify() {
-  const router = useRouter();
   const route = useRoute();
-  // const { secret = undefined } = route.params;
-  const { secret = undefined } = route.query;
-
-  const verify = () => {
-    return verifyAccount({ secret })
-      .then((response) => {
-        const { data = null, error = null } = response;
-        const { message } = data;
-        const redirectTo = error ? "NotFound" : "Login";
-        return router.push({ name: redirectTo, params: { message } });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
-  return {
-    verify,
-  };
+  const router = useRouter();
+  const { secret = "" } = route.query;
+  const { data /*, executions, error, failed, initialized, loaded, loading*/ } = useLoader({
+    callback: () => verifyAccount({ secret }),
+    immediate: true,
+    deps: () => [],
+  });
+  watch(
+    data,
+    (data) => {
+      const { message = "" } = data || {};
+      return router.push({ name: "Login", params: { message } });
+    },
+    { immediate: false }
+  );
 }

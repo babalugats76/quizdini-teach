@@ -48,10 +48,6 @@ const buildUrl = (req, { path = "", params = {}, protocol = "https" }) => {
 };
 
 module.exports = (app) => {
-  app.get("/api/buildUrl", (req, res, next) => {
-    res.send(buildUrl(req, { path: "verify", params: { secret: "boo?" } }));
-  });
-
   app.post("/api/account", async (req, res, next) => {
     try {
       const {
@@ -313,7 +309,7 @@ module.exports = (app) => {
 
   app.put("/api/account/verify", async (req, res, next) => {
     try {
-      console.log(JSON.stringify(req.headers, null, 3));
+      console.log("made it to the server");
       const { secret } = req.body;
       const token = await Token.findOne({
         $and: [

@@ -16,6 +16,6 @@ export {
   useLoader,
   useMatches,
   useScript,
-  useStates,
   useVerify,
+  useStates,
 };
