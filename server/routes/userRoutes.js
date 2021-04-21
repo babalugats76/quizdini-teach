@@ -21,30 +21,37 @@ const { format, utcToZonedTime } = require("date-fns-tz");
  *
  * To build URLs suitable for inclusion in emails, etc.
  *
- * @param {Object}   request           Express request object
+ * @param {Object}   req               Express request object
  * @param {Object}   options           URL components
  * @param {string}   options.path      resource path for URI
+ * @param {Object}   options.params    (Optional) query params
  * @param {string}   options.protocol  HTTP protocol
- * @param {string}   options.token     (Optional) secret id
  * @returns {string}                   complete URL
+ *
+ * May have to add request.headers["x-forwarded-host"] behind proxy
+ *
  */
-const buildUrl = (request, { path = "", protocol = "https", token = "" }) => {
-  // build base URL (based on environment)
-  var url =
-    (process.env.NODE_ENV != "production" ? "http" : protocol) +
-    "://" +
-    (process.env.NODE_ENV != "production" ? request.headers["x-forwarded-host"] : request.host);
+const buildUrl = (req, { path = "", params = {}, protocol = "https" }) => {
+  // base URL
+  var url = (process.env.NODE_ENV != "production" ? "http" : protocol) + "://" + req.get("host");
 
-  // append URI path
+  // append URI path (optional)
   url += path ? "/" + path : "";
 
-  // append and encode secret (optional)
-  // url += token ? "/" + encodeURIComponent(token) : "";
-  url += token ? "?secret=" + encodeURIComponent(token) : "";
+  // append params (optional)
+  url += Object.keys(params).length
+    ? Object.entries(params).map(([k, v], i) => {
+        return (i === 0 ? "?" : "&") + k + "=" + encodeURIComponent(v);
+      })
+    : "";
   return url;
 };
 
 module.exports = (app) => {
+  app.get("/api/buildUrl", (req, res, next) => {
+    res.send(buildUrl(req, { path: "verify", params: { secret: "boo?" } }));
+  });
+
   app.post("/api/account", async (req, res, next) => {
     try {
       const {
@@ -118,7 +125,7 @@ module.exports = (app) => {
           toAddress: user.email,
           firstName: user.firstName,
           fullName: user.fullName,
-          verifyUrl: buildUrl(req, { path: "verify", token: token.secret }),
+          verifyUrl: buildUrl(req, { path: "verify", params: { secret: token.secret } }),
         });
         console.log("Queued email (registration): %s, %s", user.fullName, user.email);
       } catch (e) {
@@ -216,7 +223,7 @@ module.exports = (app) => {
             toAddress,
             firstName,
             fullName,
-            resetUrl: buildUrl(req, { path: "reset", token: token.secret }),
+            resetUrl: buildUrl(req, { path: "reset", params: { secret: token.secret } }),
             resetExpiryDate: localExpiryDate,
           });
           console.log("Queued email (recovery): %s, %s", fullName, toAddress);
