@@ -13,7 +13,7 @@ export default {
   components: {
     UiButton,
   },
-  inheritAttr: false,
+  inheritAttrs: false,
   props: {
     to: {
       type: [String, Object],

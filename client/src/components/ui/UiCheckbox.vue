@@ -25,7 +25,7 @@ export default {
     UiError,
   },
   mixins: [focus],
-  inheritAttr: false,
+  inheritAttrs: false,
   props: {
     autocomplete: {
       type: String,

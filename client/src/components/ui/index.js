@@ -16,6 +16,8 @@ import {
   UiTableCell,
   UiTableHeaderCell,
 } from "./UiTable";
+import { UiRadio, UiRadioGroup } from "./UiRadio";
+
 import { UiGrid, UiGridRow, UiGridColumn } from "./UiGrid";
 
 export {
@@ -33,6 +35,8 @@ export {
   UiInput,
   UiLink,
   UiMessage,
+  UiRadio,
+  UiRadioGroup,
   UiTable,
   UiTableBody,
   UiTableHeader,

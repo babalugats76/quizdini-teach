@@ -28,7 +28,7 @@ export default {
     UiError,
   },
   mixins: [focus],
-  inheritAttr: false,
+  inheritAttrs: false,
   props: {
     // eslint-disable-next-line
     code: {

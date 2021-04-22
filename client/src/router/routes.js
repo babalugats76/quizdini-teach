@@ -1,5 +1,13 @@
 const routes = [
   {
+    path: "/test",
+    name: "Test",
+    component: () => import(/* webpackChunkName: "public" */ "../views/Test.vue"),
+    meta: {
+      navItem: true,
+    },
+  },
+  {
     path: "/",
     name: "Home",
     component: () => import(/* webpackChunkName: "public" */ "../views/Landing.vue"),
@@ -9,9 +17,9 @@ const routes = [
     props: false,
   },
   {
-    path: "/test",
-    name: "Stripe",
-    component: () => import(/* webpackChunkName: "test" */ "../views/Test.vue"),
+    path: "/credits",
+    name: "Credits",
+    component: () => import(/* webpackChunkName: "members" */ "../views/Credits.vue"),
     meta: {
       navItem: true,
       auth: true,
