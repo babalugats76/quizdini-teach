@@ -1,4 +1,7 @@
 <script>
+import { computed } from "vue";
+import UiError from "./UiError";
+
 export const UiRadio = {
   name: "UiRadio",
   inheritAttrs: false,
@@ -50,13 +53,74 @@ export const UiRadio = {
   },
 };
 
-export const UiRadioGroup = {};
+export const UiRadioGroup = {
+  name: "UiRadioGroup",
+  inheritAttrs: false,
+  components: {
+    UiError,
+    UiRadio,
+  },
+  props: {
+    errors: {
+      type: [Array, String],
+      default: "",
+      required: false,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    options: {
+      type: [Array],
+      required: true,
+      default: () => [],
+    },
+    value: {
+      type: [String, Number],
+      default: "",
+    },
+  },
+  emits: ["update:value"],
+  setup(props, { emit }) {
+    const onSelected = computed({
+      get: () => props.value,
+      set: (value) => emit("update:value", value),
+    });
+    return {
+      onSelected,
+    };
+  },
+  render() {
+    const { errors, name, options } = this.$props;
+    return (
+      <>
+        <div class="ui-radio-group" {...this.$attrs}>
+          {options.map((o) => (
+            <UiRadio
+              key={o.key}
+              label={o.text}
+              name={name}
+              value={o.value}
+              v-model={[this.onSelected, "selected"]}
+            />
+          ))}
+        </div>
+        {errors ? <ui-error errors={errors} /> : null}
+      </>
+    );
+  },
+};
 export default UiRadioGroup;
 </script>
 
 <style lang="scss">
+.ui-radio-group {
+  > .ui-radio {
+    display: inline-block;
+  }
+}
+
 .ui-radio {
-  display: inline-block;
   padding: 0.375rem;
   font-size: inherit;
   &__label {

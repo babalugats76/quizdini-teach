@@ -10,7 +10,7 @@ export default {
   name: "UiError",
   props: {
     errors: {
-      type: Array,
+      type: [String, Array],
       default: () => [],
       required: false,
     },
