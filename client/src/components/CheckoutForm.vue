@@ -53,7 +53,7 @@
           <div class="form-input">
             <ui-input
               v-model:value="values.cardholderName"
-              name="cardholder-name"
+              name="cardholderName"
               autocomplete="cc-name"
               :errors="touched.cardholderName && errors.cardholderName"
               label="Name on card"

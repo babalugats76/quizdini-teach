@@ -43,7 +43,7 @@
       <div class="form-input">
         <ui-input
           v-model:value="values.firstName"
-          name="first-name"
+          name="firstName"
           autocomplete="given-name"
           :errors="touched.firstName && errors.firstName"
           label="First Name"
@@ -60,7 +60,7 @@
           autocomplete="family-name"
           :errors="touched.lastName && errors.lastName"
           label="Last Name"
-          name="last-name"
+          name="lastName"
           type="text"
           tabindex="3"
           :disabled="submitting"
@@ -162,7 +162,7 @@
           autocomplete="new-password"
           :errors="touched.confirmPassword && errors.confirmPassword"
           label="Confirm Password"
-          name="confirm-password"
+          name="confirmPassword"
           type="password"
           tabindex="10"
           :disabled="submitting"
@@ -224,7 +224,7 @@
       </div>
       <div class="form-input">
         <ui-input
-          name="register-submit"
+          name="registerSubmit"
           tabindex="14"
           :disabled="submitting || hasErrors || !dirty"
           type="button"

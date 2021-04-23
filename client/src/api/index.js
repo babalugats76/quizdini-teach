@@ -21,7 +21,7 @@ const postAccount = (account) => post({ url: `${ACCOUNT_ENDPOINT}`, data: accoun
 const postLogin = (auth) => post({ url: `${LOGIN_ENDPOINT}`, data: auth });
 const postMatch = (match) => post({ url: `${MATCHES_ENDPOINT}`, data: match });
 const postPayment = (credits) => post({ url: `${PAYMENTS_ENDPOINT}`, data: credits });
-
+const sendRecoveryEmail = (recovery) => post({ url: `${ACCOUNT_ENDPOINT}/lost`, data: recovery });
 const updateMatch = (match) => {
   const { matchId = null } = match;
   return put({ url: `${MATCHES_ENDPOINT}`, data: match, id: matchId });
@@ -42,6 +42,7 @@ export {
   postLogin,
   postMatch,
   postPayment,
+  sendRecoveryEmail,
   updateMatch,
   verifyAccount,
 };

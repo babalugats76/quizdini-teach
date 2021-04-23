@@ -33,13 +33,26 @@
           @input="input"
         />
       </div>
+      <div class="form-input">
+        <ui-input
+          name="lostSubmit"
+          tabindex="2"
+          :disabled="submitting || hasErrors || !dirty"
+          type="button"
+          value="submit"
+          @mousedown.prevent="() => false"
+          @click.prevent="handleSubmit"
+        />
+      </div>
     </template>
   </ui-form>
 </template>
 
 <script>
 import { reactive } from "vue";
+import { useRouter } from "vue-router";
 import { object, string } from "yup";
+import { sendRecoveryEmail } from "@api";
 import { UiForm, UiInput } from "@ui";
 
 export default {
@@ -48,43 +61,30 @@ export default {
     UiForm,
     UiInput,
   },
-  setup() {
+  props: {
+    recoveryType: {
+      type: String,
+      default: "username",
+    },
+  },
+  setup(props) {
+    const router = useRouter();
     const lostFormSchema = object({
       email: string().required("Email is required").email("Invalid email"),
     });
     const initialValues = reactive({ email: "" });
     const handleSubmit = async ({ errors, setSubmitting, setSubmitted, values }) => {
-      //   if (errors) return;
-      //   setSubmitting();
-      //   postAccount(values)
-      //     .then((res) => {
-      //       const { error, data } = res || {};
-      //       if (error) {
-      //         switch (data.code) {
-      //           case "DuplicateUsername":
-      //             values.username = "";
-      //             message.value = "Username already taken";
-      //             severity.value = "danger";
-      //             break;
-      //           case "DuplicateEmail":
-      //             values.email = "";
-      //             break;
-      //           default:
-      //             break;
-      //         }
-      //         throw new Error("RegistrationFailed");
-      //       }
-      //       return data.message;
-      //     })
-      //     .then((message) => router.push({ name: "Login", params: { message } }))
-      //     .catch((err) => {
-      //       console.error(err);
-      //     })
-      //     .finally(() => {
-      //       setSubmitted();
-      //     });
+      if (errors) return;
+      setSubmitting();
+      sendRecoveryEmail({ ...values, recoveryType: props.recoveryType })
+        .then((res) => {
+          const { data: { message } = {} } = res || {};
+          return message;
+        })
+        .then((message) => router.push({ name: "Login", params: { message } }))
+        .catch((err) => console.error(err))
+        .finally(() => setSubmitted());
     };
-
     return {
       handleSubmit,
       initialValues,

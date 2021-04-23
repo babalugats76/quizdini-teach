@@ -1,12 +1,12 @@
 <template>
   <layout-default>
     <ui-radio-group
-      v-model:value="selected"
+      v-model:value="recoveryType"
       class="lost__options"
-      :options="options"
+      :options="recoveryOptions"
       name="recoveryOptions"
     />
-    <lost-form />
+    <lost-form :recovery-type="recoveryType" />
   </layout-default>
 </template>
 
@@ -22,8 +22,8 @@ export default {
     UiRadioGroup,
   },
   setup() {
-    const selected = ref("username");
-    const options = [
+    const recoveryType = ref("username");
+    const recoveryOptions = [
       {
         key: "0",
         value: "username",
@@ -36,8 +36,8 @@ export default {
       },
     ];
     return {
-      options,
-      selected,
+      recoveryOptions,
+      recoveryType,
     };
   },
 };

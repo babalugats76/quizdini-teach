@@ -60,7 +60,7 @@
         </div>
         <div class="form-input">
           <ui-input
-            name="login-submit"
+            name="loginSubmit"
             tabindex="3"
             :disabled="submitting || hasErrors || !dirty"
             type="button"
