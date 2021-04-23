@@ -105,7 +105,7 @@ export const UiRadioGroup = {
             />
           ))}
         </div>
-        {errors ? <ui-error errors={errors} /> : null}
+        {errors ? <ui-error errors={errors} /> : ""}
       </>
     );
   },

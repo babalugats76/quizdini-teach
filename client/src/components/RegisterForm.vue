@@ -277,7 +277,7 @@ export default {
       confirmPassword: string().oneOf([yupRef("password")], "Passwords mismatch"),
       cookie: boolean().oneOf([true], "Please read and accept our Cookie policy"),
       country: string().required("Country is required"),
-      email: string().required("Email is required").email("Inva lid email"),
+      email: string().required("Email is required").email("Invalid email"),
       firstName: string().required("First Name is required"),
       lastName: string().required("Last Name is required"),
       password: string() /* Add rules for password complexity */

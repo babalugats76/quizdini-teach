@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="errors">
     <ul v-for="(error, i) in errors" :key="i">
       <li v-if="error">{{ error }}</li>
     </ul>

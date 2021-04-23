@@ -65,6 +65,16 @@ const routes = [
     props: false,
   },
   {
+    path: "/lost",
+    name: "Lost",
+    component: () => import(/* webpackChunkName: "public" */ "../views/Lost.vue"),
+    meta: {
+      navItem: false,
+      guest: true,
+    },
+    props: false,
+  },
+  {
     path: "/dashboard",
     name: "Dashboard",
     component: () => import(/* webpackChunkName: "members" */ "../views/Dashboard.vue"),
