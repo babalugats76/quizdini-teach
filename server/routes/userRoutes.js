@@ -33,7 +33,8 @@ const { format, utcToZonedTime } = require("date-fns-tz");
  */
 const buildUrl = (req, { path = "", params = {}, protocol = "https" }) => {
   // base URL
-  var url = (process.env.NODE_ENV != "production" ? "http" : protocol) + "://" + req.get("host");
+  var url =
+    process.env.NODE_ENV !== "production" ? `http://${req.host}:3000` : `${protocol}://${req.host}`;
 
   // append URI path (optional)
   url += path ? "/" + path : "";

@@ -25,7 +25,7 @@
           autocomplete="new-password"
           :errors="touched.newPassword && errors.newPassword"
           label="New Password"
-          name="nwePassword"
+          name="newPassword"
           type="password"
           tabindex="1"
           :disabled="submitting"
@@ -74,7 +74,13 @@ export default {
     UiForm,
     UiInput,
   },
-  setup() {
+  props: {
+    token: {
+      type: String,
+      required: true,
+    },
+  },
+  setup(props) {
     const router = useRouter();
     const resetFormSchema = object({
       confirmPassword: string().oneOf([yupRef("newPassword")], "Passwords mismatch"),
@@ -89,7 +95,7 @@ export default {
     const handleSubmit = async ({ errors, setSubmitting, setSubmitted, values }) => {
       if (errors) return;
       setSubmitting();
-      resetPassword({ ...values })
+      resetPassword({ ...values, secret: props.token })
         .then((res) => {
           const { data: { message } = {} } = res || {};
           return message;

@@ -33,7 +33,19 @@ const updateMatch = (match) => {
 const validateToken = (secret) => get({ url: `${TOKEN_ENDPOINT}/${secret}` });
 const verifyAccount = (secret) => put({ url: `${ACCOUNT_ENDPOINT}/verify`, data: secret });
 
+const callApi = (cb) => async (...args) => {
+  const response = await cb(args);
+  const { data = null, error = null } = response;
+  return {
+    data,
+    error,
+    failed: error ? true : false,
+    loaded: error ? false : true,
+  };
+};
+
 export {
+  callApi,
   getAccount,
   getAuth,
   getCountries,

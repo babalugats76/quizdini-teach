@@ -1,4 +1,5 @@
 import { reactive, toRefs, watch } from "vue";
+import { callApi } from "@api";
 
 export default function useLoader({ callback, immediate = true, deps = [] }) {
   const state = reactive({
@@ -15,21 +16,14 @@ export default function useLoader({ callback, immediate = true, deps = [] }) {
     deps,
     async () => {
       state.loading = true;
-      const response = await callback();
-      const { data = null, error = null } = response;
-      state.data = data;
-      state.error = error;
+      ({
+        data: state.data,
+        error: state.error,
+        failed: state.failed,
+        loaded: state.loaded,
+      } = await callApi(callback)());
       state.executions += 1;
       state.initialized = !!state.executions;
-
-      if (data) {
-        state.loaded = true;
-        state.failed = false;
-      }
-      if (error) {
-        state.loaded = false;
-        state.failed = true;
-      }
       state.loading = false;
     },
     { immediate }
