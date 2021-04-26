@@ -1,6 +1,6 @@
 import { getAccount } from "@api";
-import { callApi } from "@utils/fetch";
 import { ACCOUNT } from "@vuex/types";
+import { callApi } from "@vuex/utils";
 
 const INITIAL_STATE = {
   data: {},

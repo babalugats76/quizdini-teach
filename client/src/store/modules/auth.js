@@ -1,6 +1,6 @@
 import { getAuth } from "@api";
-import { callApi } from "@utils/fetch";
 import { AUTH } from "@vuex/types";
+import { callApi } from "@vuex/utils";
 
 // data for unauthorized user (initial and failed state)
 const UNAUTHORIZED = {

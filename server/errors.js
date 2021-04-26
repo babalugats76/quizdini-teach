@@ -1,13 +1,14 @@
 const { StatusCodes } = require("http-status-codes");
 
 const DUPLICATE_EMAIL = "%email% is already associated with another account.";
-const DUPLICATE_USERNAME = "%username% already exists";
+const DUPLICATE_USERNAME = "%username% already exists.";
 const INCORRECT_PASSWORD = "Your current password is incorrect.";
 const INSUFFICIENT_CREDITS = "There are not enough credits in your account.";
 const INVALID_TOKEN = "Your token is invalid, claimed, or expired.";
 const LOGIN_FAILED = "Please check your credentials or verify your account.";
 const NOT_AUTHENTICATED = "You must be logged in to access %path%.";
 const NOT_ADMIN = "You must be a logged in super user to access %path%.";
+const NOT_FOUND = "%path% not found.";
 
 class CustomError extends Error {
   constructor(msg, statusCode = StatusCodes.INTERNAL_SERVER_ERROR, code = undefined) {
@@ -72,6 +73,12 @@ class NotAuthenticated extends CustomError {
   }
 }
 
+class NotFound extends CustomError {
+  constructor(path, msg = NOT_FOUND) {
+    super(msg.replace("%path%", path), StatusCodes.NOT_FOUND);
+  }
+}
+
 class StripeChargeError extends CustomError {
   constructor(msg, code) {
     super(msg, StatusCodes.BAD_REQUEST, code);
@@ -88,5 +95,6 @@ module.exports = {
   LoginFailed,
   NotAdmin,
   NotAuthenticated,
+  NotFound,
   StripeChargeError,
 };

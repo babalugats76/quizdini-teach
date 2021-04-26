@@ -75,6 +75,15 @@ const routes = [
     props: false,
   },
   {
+    path: "/reset",
+    name: "Reset",
+    component: () => import(/* webpackChunkName: "public" */ "../views/Reset.js"),
+    meta: {
+      navItem: false,
+      guest: true,
+    },
+  },
+  {
     path: "/dashboard",
     name: "Dashboard",
     component: () => import(/* webpackChunkName: "members" */ "../views/Dashboard.vue"),

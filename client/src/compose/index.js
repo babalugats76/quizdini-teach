@@ -5,7 +5,9 @@ import useForm from "./useForm";
 import useLoader from "./useLoader";
 import useMatches from "./useMatches";
 import useScript from "./useScript";
+import useState from "./useState";
 import useStates from "./useStates";
+import useToken from "./useToken";
 import useVerify from "./useVerify";
 
 export {
@@ -16,6 +18,8 @@ export {
   useLoader,
   useMatches,
   useScript,
+  useToken,
   useVerify,
+  useState,
   useStates,
 };

@@ -10,6 +10,7 @@ import MatchView from "./MatchView";
 import PaymentTable from "./PaymentTable";
 import PingChart from "./PingChart";
 import RegisterForm from "./RegisterForm";
+import ResetForm from "./ResetForm";
 
 export {
   CardGrid,
@@ -24,4 +25,5 @@ export {
   PaymentTable,
   PingChart,
   RegisterForm,
+  ResetForm,
 };
