@@ -24,7 +24,8 @@
           <ui-link :href="getGameUrl(matchId)" :target="`_${matchId}`">
             <ui-button>Play</ui-button>
           </ui-link>
-          <nav-button :to="getEditUri(matchId)">Edit</nav-button>
+          <!-- <nav-button :to="getEditUri(matchId)">Edit</nav-button> -->
+          <ui-button @click.prevent="handleEdit(matchId)">Edit</ui-button>
           <nav-button :to="getStatsUri(matchId)">Stats</nav-button>
           <ui-button @click.prevent="handleCopy(matchId)">Copy</ui-button>
         </ui-button-group>
@@ -56,7 +57,8 @@ export default {
       required: true,
     },
   },
-  setup() {
+  emits: ["edit"],
+  setup(props, { emit }) {
     const { copy: copyToClipboard } = useClipboard();
     const getEditUri = (id) => `/match/${id}`;
     const getGameUrl = (id) => `${process.env.VUE_APP_GAME_BASE_URL}/match/${id}`;
@@ -67,12 +69,17 @@ export default {
       await copyToClipboard(getGameUrl(id));
     };
 
+    const handleEdit = (id) => {
+      emit("edit", { id });
+    };
+
     return {
       getBadgeType,
       getEditUri,
       getGameUrl,
       getStatsUri,
       handleCopy,
+      handleEdit,
     };
   },
 };
