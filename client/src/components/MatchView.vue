@@ -5,7 +5,7 @@
     <ui-modal
       class="matches__modal--edit"
       :appear="true"
-      :duration="100"
+      :duration="500"
       :fade-type="referrer === 'loader' ? 'dark-to-light' : 'light-to-dark'"
       :show="showModal"
       @exited="handleModalExit"
