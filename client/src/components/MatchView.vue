@@ -1,32 +1,29 @@
 <template>
   <div class="matches">
     <nav-button :to="{ path: `/match/new` }" :disabled="credits <= 0">Press Me</nav-button>
-    <match-list :matches="matches" class="matches__list" @edit="openEditModal" />
-    <ui-modal
-      class="matches__modal--edit"
-      :appear="true"
-      :duration="500"
-      :fade-type="referrer === 'loader' ? 'dark-to-light' : 'light-to-dark'"
-      :show="showModal"
-      @exited="handleModalExit"
-    >
-      <p>Content of the Modal goes here</p>
-      <button @click.prevent="closeModal">Close (X)</button>
-    </ui-modal>
+    <match-list :matches="matches" class="matches__list" @edit="openEdit" />
+    <match-edit
+      :match-id="matchId"
+      class="matches__edit"
+      :show-modal="showEdit"
+      @close="closeEdit"
+      @exited="exitEdit"
+    />
   </div>
 </template>
 
 <script>
 import { reactive, toRefs } from "vue";
-import { NavButton, UiModal } from "@ui";
+import { NavButton } from "@ui";
 import MatchList from "./MatchList";
+import MatchEdit from "./MatchEdit";
 
 export default {
   name: "MatchView",
   components: {
+    MatchEdit,
     MatchList,
     NavButton,
-    UiModal,
   },
   props: {
     credits: {
@@ -40,30 +37,31 @@ export default {
       required: true,
     },
   },
-  emits: ["close"],
   setup() {
     const state = reactive({
-      showModal: false,
+      matchId: undefined,
+      showEdit: false,
     });
 
     // launch the match edit modal
-    const openEditModal = (payload) => {
-      console.log(payload);
-      state.showModal = true;
+    const openEdit = (payload) => {
+      const { id: matchId } = payload;
+      state.matchId = matchId;
+      state.showEdit = true;
     };
 
-    const handleModalExit = () => {
-      console.log("Modal exited...");
+    const exitEdit = () => {
+      console.log("Edit exited...");
     };
 
-    const closeModal = () => {
-      state.showModal = false;
+    const closeEdit = () => {
+      state.showEdit = false;
     };
 
     return {
-      closeModal,
-      openEditModal,
-      handleModalExit,
+      closeEdit,
+      exitEdit,
+      openEdit,
       ...toRefs(state),
     };
   },
