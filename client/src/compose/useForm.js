@@ -12,15 +12,14 @@ export default function useForm({ emit, initialValues, schema }) {
   watch(
     () => values,
     (values) => {
-      console.log("dirty check");
-      dirty.value = !JSON.stringify(values) !== JSON.stringify(unref(initialValues));
+      dirty.value = JSON.stringify(values) !== JSON.stringify(unref(initialValues));
     },
     { deep: true }
   );
 
-  const validateForm = () => {
+  const validateForm = (context = {}) => {
     return schema
-      .validate(values, { abortEarly: false })
+      .validate(values, { abortEarly: false, ...context })
       .then(() => {
         meta.errors = {};
       })
@@ -39,9 +38,9 @@ export default function useForm({ emit, initialValues, schema }) {
       });
   };
 
-  const validateField = (field) => {
+  const validateField = (field, context = {}) => {
     return schema
-      .validateAt(field, values, { abortEarly: false })
+      .validateAt(field, values, { abortEarly: false, ...context })
       .then(() => {
         const { [field]: remove, ...rest } = meta.errors;
         meta.errors = rest;
@@ -87,7 +86,9 @@ export default function useForm({ emit, initialValues, schema }) {
     await validateForm();
 
     if (unref(hasErrors)) {
-      const { schema: { fields = {} } = {} } = props;
+      //const { schema: { fields = {} } = {} } = props;
+      const { fields = {} } = schema || {};
+      console.log(fields);
       meta.touched = Object.keys(fields).reduce(
         (touched, field) => ({ ...touched, [field]: true }),
         {}
@@ -108,6 +109,9 @@ export default function useForm({ emit, initialValues, schema }) {
         dirty.value = false;
         meta.touched = {};
       },
+      resetForm: () => {
+        Object.assign(values, JSON.parse(JSON.stringify(unref(initialValues))));
+      },
     });
   };
 
@@ -127,6 +131,7 @@ export default function useForm({ emit, initialValues, schema }) {
     setValues,
     submitting,
     validateField,
+    validateForm,
     values,
     ...toRefs(meta),
   };

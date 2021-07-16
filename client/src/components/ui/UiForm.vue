@@ -10,6 +10,7 @@
     :submitting="submitting"
     :touched="touched"
     :validateField="validateField"
+    :validateForm="validateForm"
     :values="values"
   />
 </template> */
@@ -52,6 +53,7 @@ export default {
       submitting,
       touched,
       validateField,
+      validateForm,
       values,
     } = useForm({ emit, initialValues, schema: props.schema });
     return {
@@ -67,6 +69,7 @@ export default {
       submitting,
       touched,
       validateField,
+      validateForm,
       values,
     };
   },
@@ -83,6 +86,7 @@ export default {
           submitting: this.submitting,
           touched: this.touched,
           validateField: this.validateField,
+          validateForm: this.validateForm,
           values: this.values,
         })
       : [];
