@@ -9,7 +9,12 @@
     @exited="$emit('exited')"
   >
     <button @click.prevent="$emit('close')">Close (X)</button>
-    <match-form :v-if="initialized && !loading && !error" :game="game" />
+    <!-- <pre>matches: {{ JSON.stringify(game.matches, null, 2) }}</pre> -->
+    <pre>loaded: {{ loaded }} </pre>
+    <pre>initialized: {{ initialized }} </pre>
+    <pre>loading: {{ loading }} </pre>
+    <pre>error: {{ error }} </pre>
+    <match-form v-if="!loading && initialized" :game="game" />
   </ui-modal>
 </template>
 
@@ -36,6 +41,7 @@ export default {
   },
   emits: ["close", "exited"],
   setup(props) {
+    console.log("matchId inside MatchEdit", props.matchId);
     const { data: game, error, failed, initialized, loaded, loading } = useLoader({
       callback: () => getMatch(props.matchId),
       immediate: true,

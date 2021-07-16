@@ -65,13 +65,13 @@
         "
       />
       <pre>matches: {{ JSON.stringify(matches, null, 2) }}</pre>
-      <pre>errors: {{ JSON.stringify(errors, null, 2) }}</pre>
+      <!-- <pre>errors: {{ JSON.stringify(errors, null, 2) }}</pre>
       <pre>initialValues: {{ JSON.stringify(initialValues, null, 2) }}</pre>
       <pre>values: {{ JSON.stringify(values, null, 2) }}</pre>
       <pre>touched: {{ JSON.stringify(touched, null, 2) }}</pre>
       <pre>dirty: {{ JSON.stringify(dirty, null, 2) }}</pre>
       <pre>submitting: {{ JSON.stringify(submitting, null, 2) }}</pre>
-      <pre>hasErrors: {{ JSON.stringify(hasErrors, null, 2) }}</pre>
+      <pre>hasErrors: {{ JSON.stringify(hasErrors, null, 2) }}</pre> -->
     </template>
   </ui-form>
 </template>

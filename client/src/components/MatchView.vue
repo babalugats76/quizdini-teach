@@ -3,6 +3,7 @@
     <nav-button :to="{ path: `/match/new` }" :disabled="credits <= 0">Press Me</nav-button>
     <match-list :matches="matches" class="matches__list" @edit="openEdit" />
     <match-edit
+      v-if="matchId"
       :match-id="matchId"
       class="matches__edit"
       :show-modal="showEdit"
@@ -39,18 +40,20 @@ export default {
   },
   setup() {
     const state = reactive({
-      matchId: undefined,
+      matchId: "",
       showEdit: false,
     });
 
     // launch the match edit modal
     const openEdit = (payload) => {
       const { id: matchId } = payload;
+      console.log("requesting to open", matchId);
       state.matchId = matchId;
       state.showEdit = true;
     };
 
     const exitEdit = () => {
+      state.matchId = "";
       console.log("Edit exited...");
     };
 
