@@ -9,7 +9,9 @@ import UiInput from "./UiInput";
 import UiLink from "./UiLink";
 import UiMessage from "./UiMessage";
 import UiModal from "./UiModal";
+import UiSlidedown from "./UiSlidedown";
 import UiTab from "./UiTab";
+import UiTabMenu from "./UiTabMenu";
 import {
   UiTable,
   UiTableBody,
@@ -40,7 +42,9 @@ export {
   UiModal,
   UiRadio,
   UiRadioGroup,
+  UiSlidedown,
   UiTab,
+  UiTabMenu,
   UiTable,
   UiTableBody,
   UiTableHeader,

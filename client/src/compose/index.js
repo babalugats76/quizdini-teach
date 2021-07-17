@@ -1,5 +1,6 @@
 import useAccount from "./useAccount";
 import useClipboard from "./useClipboard";
+import useCodeMirror from "./useCodeMirror";
 import useCountries from "./useCountries";
 import useForm from "./useForm";
 import useLoader from "./useLoader";
@@ -14,6 +15,7 @@ import useVerify from "./useVerify";
 export {
   useAccount,
   useClipboard,
+  useCodeMirror,
   useCountries,
   useForm,
   useLoader,

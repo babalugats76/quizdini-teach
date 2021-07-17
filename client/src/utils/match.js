@@ -11,6 +11,8 @@ import Placeholder from "@tiptap/extension-placeholder";
 import escapeHtml from "escape-html";
 import parse from "csv-parse/lib/sync";
 import DOMPurify from "dompurify";
+import CodeMirror from "codemirror";
+import { default as asyncParse } from "csv-parse";
 
 const PURIFY_OPTS = {
   ALLOWED_TAGS: ["u", "code", "sup", "sub"],
@@ -122,3 +124,124 @@ export const serializeToHtml = (json) => {
 };
 
 export const toJSON = (html, config = {}) => generateJSON(html, extensions(config));
+
+export const bulkMatchValidator = async (doc, cb, options, cm) => {
+  const validator = async (doc) => {
+    var annotations = [];
+    var uniqueTerms = new Map(); // Create empty map (to store terms seen thus far)
+
+    const annotate = (lines, message) => {
+      annotations.push({
+        from: CodeMirror.Pos(lines - 1, 0), // account for 0-indexing
+        to: CodeMirror.Pos(lines - 1, 0), // account for 0-indexing
+        message, // tooltip message
+        severity: "warning", // determines color, icon, etc.
+      });
+    };
+
+    const parser = asyncParse({
+      cast: function (value, context) {
+        // console.log("quoting", context.quoting);
+        return context.quoting ? `"${value}"` : value;
+      },
+      columns: ["term", "definition"], // Give our two columns a name
+      // comment: "#", // skip rows that begin with the pound
+      delimiter: ",", // use standard delimiter
+      ltrim: true, // Remove whitespace from the left
+      quote: '"',
+      raw: true, // Includes raw alongside parsed content
+      rtrim: true, // Remove whitespace from the right
+      relax_column_count: false, // Do not throw error on invalid # of columns
+      skip_empty_lines: true, // Skip empty lines, e.g., \n
+      skip_lines_with_error: true, // Ignore failed lines, e.g, misused quotes
+    });
+
+    // Work with each record
+    parser.on("readable", function () {
+      /* eslint no-unused-vars: "off" */
+      let definition, line, lines, raw, records, term;
+      /* eslint no-cond-assign: "off" */
+      while ((line = parser.read())) {
+        ({
+          info: { lines, records },
+        } = parser);
+        ({
+          raw,
+          record: { term = "", definition = "" },
+        } = line);
+
+        // console.log("raw", raw);
+        // console.log("lines", lines);
+        // console.log("records (valid)", records);
+        // console.log("term", term);
+        // console.log("definition", definition);
+
+        const purifiedTerm = DOMPurify.sanitize(term.trim(), PURIFY_OPTS); // Trim and HTML sanitize term
+        const purifiedDefinition = DOMPurify.sanitize(definition.trim(), PURIFY_OPTS); // Trim and HTML sanitize definition
+
+        if (!term) {
+          return annotate(lines, "term missing");
+        }
+
+        if (!definition) {
+          return annotate(lines, "definition missing");
+        }
+
+        if (purifiedTerm !== term || !purifiedTerm) {
+          return annotate(lines, "term contains invalid HTML");
+        }
+
+        if (purifiedDefinition !== definition || !purifiedDefinition) {
+          return annotate(lines, "definition contains invalid HTML");
+        }
+
+        if (uniqueTerms.has(term)) {
+          return annotate(lines, "duplicate term");
+        }
+
+        uniqueTerms.set(term, true);
+      }
+    });
+
+    parser.on("skip", function (err) {
+      const { code = undefined, column = "", lines /* record = [""] */ } = err;
+      var message = "";
+
+      // console.log(JSON.stringify(err, null, 2));
+      // console.log("column", column);
+      // console.log("lines", lines);
+      // console.log("record", record);
+
+      switch (code) {
+        case "CSV_RECORD_DONT_MATCH_COLUMNS_LENGTH":
+          message = column ? column + " missing" : "invalid format";
+          break;
+        case "CSV_QUOTE_NOT_CLOSED":
+          message = "unclosed quote";
+          break;
+        case "INVALID_OPENING_QUOTE":
+          message = "invalid quote";
+          break;
+        case "CSV_INVALID_CLOSING_QUOTE":
+          message = "unclosed quote";
+          break;
+        default:
+          message = "invalid format";
+          break;
+      }
+
+      return annotate(lines, message);
+    });
+
+    // if you need to do something at the end
+    // parser.on("end", function () {
+    //   console.log("parser done...");
+    // });
+
+    await parser.write(doc); // push into stream
+    parser.end(); // clean up
+    return annotations; // annotations used to linter
+  };
+  const annotations = await validator(doc, options, cm);
+  cb(annotations);
+};

@@ -19,21 +19,49 @@
         values,
       }"
     >
-      <ui-tab title="Matches">
-        <match-editor
-          :initial-values="blankMatch"
-          :matches="values.matches"
-          @save="(match) => values.matches.push(match)"
-        />
-      </ui-tab>
+      <ui-tab-menu>
+        <ui-tab title="Matches">
+          <match-editor
+            :initial-values="blankMatch"
+            :matches="values.matches"
+            @save="(match) => values.matches.push(match)"
+          />
+        </ui-tab>
+        <ui-tab title="Bulk">
+          <match-bulk
+            :bulkMatches="bulkMatches"
+            :options="{
+              lineNumbers: true,
+              mode: 'htmlmixed',
+              theme: 'material',
+              autoCloseTags: true,
+              allowDropFileTypes: null,
+              gutters: ['CodeMirror-linenumbers', 'CodeMirror-lint-markers'],
+              lint: {
+                getAnnotations: bulkMatchValidator,
+                lintOnChange: true,
+                async: true,
+              },
+              /* viewportMargin: Infinity, */
+            }"
+            :matches="values.matches"
+            @change="handleBulkChange"
+            @save="handleBulkSave"
+            @upload="handleBulkUpload"
+          />
+        </ui-tab>
+      </ui-tab-menu>
     </template>
   </ui-form>
 </template>
 <script>
-import { reactive } from "vue";
+import { reactive, toRefs } from "vue";
 import { array, number, object, string, ref as yupRef } from "yup";
-import { UiForm, UiTab } from "@ui";
+import { UiForm, UiTab, UiTabMenu } from "@ui";
+import MatchBulk from "./MatchBulk";
 import MatchEditor from "./MatchEditor";
+
+import { bulkMatchValidator, matchToString, parseMatch } from "@utils/match";
 
 const itemsPerBoardOptions = [
   { text: "4", value: 4 },
@@ -56,19 +84,14 @@ const colorSchemeOptions = [
   { text: "Rainbow", value: "Rainbow" },
 ];
 
-/* Disposition once more of the code has been migrated */
-const matchToString = (matches) => {
-  return matches.reduce((accum, vals) => {
-    return accum + vals.term + ", " + vals.definition + "\n";
-  }, "");
-};
-
 export default {
   name: "MatchForm",
   components: {
+    MatchBulk,
     MatchEditor,
     UiForm,
     UiTab,
+    UiTabMenu,
   },
   props: {
     game: {
@@ -78,6 +101,13 @@ export default {
     },
   },
   setup(props) {
+    // Disposition piece by piece using UiForm, etc.
+    const state = reactive({
+      bulkMatches: matchToString(props.game.matches || []),
+      matches: props.game.matches,
+      showDialog: false,
+    });
+
     const initialValues = reactive({
       matchId: props.game.matchId || null,
       title: props.game.title || "",
@@ -140,12 +170,49 @@ export default {
       term: `<p>${initialTerm}</p>`,
     };
 
+    const handleBulkChange = ({ value }) => (state.bulkMatches = value);
+
+    const handleBulkSave = ({ setValue }) => {
+      state.matches = parseMatch(state.bulkMatches, 500);
+      state.bulkMatches = matchToString(state.matches);
+      setValue(state.bulkMatches);
+    };
+
+    const handleBulkUpload = ({ event, append }) => {
+      if (event.target.files.length) {
+        const file = event.target.files[0]; // Assumes single file processing
+        const contents = event.target.files[0].slice(0, file.size, ""); // 0, size, '' are defaults
+        const reader = new FileReader(); // To read file from disk
+
+        reader.onload = (function (file) {
+          // Closure run upon read completion
+          return function (event) {
+            console.log(`Loaded ${file.size} bytes from ${file.name}...`);
+            if (event.target.result) {
+              // If results are returned
+              const parsed = parseMatch(event.target.result, 500); // Split, Sanitize, Dedup -> array of matches
+              const bulk = matchToString(parsed); // Flatten parsed matches
+              append(bulk); // append to editor
+              event.target.value = null;
+            }
+          };
+        })(file);
+
+        reader.readAsText(contents, "UTF-8"); // Initiate file read, assuming UTF-8 encoding
+      }
+    };
+
     const handleSubmit = async ({ errors, setSubmitting, setSubmitted, values }) => {
       if (errors) return;
     };
 
     return {
+      ...toRefs(state),
       blankMatch,
+      bulkMatchValidator,
+      handleBulkChange,
+      handleBulkSave,
+      handleBulkUpload,
       handleSubmit,
       initialValues,
       matchValidation,
