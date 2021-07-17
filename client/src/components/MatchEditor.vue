@@ -64,7 +64,7 @@
           }
         "
       />
-      <pre>matches: {{ JSON.stringify(matches, null, 2) }}</pre>
+      <!-- <pre>matches: {{ JSON.stringify(matches, null, 2) }}</pre> -->
       <!-- <pre>errors: {{ JSON.stringify(errors, null, 2) }}</pre>
       <pre>initialValues: {{ JSON.stringify(initialValues, null, 2) }}</pre>
       <pre>values: {{ JSON.stringify(values, null, 2) }}</pre>
@@ -214,6 +214,10 @@ button:disabled {
   padding: 1rem;
   margin: 0 auto;
   font-family: "Inter", "Ubuntu Mono", monospace;
+  &__form {
+    width: 100%;
+    padding: 1rem;
+  }
   &__submit {
     &:focus {
       /* added to test tabindex order */

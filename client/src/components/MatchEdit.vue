@@ -8,13 +8,14 @@
     @close="$emit('close')"
     @exited="$emit('exited')"
   >
-    <button @click.prevent="$emit('close')">Close (X)</button>
-    <!-- <pre>matches: {{ JSON.stringify(game.matches, null, 2) }}</pre> -->
-    <pre>loaded: {{ loaded }} </pre>
+    <button class="match-edit__close" @click.prevent="$emit('close')">X</button>
+    <!-- <pre>loaded: {{ loaded }} </pre>
     <pre>initialized: {{ initialized }} </pre>
     <pre>loading: {{ loading }} </pre>
-    <pre>error: {{ error }} </pre>
-    <match-form v-if="!loading && initialized" :game="game" />
+    <pre>error: {{ error }} </pre> -->
+    <div v-if="loading">Loader goes here...</div>
+    <match-form v-if="!loading && !error" :game="game" />
+    <!-- <pre v-if="game" :style="{ overflow: 'scroll' }">matches: {{ JSON.stringify(game.matches, null, 2) }}</pre> -->
   </ui-modal>
 </template>
 
@@ -60,4 +61,14 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.match-edit {
+  &__modal {
+    flex-direction: column;
+  }
+  &__close {
+    position: absolute;
+    right: 0;
+  }
+}
+</style>

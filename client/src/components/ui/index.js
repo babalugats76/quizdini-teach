@@ -9,6 +9,7 @@ import UiInput from "./UiInput";
 import UiLink from "./UiLink";
 import UiMessage from "./UiMessage";
 import UiModal from "./UiModal";
+import UiTab from "./UiTab";
 import {
   UiTable,
   UiTableBody,
@@ -39,6 +40,7 @@ export {
   UiModal,
   UiRadio,
   UiRadioGroup,
+  UiTab,
   UiTable,
   UiTableBody,
   UiTableHeader,

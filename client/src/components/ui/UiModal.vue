@@ -141,9 +141,11 @@ $modal-mask-opacity: 0.6;
   }
 
   &__container {
+    position: relative;
     display: flex;
     width: 100%;
     max-width: 500px;
+    max-height: 85vh;
     margin: 0px auto;
     background-color: #fff;
     border-radius: 0.875rem;

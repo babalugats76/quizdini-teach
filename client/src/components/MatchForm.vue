@@ -19,18 +19,20 @@
         values,
       }"
     >
-      <match-editor
-        :initial-values="blankMatch"
-        :matches="values.matches"
-        @save="(match) => values.matches.push(match)"
-      />
+      <ui-tab title="Matches">
+        <match-editor
+          :initial-values="blankMatch"
+          :matches="values.matches"
+          @save="(match) => values.matches.push(match)"
+        />
+      </ui-tab>
     </template>
   </ui-form>
 </template>
 <script>
 import { reactive } from "vue";
 import { array, number, object, string, ref as yupRef } from "yup";
-import { UiForm } from "@ui";
+import { UiForm, UiTab } from "@ui";
 import MatchEditor from "./MatchEditor";
 
 const itemsPerBoardOptions = [
@@ -66,6 +68,7 @@ export default {
   components: {
     MatchEditor,
     UiForm,
+    UiTab,
   },
   props: {
     game: {
@@ -150,4 +153,8 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.match__form {
+  width: 100%;
+}
+</style>
