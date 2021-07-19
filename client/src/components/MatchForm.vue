@@ -19,7 +19,7 @@
         values,
       }"
     >
-      <ui-tab-menu>
+      <ui-tabs>
         <ui-tab title="Matches">
           <match-editor
             :initial-values="blankMatch"
@@ -29,7 +29,7 @@
         </ui-tab>
         <ui-tab title="Bulk">
           <match-bulk
-            :bulkMatches="bulkMatches"
+            :bulk-matches="bulkMatches"
             :options="{
               lineNumbers: true,
               mode: 'htmlmixed',
@@ -50,14 +50,14 @@
             @upload="handleBulkUpload"
           />
         </ui-tab>
-      </ui-tab-menu>
+      </ui-tabs>
     </template>
   </ui-form>
 </template>
 <script>
 import { reactive, toRefs } from "vue";
 import { array, number, object, string, ref as yupRef } from "yup";
-import { UiForm, UiTab, UiTabMenu } from "@ui";
+import { UiForm, UiTab, UiTabs } from "@ui";
 import MatchBulk from "./MatchBulk";
 import MatchEditor from "./MatchEditor";
 
@@ -91,7 +91,7 @@ export default {
     MatchEditor,
     UiForm,
     UiTab,
-    UiTabMenu,
+    UiTabs,
   },
   props: {
     game: {

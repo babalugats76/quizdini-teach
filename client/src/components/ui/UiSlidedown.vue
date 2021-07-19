@@ -1,6 +1,6 @@
 <template>
   <transition name="top-down" @after-leave="dialogExited">
-    <div class="ui-slidedown" v-if="show">
+    <div v-if="show" class="ui-slidedown">
       <div class="ui-slidedown__mask">
         <div class="ui-slidedown__dialog">
           <div class="ui-slidedown__body">

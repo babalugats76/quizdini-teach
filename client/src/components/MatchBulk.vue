@@ -9,18 +9,18 @@
       <input
         type="button"
         name="bulk-match__confirm"
-        @click.prevent="onConfirm"
         value="OK"
         :style="{ float: 'right' }"
         class="bulk-match__confirm positive"
+        @click.prevent="onConfirm"
       />
       <input
         type="button"
         name="bulk-match__deny"
-        @click.prevent="onDeny"
         value="Cancel"
         :style="{ float: 'right', marginRight: '0.5rem' }"
         class="bulk-match__deny negative"
+        @click.prevent="onDeny"
       />
     </template>
   </UiSlidedown>
@@ -32,32 +32,32 @@
     <input
       type="button"
       name="bulk-match__save"
-      @click="onSave"
       value="Save"
       :disabled="!dirty"
       class="bulk-match__save primary"
+      @click="onSave"
     />
     <input
       type="button"
       for="bulk-match__file"
       name="bulk-match__upload"
-      @click.prevent="onUpload"
       value="Upload"
       class="bulk-match__upload"
+      @click.prevent="onUpload"
     />
     <input
-      hidden
       id="bulk-match__file"
+      ref="fileRef"
+      hidden
       name="bulk-match__file"
       :accept="'.csv, .txt'"
       type="file"
-      ref="fileRef"
       @change.prevent="onFileChange"
     />
     <textarea
+      ref="textareaRef"
       placeholder="term, definition"
       class="bulk-match__editor"
-      ref="textareaRef"
     ></textarea>
   </div>
 </template>

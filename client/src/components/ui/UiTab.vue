@@ -1,10 +1,12 @@
 <template>
-  <div v-show="isActive">
+  <div :class="classes" v-show="isActive">
     <slot></slot>
   </div>
 </template>
 
 <script>
+import { computed, inject, onBeforeMount, ref, watch } from "vue";
+
 export default {
   name: "UiTab",
   props: {
@@ -13,19 +15,42 @@ export default {
       default: "Tab",
     },
   },
-  data() {
+  setup() {
+    const index = ref(0);
+    const isActive = ref(false);
+    const tabs = inject("TabsProvider");
+
+    watch(
+      () => tabs.selectedIndex,
+      () => {
+        isActive.value = index.value === tabs.selectedIndex;
+      }
+    );
+
+    const classes = computed(() => ({
+      "ui-tab": true,
+      "ui-tab--selected": index.value === tabs.selectedIndex,
+    }));
+
+    onBeforeMount(() => {
+      index.value = tabs.count;
+      tabs.count++;
+      isActive.value = index.value === tabs.selectedIndex;
+    });
+
     return {
-      isActive: true,
+      classes,
+      index,
+      isActive,
     };
-  },
-  computed: {
-    classes() {
-      return {
-        "ui-tab": true,
-      };
-    },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.ui-tab {
+  &--selected {
+    background-color: black;
+  }
+}
+</style>

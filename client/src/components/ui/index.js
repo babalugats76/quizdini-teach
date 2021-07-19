@@ -11,7 +11,7 @@ import UiMessage from "./UiMessage";
 import UiModal from "./UiModal";
 import UiSlidedown from "./UiSlidedown";
 import UiTab from "./UiTab";
-import UiTabMenu from "./UiTabMenu";
+import UiTabs from "./UiTabs";
 import {
   UiTable,
   UiTableBody,
@@ -44,7 +44,7 @@ export {
   UiRadioGroup,
   UiSlidedown,
   UiTab,
-  UiTabMenu,
+  UiTabs,
   UiTable,
   UiTableBody,
   UiTableHeader,
