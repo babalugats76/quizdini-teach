@@ -40,9 +40,9 @@ export default {
        :class="{ 'ui-tabs__item': true, 'ui-tabs__item--selected': index === selectedIndex }"
        */
 
-    const itemClasses = computed((index) => ({
+    const itemClasses = computed(() => (index) => ({
       "ui-tabs__item": true,
-      "ui-tabs__item--selected": index === selectedIndex,
+      "ui-tabs__item--selected": index === state.selectedIndex,
     }));
 
     onBeforeMount(() => {
@@ -65,4 +65,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.ui-tabs {
+  $tabs: &;
+  $items: #{$tabs}__item;
+  @at-root #{$tabs} #{$items}--selected {
+    color: red;
+  }
+}
+</style>
