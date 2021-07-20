@@ -252,5 +252,6 @@ button:disabled {
 .CodeMirror-lint-tooltip {
   font-family: "Inter", "Ubuntu Mono", monospace;
   background-color: #ffe !important;
+  z-index: 99999;
 }
 </style>
