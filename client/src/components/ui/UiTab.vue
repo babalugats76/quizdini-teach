@@ -1,5 +1,5 @@
 <template>
-  <div :class="classes" v-show="isActive">
+  <div :class="classes" v-if="isActive">
     <slot></slot>
   </div>
 </template>
@@ -49,8 +49,9 @@ export default {
 
 <style lang="scss" scoped>
 .ui-tab {
-  &--selected {
-    background-color: black;
-  }
+  display: inline-block;
+  width: 100%;
+  background-color: #fff;
+  // &--selected {  }
 }
 </style>

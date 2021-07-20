@@ -68,9 +68,30 @@ export default {
 <style lang="scss" scoped>
 .ui-tabs {
   $tabs: &;
+  $header: #{$tabs}__header;
   $items: #{$tabs}__item;
-  @at-root #{$tabs} #{$items}--selected {
-    color: red;
+  &__header {
+    display: block;
+    list-style: none;
+    margin: 1rem 1rem 0;
+    padding: 0;
+  }
+  @at-root #{$tabs} #{$header} #{$items}--selected {
+    font-weight: bold;
+    border-radius: 0.75rem 0.75rem 0 0;
+    border-bottom: 0.5rem solid transparent;
+    background-color: #fff;
+    color: #001399;
+  }
+  @at-root #{$header} > #{$items} {
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    margin: 0;
+    display: inline-block;
+    margin-right: 0.5rem;
+    cursor: pointer;
+    background-color: #ddd;
+    color: #aaa;
   }
 }
 </style>

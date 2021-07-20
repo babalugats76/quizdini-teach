@@ -20,14 +20,14 @@
       }"
     >
       <ui-tabs>
-        <ui-tab title="Matches">
+        <ui-tab title="Add Match">
           <match-editor
             :initial-values="blankMatch"
             :matches="values.matches"
             @save="(match) => values.matches.push(match)"
           />
         </ui-tab>
-        <ui-tab title="Bulk">
+        <ui-tab title="Bulk Editor">
           <match-bulk
             :bulk-matches="bulkMatches"
             :options="{
@@ -223,5 +223,6 @@ export default {
 <style lang="scss" scoped>
 .match__form {
   width: 100%;
+  background-color: #ccc;
 }
 </style>
