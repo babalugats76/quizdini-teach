@@ -65,6 +65,8 @@ export default {
 .match-edit {
   &__modal {
     flex-direction: column;
+    width: 85vw !important;
+    max-width: 800px !important;
   }
   &__close {
     position: absolute;
