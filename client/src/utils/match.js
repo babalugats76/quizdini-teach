@@ -20,9 +20,11 @@ const PURIFY_OPTS = {
 };
 
 export const matchToString = (matches) => {
-  return matches.reduce((accum, vals) => {
-    return accum + vals.term + ", " + vals.definition + "\n";
-  }, "");
+  return matches
+    .sort((a, b) => (a.term > b.term ? 1 : -1))
+    .reduce((accum, vals) => {
+      return accum + vals.term + ", " + vals.definition + "\n";
+    }, "");
 };
 
 /**

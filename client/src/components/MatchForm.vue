@@ -24,12 +24,12 @@
           <match-editor
             :initial-values="blankMatch"
             :matches="values.matches"
-            @save="(match) => values.matches.push(match)"
+            @save="(match) => onAddMatch({ match, values })"
           />
         </ui-tab>
         <ui-tab title="Bulk Editor">
           <match-bulk
-            :bulk-matches="bulkMatches"
+            :bulk-matches="values.bulkMatches"
             :options="{
               lineNumbers: true,
               mode: 'htmlmixed',
@@ -45,9 +45,9 @@
               /* viewportMargin: Infinity, */
             }"
             :matches="values.matches"
-            @change="handleBulkChange"
-            @save="handleBulkSave"
-            @upload="handleBulkUpload"
+            @change="onBulkChange"
+            @save="({ setValue }) => onBulkSave({ setValue, values })"
+            @upload="onBulkUpload"
           />
         </ui-tab>
       </ui-tabs>
@@ -170,15 +170,21 @@ export default {
       term: `<p>${initialTerm}</p>`,
     };
 
-    const handleBulkChange = ({ value }) => (state.bulkMatches = value);
-
-    const handleBulkSave = ({ setValue }) => {
-      state.matches = parseMatch(state.bulkMatches, 500);
-      state.bulkMatches = matchToString(state.matches);
-      setValue(state.bulkMatches);
+    const onAddMatch = ({ match, values }) => {
+      values.matches.push(match);
+      values.bulkMatches = matchToString(values.matches);
     };
 
-    const handleBulkUpload = ({ event, append }) => {
+    const onBulkChange = ({ value }) => (state.bulkMatches = value);
+
+    const onBulkSave = ({ setValue, values }) => {
+      values.matches = parseMatch(state.bulkMatches, 500);
+      values.bulkMatches = matchToString(values.matches);
+      setValue(values.bulkMatches);
+      state.bulkMatches = values.bulkMatches;
+    };
+
+    const onBulkUpload = ({ event, append }) => {
       if (event.target.files.length) {
         const file = event.target.files[0]; // Assumes single file processing
         const contents = event.target.files[0].slice(0, file.size, ""); // 0, size, '' are defaults
@@ -210,9 +216,10 @@ export default {
       ...toRefs(state),
       blankMatch,
       bulkMatchValidator,
-      handleBulkChange,
-      handleBulkSave,
-      handleBulkUpload,
+      onAddMatch,
+      onBulkChange,
+      onBulkSave,
+      onBulkUpload,
       handleSubmit,
       initialValues,
       matchValidation,
